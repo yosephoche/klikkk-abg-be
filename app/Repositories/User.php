@@ -37,24 +37,15 @@ class User extends BaseRepository
     }
 
     public function register($request){
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:6|confirmed',
-        ]);
-
-        if ($validator->fails())
-        {
-            return response(['errors'=>$validator->errors()->all()], 422);
-        }
-
         $request['password']=Hash::make($request['password']);
+        $request['uuid'] = \Str::uuid();
         $user = $this->model::create($request->toArray());
+        // TODO : send verivication email to users email
 
-        $token = $user->createToken('Laravel Password Grant Client')->accessToken;
-        $response = ['token' => $token];
+        // $token = $user->createToken('Laravel Password Grant Client')->accessToken;
+        // $response = ['token' => $token];
 
-        return response($response, 200);
+        return response(['User anda berhasil terdaftar, silahkan konfirmasi email anda untuk menyelesaikan proses pendaftaran'], 200);
     }
 
     public static function logout($request){
