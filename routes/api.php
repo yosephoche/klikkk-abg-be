@@ -11,16 +11,16 @@ Route::group(['middleware' => ['json.response'], 'namespace' => 'Api'], function
 
     // Public Routes
     Route::post('/login', 'AuthController@login')->name('api.login');
+    Route::post('/register', 'AuthController@register')->name('api.register');
     /**
-     * todo : register
-     * todo : reset password
+     * TODO : reset password
      *
      */
 
     // Private Route
     Route::middleware('auth:api')->group(function(){
         Route::get('/logout', 'AuthController@logout')->name('api.logout');
-        Route::get('/home', 'HomeController@index')->name('api.home');
+        // Route::get('/home', 'HomeController@index')->name('api.home');
     });
 
 
