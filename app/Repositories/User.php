@@ -40,7 +40,7 @@ class User extends BaseRepository
         $request['password']=Hash::make($request['password']);
         $request['uuid'] = \Str::uuid();
         $user = $this->model::create($request->toArray());
-        // TODO : send verivication email to users email
+        // TODO : send verivication mail to users email
 
         // $token = $user->createToken('Laravel Password Grant Client')->accessToken;
         // $response = ['token' => $token];
