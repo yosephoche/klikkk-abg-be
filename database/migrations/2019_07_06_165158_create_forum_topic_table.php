@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTahapPengajuanTable extends Migration
+class CreateForumTopicTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,11 @@ class CreateTahapPengajuanTable extends Migration
      */
     public function up()
     {
-        Schema::create('tahap_pengajuan', function (Blueprint $table) {
+        Schema::create('forum_topic', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->uuid('uuid');
-            $table->string('nama');
-            $table->smallInteger('urutan');
-            $table->bigInteger('pic');
+            $table->string('subject');
+            $table->bigInteger('category_id')->unsigned();
+            $table->bigInteger('created_by')->unsigned();
             $table->timestamps();
         });
     }
@@ -30,6 +29,6 @@ class CreateTahapPengajuanTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tahap_pengajuan');
+        Schema::dropIfExists('forum_topic');
     }
 }

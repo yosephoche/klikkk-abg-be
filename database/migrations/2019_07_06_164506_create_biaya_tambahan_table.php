@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateParameterTable extends Migration
+class CreateBiayaTambahanTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,13 @@ class CreateParameterTable extends Migration
      */
     public function up()
     {
-        Schema::create('parameter', function (Blueprint $table) {
+        Schema::create('biaya_tambahan', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->uuid('uuid');
-            $table->bigInteger('id_jenis_pengujian')->unsigned();
-            $table->string('nama');
+            $table->enum('jenis_pengajuan', ['pengujian', 'pelatihan']);
+            $table->bigInteger('id_pengajuan');
+            $table->string('nama_biaya');
             $table->double('biaya');
-            $table->boolean('status');
-            $table->timestamps();
+            $table->smallInteger('jumlah');
         });
     }
 
@@ -31,6 +30,6 @@ class CreateParameterTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('parameter');
+        Schema::dropIfExists('biaya_tambahan');
     }
 }
