@@ -21,6 +21,22 @@ Route::group(['middleware' => ['json.response'], 'namespace' => 'Api'], function
     Route::middleware('auth:api')->group(function(){
         Route::get('/logout', 'AuthController@logout')->name('api.logout');
         // Route::get('/home', 'HomeController@index')->name('api.home');
+        Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function(){
+
+            Route::group(['prefix' => 'master-data', 'namespace' => 'MasterData'], function(){
+
+                Route::group(['prefix' => 'master-pengujian'], function(){
+                    Route::get('/', 'MasterPengujianController@index')->name('api.admin.master-data.master-pengujian.index');
+
+                    Route::post('/store-jenis-pengujian','MasterPengujianController@storeJenisPengujian')->name('api.admin.master-data.master-pengujian.store-jenis-pengujian');
+                    Route::post('/store-parameter','MasterPengujianController@storeParameter')->name('api.admin.master-data.master-pengujian.store-parameter');
+                    Route::post('/update-jenis-pengujian','MasterPengujianController@updateJenisPengujian')->name('api.admin.master-data.master-pengujian.update-jenis-pengujian');
+                    Route::post('/update-parameter','MasterPengujianController@updateParameter')->name('api.admin.master-data.master-pengujian.update-parameter');
+                    Route::post('/delete', 'MasterPengujianController@delete')->name('api.admin.master-data.master-pengujian.delete');
+                });
+
+            });
+        });
     });
 
 
