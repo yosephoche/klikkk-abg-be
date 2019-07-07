@@ -56,3 +56,36 @@ if (!function_exists('separatePagingAndData')) {
         }
     }
 }
+
+if (!function_exists('responseMessage')) {
+    function responseMessage($type = 'save', $status = 'success'){
+        switch ($status) {
+            case 'success':
+                $message['status'] = 'Data berhasil';
+                break;
+            case 'error':
+                $message['status'] = 'Data gagal';
+                break;
+        }
+
+        switch ($type) {
+            case 'save':
+                $message['type'] = 'di simpan';
+                break;
+            case 'update':
+                $message['type'] = 'di update';
+                break;
+            case 'delete':
+                $message['type'] = 'di hapus';
+                break;
+        }
+
+        return implode(' ', $message);
+    }
+}
+
+if (!function_exist('databaseExceptionError')) {
+    function databaseExceptionError($message){
+        return dtcApiResponse(502,false,$message);
+    }
+}
