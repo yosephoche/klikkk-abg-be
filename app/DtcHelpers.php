@@ -84,7 +84,7 @@ if (!function_exists('responseMessage')) {
     }
 }
 
-if (!function_exist('databaseExceptionError')) {
+if (!function_exists('databaseExceptionError')) {
     function databaseExceptionError($message){
         return dtcApiResponse(502,false,$message);
     }
