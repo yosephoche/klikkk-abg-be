@@ -3,9 +3,12 @@
 namespace App\Repositories;
 
 use Illuminate\Support\Str;
+use App\Repositories\Traits\ApiResponseTrait;
 
 class MasterPengujian
 {
+    use ApiResponseTrait;
+
     public $jenis_pengujian;
     public $parameter_pengujian;
 
@@ -94,7 +97,7 @@ class MasterPengujian
         $jenis_pengujian->urutan = $data->urutan;
         $jenis_pengujian->status = $data->status;
 
-        return $jenis_pengujian->save();
+        return $this->apiResponse($this->jenis_pengujian->save());
     }
 
     public function storeParameter($data)
@@ -107,7 +110,7 @@ class MasterPengujian
             $parameter_pengujian[$key] = $this->prepareParameter($data, $key);
         }
 
-        return $jenis_pengujian->parameterPengujian()->saveMany($parameter_pengujian);
+        return $this->apiResponse($jenis_pengujian->parameterPengujian()->saveMany($parameter_pengujian));
     }
 
     public function updateJenisPengujian($data)
@@ -117,30 +120,36 @@ class MasterPengujian
 
     public function updateParameter($data)
     {
-        /** get list of old parameter id from parameter_pengujian property */
-        $oldParameterId = $this->parameter_pengujian->pluck('uuid')->toArray();
-        /** get deleted parameter by comparing id from form request and old parameter */
-        $deletedParameter = array_diff($oldParameterId,$data['uuid']);
+        try {
+            /** get list of old parameter id from parameter_pengujian property */
+            $oldParameterId = $this->parameter_pengujian->pluck('uuid')->toArray();
+            /** get deleted parameter by comparing id from form request and old parameter */
+            $deletedParameter = array_diff($oldParameterId,$data['uuid']);
 
-        /** delete deleted parameter by id */
-        \DB::table('parameter_pengujian')->whereIn('uuid', $deletedParameter)->delete();
+            /** delete deleted parameter by id */
+            \DB::table('parameter_pengujian')->whereIn('uuid', $deletedParameter)->delete();
 
-        /** update old param or add new param */
-        foreach ($data['nama'] as $key => $value) {
-            if (isset($data['uuid'][$key])) {
-                $update[$key] = $this->prepareParameter($data,$key);
+            /** update old param or add new param */
+            foreach ($data['nama'] as $key => $value) {
+                if (isset($data['uuid'][$key])) {
+                    $update[$key] = $this->prepareParameter($data,$key);
 
-                $update[$key]->save();
+                    $update[$key]->save();
+                }
+                else{
+                    $save[$key] = $this->prepareParameter($data,$key);
+
+                    $jenis_pengujian = $this->jenis_pengujian->first();
+
+                    $jenis_pengujian->parameterPengujian()->saveMany($save);
+                }
             }
-            else{
-                $save[$key] = $this->prepareParameter($data,$key);
 
-                $jenis_pengujian = $this->jenis_pengujian->first();
-
-                $jenis_pengujian->parameterPengujian()->saveMany($save);
-
-            }
+            return dtcApiResponse(200,true,responseMessage('update'));
+        } catch (\Illuminate\Database\QueryException $th) {
+            return dtcApiResponse(502,false,implode($th->errorInfo));
         }
+
     }
 
     private function prepareParameter($data, $index)
@@ -162,8 +171,15 @@ class MasterPengujian
         return $parameter_pengujian;
     }
 
+    public function getJenisPengujian($id)
+    {
+        $this->jenis_pengujian = $this->jenis_pengujian->where('id', $id)->orWhere('uuid', $id)->first();
+
+        return $this;
+    }
+
     public function delete()
     {
-        return $this->jenis_pengujian->delete();
+        return $this->apiResponse($this->jenis_pengujian->delete(), 'delete');
     }
 }
