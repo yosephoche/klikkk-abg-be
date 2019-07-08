@@ -25,6 +25,7 @@ Route::group(['middleware' => ['json.response'], 'namespace' => 'Api'], function
 
             Route::group(['prefix' => 'master-data', 'namespace' => 'MasterData'], function(){
 
+                /** Master Data Pengujian dan parameter pengujian */
                 Route::group(['prefix' => 'master-pengujian'], function(){
                     Route::get('/', 'MasterPengujianController@index')->name('api.admin.master-data.master-pengujian.index');
 
@@ -35,7 +36,18 @@ Route::group(['middleware' => ['json.response'], 'namespace' => 'Api'], function
                     Route::post('/delete', 'MasterPengujianController@delete')->name('api.admin.master-data.master-pengujian.delete');
                 });
 
+                /** Master Data tahap pengajuan pengujian */
+                Route::group(['prefix' => 'tahap-pengajuan-pengujian'], function(){
+                    Route::get('/', 'TahapPengajuanPengujianController@index')->name('api.admin.master-data.tahap-pengajuan-pengujian.index');
+                    Route::get('/delete/{id}', 'TahapPengajuanPengujianController@delete')->name('api.admin.master-data.tahap-pengajuan-pengujian.delete');
+
+                    Route::post('/store','TahapPengajuanPengujianController@store')->name('api.admin.master-data.tahap-pengajuan-pengujian.store');
+                    Route::post('/update','TahapPengajuanPengujianController@update')->name('api.admin.master-data.tahap-pengajuan-pengujian.update');
+                });
+
             });
+
+
         });
     });
 
