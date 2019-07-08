@@ -56,6 +56,11 @@ abstract class BaseRepository
         return $this;
     }
 
+    public function orWhere( $column, $operator = null, $value = null){
+        $this->mode = $this->model->orWhere($column , $operator, $value);
+        return $this;
+    }
+
     public function take($number)
     {
 
@@ -78,6 +83,12 @@ abstract class BaseRepository
     public function whereYear($column,$operator,$value = null,$boolean = 'and')
     {
         $this->model = $this->model->whereYear($column, $operator, $value, $boolean);
+        return $this;
+    }
+
+    public function first()
+    {
+        $this->model = $this->model->first();
         return $this;
     }
 

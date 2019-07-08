@@ -10,6 +10,7 @@ class User extends BaseRepository
     public function __construct()
     {
         parent::__construct();
+        return $this;
     }
 
     public function model(){
@@ -54,5 +55,18 @@ class User extends BaseRepository
 
         $response = 'You have been succesfully logged out!';
         return response($response, 200);
+    }
+
+    public static function user($id = null){
+        return app()->make('App\Models\User');
+    }
+
+    public function admin(){
+        $this->model = $this->model->where('jenis_akun', 1);
+        return $this;
+    }
+
+    public function roles(){
+        return $this->model = $this->model->roles();
     }
 }
