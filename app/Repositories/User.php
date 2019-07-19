@@ -24,16 +24,26 @@ class User extends BaseRepository
 
             if (Hash::check($request->password, $user->password)) {
                 $token = $user->createToken('Laravel Password Grant Client')->accessToken;
-                $response = ['token' => $token];
-                return response($response, 200);
+                $jenis_akun = \DB::table('jenis_akun')->where('id',$user->jenis_akun);
+                $jenis_akun = $jenis_akun->first()?$jenis_akun->first()->nama:null;
+                $response = [
+                    'token' => $token,
+                    'user_id' => $user->user_id,
+                    'nama_lengkap' => $user->nama_lengkap,
+                    'pekerjaan' => $user->pekerjaan,
+                    'instansi' => $user->instansi,
+                    'jenis_akun' => $jenis_akun,
+                    'avatar' => $user->avatar?asset('user/avatar'.$user->avatar):null
+                ];
+                return dtcApiResponse(200, $response);
             } else {
                 $response = "Password missmatch";
-                return response($response, 422);
+                return dtcApiResponse(422,null,$response);
             }
 
         } else {
             $response = 'User does not exist';
-            return response($response, 422);
+            return dtcApiResponse(404,null,$response);
         }
     }
 

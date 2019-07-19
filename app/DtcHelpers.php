@@ -24,6 +24,9 @@ if (!function_exists('httpResponse')) {
             case 404:
                 $status = 'NOT FOUND';
                 break;
+            case 422:
+                $status = 'PASSWORD MISSMATCH';
+                break;
             case 500:
                 $status = 'INTERNAL SERVER ERROR';
                 break;
