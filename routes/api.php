@@ -45,6 +45,18 @@ Route::group(['middleware' => ['json.response'], 'namespace' => 'Api'], function
                     Route::post('/update','TahapPengajuanPengujianController@update')->name('api.admin.master-data.tahap-pengajuan-pengujian.update');
                 });
 
+                /** Master Data tahap pengajuan pengujian */
+                Route::group(['prefix' => 'user-role'], function(){
+                    Route::get('/', 'UserRoleController@index')->name('api.admin.master-data.user-role.index');
+                    Route::get('/get-list-user', 'UserRoleController@getListUser')->name('api.admin.master-data.user-role.get-list-user');
+                    Route::get('/get-list-role', 'UserRoleController@getListRole')->name('api.admin.master-data.role-role.get-list-role');
+                    Route::get('/delete/{id}', 'UserRoleController@delete')->name('api.admin.master-data.user-role.delete');
+
+
+                    Route::post('/attach','UserRoleController@attach')->name('api.admin.master-data.user-role.attach');
+                    Route::post('/detach','UserRoleController@detach')->name('api.admin.master-data.user-role.detach');
+                });
+
             });
 
 
