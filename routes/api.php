@@ -49,7 +49,15 @@ Route::group(['middleware' => ['json.response'], 'namespace' => 'Api'], function
 
 
         });
+
+        // Route FOr Forum
+        Route::group(['prefix' => 'forum', 'namespace' => 'Forum'], function(){
+            Route::group(['prefix'=>'thread'], function(){
+                Route::get('/','threadController@index')->name('index');
+            });
+        });
     });
+
 
 
 });
