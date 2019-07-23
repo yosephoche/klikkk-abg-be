@@ -95,14 +95,20 @@ class User extends BaseRepository
     }
 
     public static function getRegisterData(){
+        // ->pluck('nama','id')->toArray()
+        $jenis_akun = \DB::table('jenis_akun')->get()->map(function($value){
+            if ($value->nama != 'BBPK3') {
+                return [
+                    'id' => $value->id,
+                    'name' => $value->nama
+                ];
+            }
 
-        $jenis_akun = \DB::table('jenis_akun')->get()->pluck('nama','id')->toArray();
+        })->filter(function($value){
+            return !empty($value);
+        });
 
-        if (($key = array_search('BBPK3', $jenis_akun)) !== false) {
-            unset($jenis_akun[$key]);
-        }
-
-        $data['jenis_akun'] = $jenis_akun;
+        $data['jenis_akun'] = $jenis_akun->toArray();
 
         return
             dtcApiResponse(200,$data);
