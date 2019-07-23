@@ -37,7 +37,7 @@ class RoleSeeder extends Seeder
         $penggantiKepalBalai->save();
 
         $staffTeknis = new Role();
-        $staffTeknis->name = 'staff_teknis';
+        $staffTeknis->name = 'staf_teknis';
         $staffTeknis->display_name = 'Staff Teknis K3';
         $staffTeknis->description = 'Staff teknis k3';
         $staffTeknis->save();
@@ -50,7 +50,7 @@ class RoleSeeder extends Seeder
 
         $keuangan = new Role();
         $keuangan->name = 'keuangan';
-        $keuangan->display_name = 'Staff Keuangan K3';
+        $keuangan->display_name = 'Staf Keuangan K3';
         $keuangan->description = 'Bagian keuangan k3';
         $keuangan->save();
 
