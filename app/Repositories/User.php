@@ -108,7 +108,7 @@ class User extends BaseRepository
             return !empty($value);
         });
 
-        $data['jenis_akun'] = $jenis_akun->toArray();
+        $data['jenis_akun'] = array_values($jenis_akun->toArray());
 
         return
             dtcApiResponse(200,$data);
