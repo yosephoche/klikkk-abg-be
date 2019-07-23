@@ -60,6 +60,7 @@ class User extends BaseRepository
         $roles = Role::where('name', 'user')->first()->id;
 
         $user->roles()->attach($roles);
+
         // TODO : send verivication mail to users email
 
         // $token = $user->createToken('Laravel Password Grant Client')->accessToken;
@@ -91,5 +92,19 @@ class User extends BaseRepository
 
     public function roles(){
         return $this->model = $this->model->roles();
+    }
+
+    public static function getRegisterData(){
+
+        $jenis_akun = \DB::table('jenis_akun')->get()->pluck('nama','id')->toArray();
+
+        if (($key = array_search('BBPK3', $jenis_akun)) !== false) {
+            unset($jenis_akun[$key]);
+        }
+
+        $data['jenis_akun'] = $jenis_akun;
+
+        return
+            dtcApiResponse(200,$data);
     }
 }

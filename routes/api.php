@@ -12,6 +12,7 @@ Route::group(['middleware' => ['json.response'], 'namespace' => 'Api'], function
     // Public Routes
     Route::post('/login', 'AuthController@login')->name('api.login');
     Route::post('/register', 'AuthController@register')->name('api.register');
+    Route::get('/register', 'AuthController@getRegisterData');
     /**
      * TODO : reset password
      *
@@ -19,6 +20,7 @@ Route::group(['middleware' => ['json.response'], 'namespace' => 'Api'], function
 
     // Private Route
     Route::middleware('auth:api')->group(function(){
+        Route::get('/test', 'TestController@index');
         Route::get('/logout', 'AuthController@logout')->name('api.logout');
         // Route::get('/home', 'HomeController@index')->name('api.home');
         Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function(){
@@ -45,7 +47,7 @@ Route::group(['middleware' => ['json.response'], 'namespace' => 'Api'], function
                     Route::post('/update','TahapPengajuanPengujianController@update')->name('api.admin.master-data.tahap-pengajuan-pengujian.update');
                 });
 
-                /** Master Data tahap pengajuan pengujian */
+                /** Master Data role user */
                 Route::group(['prefix' => 'user-role'], function(){
                     Route::get('/', 'UserRoleController@index')->name('api.admin.master-data.user-role.index');
                     Route::get('/get-list-user', 'UserRoleController@getListUser')->name('api.admin.master-data.user-role.get-list-user');
@@ -59,6 +61,20 @@ Route::group(['middleware' => ['json.response'], 'namespace' => 'Api'], function
 
             });
 
+
+        });
+
+        Route::group(['prefix' => 'user', 'namespace' => 'User'], function(){
+
+            Route::group(['prefix' => 'pengajuan' , 'namespace' => 'Pengajuan'], function(){
+
+                Route::group(['prefix' => 'pengujian'], function(){
+                    Route::get('/', 'PengujianController@index')->name('api.user.pengajuan.pengujian.index');
+                    Route::get('/add', 'PengujianController@add')->name('api.user.pengajuan.pegujian.add');
+                    Route::post('/store', 'PengujianController@store')->name('api.user.pengajuan.pengujian.store');
+                });
+
+            });
 
         });
     });

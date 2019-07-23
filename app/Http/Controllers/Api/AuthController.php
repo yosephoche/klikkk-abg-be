@@ -21,8 +21,10 @@ class AuthController extends Controller
     }
 
     public function logout (Request $request) {
-
         return User::logout($request);
+    }
 
+    public function getRegisterData(){
+        return User::getRegisterData();
     }
 }
