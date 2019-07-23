@@ -6,8 +6,6 @@ if (!function_exists('dtcApiResponse')) {
         $res_data = separatePagingAndData($data);
         $res_diag = httpResponse($code, $message);
 
-        // dd($res_data);
-
         return response(array_merge($res_data, $res_diag), 200);
     }
 }
