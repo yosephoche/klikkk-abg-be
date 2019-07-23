@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24" height="24" viewBox="0 0 24 24">
+  <defs>
+    <clipPath id="clip-path">
+      <rect id="Rectangle_2890" data-name="Rectangle 2890" width="24" height="24" transform="translate(-10548 1837)" fill="#4cb050" stroke="#707070" stroke-width="1"/>
+    </clipPath>
+  </defs>
+  <g id="ic_daurulang" transform="translate(10548 -1837)" clip-path="url(#clip-path)">
+    <g id="surface1" transform="translate(-10545 1840)">
+      <path id="Path_3246" data-name="Path 3246" d="M13,4a10.073,10.073,0,0,0-2.625.375l1.359,1.266A7.154,7.154,0,0,1,13,5.5a7.507,7.507,0,0,1,5.344,2.25H16v1.5h4.5V4.75H19V6.3A8.917,8.917,0,0,0,13,4ZM4.75,5.5V7H6.344A8.928,8.928,0,0,0,4,13a12.29,12.29,0,0,0,.3,2.391L5.57,14.125A5.585,5.585,0,0,1,5.5,13,7.557,7.557,0,0,1,7.75,7.656V10h1.5V5.5Zm16.875,5.109-1.2,1.336A4.917,4.917,0,0,1,20.5,13a7.459,7.459,0,0,1-2.25,5.344V16h-1.5v4.5h4.5V19H19.727A8.913,8.913,0,0,0,22,13,8.36,8.36,0,0,0,21.625,10.609ZM5.5,16.75v4.5H7V19.656A8.878,8.878,0,0,0,13,22a6.946,6.946,0,0,0,2.18-.3l-1.43-1.2H13a7.507,7.507,0,0,1-5.344-2.25H10v-1.5Z" transform="translate(-4 -4)" fill="#284260"/>
+    </g>
+  </g>
+</svg>

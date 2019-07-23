@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24" height="24" viewBox="0 0 24 24">
+  <defs>
+    <clipPath id="clip-path">
+      <rect id="Rectangle_2900" data-name="Rectangle 2900" width="24" height="24" transform="translate(-9703 2980)" fill="#839bbd" stroke="#707070" stroke-width="1"/>
+    </clipPath>
+  </defs>
+  <g id="ic_twitter" transform="translate(9703 -2980)" clip-path="url(#clip-path)">
+    <g id="surface1" transform="translate(-9700 2984.5)">
+      <path id="Path_3258" data-name="Path 3258" d="M22,7.98a7.359,7.359,0,0,1-2.121.58A3.705,3.705,0,0,0,21.5,6.519a7.44,7.44,0,0,1-2.344.9,3.694,3.694,0,0,0-6.39,2.525,3.611,3.611,0,0,0,.1.841A10.468,10.468,0,0,1,5.254,6.923,3.695,3.695,0,0,0,6.4,11.854a3.672,3.672,0,0,1-1.673-.463v.047a3.691,3.691,0,0,0,2.962,3.621,3.676,3.676,0,0,1-.973.132,3.6,3.6,0,0,1-.694-.067,3.7,3.7,0,0,0,3.448,2.566,7.407,7.407,0,0,1-4.585,1.579A7.322,7.322,0,0,1,4,19.216a10.5,10.5,0,0,0,16.169-8.848c0-.158-.006-.319-.012-.478A7.565,7.565,0,0,0,22,7.98Z" transform="translate(-4 -6.246)" fill="#839bbd"/>
+    </g>
+  </g>
+</svg>

@@ -5,6 +5,8 @@ namespace App\Repositories;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Role;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\VerifyEmail;
 
 class User extends BaseRepository
 {
@@ -62,6 +64,8 @@ class User extends BaseRepository
         $user->roles()->attach($roles);
 
         // TODO : send verivication mail to users email
+
+        Mail::to($user)->send(new VerifyEmail($user));
 
         // $token = $user->createToken('Laravel Password Grant Client')->accessToken;
         // $response = ['token' => $token];
