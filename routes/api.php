@@ -19,7 +19,7 @@ Route::group(['middleware' => ['json.response'], 'namespace' => 'Api'], function
      */
 
     // Private Route
-    Route::middleware('auth:api')->group(function(){
+    Route::group( [ 'middleware' => ['auth:api','cors.handler'] ], function(){
         Route::get('/test', 'TestController@index');
         Route::get('/logout', 'AuthController@logout')->name('api.logout');
         // Route::get('/home', 'HomeController@index')->name('api.home');

@@ -23,7 +23,7 @@ if (!function_exists('httpResponse')) {
                 $status = 'NOT FOUND';
                 break;
             case 422:
-                $status = 'PASSWORD MISSMATCH';
+                $status = 'UNPROCESSABLE ENTITY';
                 break;
             case 500:
                 $status = 'INTERNAL SERVER ERROR';
