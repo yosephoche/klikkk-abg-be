@@ -2,8 +2,8 @@
 
 use Illuminate\Http\Request;
 
-
-Route::group(['middleware' => ['json.response', 'cors.handler'], 'namespace' => 'Api'], function(){
+// 'json.response',
+Route::group( ['namespace' => 'Api'], function(){
 
     Route::middleware('auth:api')->get('/user', function (Request $request) {
         return $request->user();

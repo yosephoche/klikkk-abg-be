@@ -17,7 +17,7 @@ return [
     'allowedOriginsPatterns' => [],
     'allowedHeaders' => ['Accept'=>'application/json'],
     'allowedMethods' => ['POST', 'GET', 'OPTIONS', 'PUT', 'DELETE'],
-    'exposedHeaders' => ['Content-Type','Accept'],
+    'exposedHeaders' => [],
     'maxAge' => 86400,
 
 ];
