@@ -15,9 +15,9 @@ return [
     'supportsCredentials' => true,
     'allowedOrigins' => ['*'],
     'allowedOriginsPatterns' => [],
-    'allowedHeaders' => ['*'],
+    'allowedHeaders' => ['Accept'=>'application/json'],
     'allowedMethods' => ['POST', 'GET', 'OPTIONS', 'PUT', 'DELETE'],
-    'exposedHeaders' => ['Content-Type'],
+    'exposedHeaders' => ['Content-Type','Accept'],
     'maxAge' => 86400,
 
 ];

@@ -3,7 +3,7 @@
 use Illuminate\Http\Request;
 
 
-Route::group(['middleware' => ['json.response'], 'namespace' => 'Api'], function(){
+Route::group(['middleware' => ['json.response', 'cors.handler'], 'namespace' => 'Api'], function(){
 
     Route::middleware('auth:api')->get('/user', function (Request $request) {
         return $request->user();
@@ -20,7 +20,7 @@ Route::group(['middleware' => ['json.response'], 'namespace' => 'Api'], function
      */
 
     // Private Route
-    Route::group( [ 'middleware' => ['auth:api','cors.handler'] ], function(){
+    Route::group( [ 'middleware' => ['auth:api'] ], function(){
         Route::get('/test', 'TestController@index');
         Route::get('/logout', 'AuthController@logout')->name('api.logout');
         // Route::get('/home', 'HomeController@index')->name('api.home');
