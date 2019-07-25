@@ -31,23 +31,14 @@ class User extends BaseRepository
             if ($user->hasVerifiedEmail()) {
                 if (Hash::check($request->password, $user->password)) {
 
-                    $response = $http->post(url('oauth/token'), [
-                        'form_params' => [
-                            'grant_type' => 'password',
-                            'client_id' => env('PASSPORT_CLIENT_ID'),
-                            'client_secret' => env('PASSPORT_SECRET_KEY'),
-                            'username' => $request->email,
-                            'password' => $request->password,
-                            'scope' => '',
-                        ],
-                    ]);
+                    $token = $user->createToken('User personal access token')->accessToken;
 
                     $jenis_akun = \DB::table('jenis_akun')->where('id',$user->jenis_akun);
                     $jenis_akun = $jenis_akun->first()?$jenis_akun->first()->nama:null;
 
                     $response = [
-                        'access_token' => json_decode((string) $response->getBody()),
                         'user_id' => $user->user_id,
+                        'token' => $token,
                         'nama_lengkap' => $user->nama_lengkap,
                         'pekerjaan' => $user->pekerjaan,
                         'instansi' => $user->instansi,
@@ -80,8 +71,6 @@ class User extends BaseRepository
 
         $user->roles()->attach($roles);
 
-        // TODO : send verivication mail to users email
-
         $email_verification = new EmailVerification();
         $email_verification['token'] = sha1(time());
 
@@ -99,10 +88,6 @@ class User extends BaseRepository
         $response = 'You have been succesfully logged out!';
         return response($response, 200);
     }
-
-    // public static function userModel($id = null){
-    //     return app()->make('App\Models\User');
-    // }
 
     public static function user($user){
         return (new self)->model->where('id', $user)->OrWhere('uuid', $user)->first();

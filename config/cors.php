@@ -12,12 +12,12 @@ return [
     |
     */
 
-    'supportsCredentials' => true,
+    'supportsCredentials' => false,
     'allowedOrigins' => ['*'],
     'allowedOriginsPatterns' => [],
-    'allowedHeaders' => ['Accept'=>'application/json'],
-    'allowedMethods' => ['POST', 'GET', 'OPTIONS', 'PUT', 'DELETE'],
+    'allowedHeaders' => ['*'],
+    'allowedMethods' => ['*'],
     'exposedHeaders' => [],
-    'maxAge' => 86400,
+    'maxAge' => 0,
 
 ];
