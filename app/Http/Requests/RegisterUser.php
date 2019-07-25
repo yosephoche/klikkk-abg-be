@@ -3,6 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 class RegisterUser extends FormRequest
 {
@@ -26,7 +28,7 @@ class RegisterUser extends FormRequest
         return [
             'nama_lengkap' => 'required|string|max:255',
             'email' => 'required|unique:users',
-            'password' => 'required|string|confirmed|max:255|unique:users',
+            'password' => 'required|string|confirmed|max:255',
             // 'pekerjaan' => 'required',
             'instansi' => 'string|max:255',
             'nip' => 'max:255',
@@ -48,5 +50,20 @@ class RegisterUser extends FormRequest
             'no_telepon.required' => 'Nomor telepon harus di isi',
             'jenis_akun.required' => 'Jesni akun harus di isi'
         ];
+    }
+
+    // public function failedValidation()
+    // {
+    //     return dtcApiResponse(422,false,$this->errorBag);
+    // }
+
+    /**
+     * Failed validation disable redirect
+     *
+     * @param Validator $validator
+     */
+    protected function failedValidation(Validator $validator)
+    {
+        throw new HttpResponseException(dtcApiResponse(422,false,array_values($validator->messages()->toArray() )));
     }
 }
