@@ -8,6 +8,7 @@ use App\Models\Role;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\VerifyEmail;
 use App\Models\EmailVerification;
+use function GuzzleHttp\json_encode;
 
 class User extends BaseRepository
 {
@@ -24,14 +25,28 @@ class User extends BaseRepository
     public function login($request){
         $user = $this->model::where('email', $request->email)->first();
 
+        $http = new \GuzzleHttp\Client;
+
         if ($user) {
             if ($user->hasVerifiedEmail()) {
                 if (Hash::check($request->password, $user->password)) {
-                    $token = $user->createToken('Laravel Password Grant Client')->accessToken;
+
+                    $response = $http->post(url('oauth/token'), [
+                        'form_params' => [
+                            'grant_type' => 'password',
+                            'client_id' => env('PASSPORT_CLIENT_ID'),
+                            'client_secret' => env('PASSPORT_SECRET_KEY'),
+                            'username' => $request->email,
+                            'password' => $request->password,
+                            'scope' => '',
+                        ],
+                    ]);
+
                     $jenis_akun = \DB::table('jenis_akun')->where('id',$user->jenis_akun);
                     $jenis_akun = $jenis_akun->first()?$jenis_akun->first()->nama:null;
+
                     $response = [
-                        'token' => $token,
+                        'access_token' => json_decode((string) $response->getBody()),
                         'user_id' => $user->user_id,
                         'nama_lengkap' => $user->nama_lengkap,
                         'pekerjaan' => $user->pekerjaan,
@@ -40,6 +55,7 @@ class User extends BaseRepository
                         'avatar' => $user->avatar?asset('user/avatar'.$user->avatar):null,
                         'role' => $user->roles()->get()->map(function($value){ return $value->name; })
                     ];
+
                     return dtcApiResponse(200, $response);
                 } else {
                     $response = "Password missmatch";
@@ -73,10 +89,7 @@ class User extends BaseRepository
 
         Mail::to($user)->send(new VerifyEmail($user));
 
-        // $token = $user->createToken('Laravel Password Grant Client')->accessToken;
-        // $response = ['token' => $token];
         return dtcApiResponse(200, null, 'User anda berhasil terdaftar, silahkan konfirmasi email anda untuk menyelesaikan proses pendaftaran');
-        // return response([], 200);
     }
 
     public static function logout($request){

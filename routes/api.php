@@ -3,7 +3,7 @@
 use Illuminate\Http\Request;
 
 // 'json.response',
-Route::group( ['namespace' => 'Api'], function(){
+Route::group( ['middleware' => ['json.response'],'namespace' => 'Api'], function(){
 
     Route::middleware('auth:api')->get('/user', function (Request $request) {
         return $request->user();
