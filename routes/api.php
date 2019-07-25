@@ -13,6 +13,7 @@ Route::group(['middleware' => ['json.response'], 'namespace' => 'Api'], function
     Route::post('/login', 'AuthController@login')->name('api.login');
     Route::post('/register', 'AuthController@register')->name('api.register');
     Route::get('/register', 'AuthController@getRegisterData');
+    Route::get('/verification/{token}', 'AuthController@verifyUsersEmail')->name('api.verifyUsersEmail');
     /**
      * TODO : reset password
      *

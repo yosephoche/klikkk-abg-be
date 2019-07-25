@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Models\Role;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\VerifyEmail;
+use App\Models\EmailVerification;
 
 class User extends BaseRepository
 {
@@ -65,6 +66,11 @@ class User extends BaseRepository
 
         // TODO : send verivication mail to users email
 
+        $email_verification = new EmailVerification();
+        $email_verification['token'] = sha1(time());
+
+        $user->emailVerification()->save($email_verification);
+
         Mail::to($user)->send(new VerifyEmail($user));
 
         // $token = $user->createToken('Laravel Password Grant Client')->accessToken;
@@ -116,5 +122,20 @@ class User extends BaseRepository
 
         return
             dtcApiResponse(200,$data);
+    }
+
+    public static function verifyUsersEmail($token){
+        $m_token = \App\Models\EmailVerification::where('token', $token)->orderBy('created_at')->first();
+        $user = (new self())->model->whereHas('emailVerification', function($q) use($token) { $q->where('token', $token); } )->first();
+
+        if ($user) {
+            $user->email_verified_at = \Carbon\Carbon::now();
+            $user->save();
+            $data['redirect'] = '/login';
+            return dtcApiResponse(200,$data);
+        }
+
+        return dtcApiResponse(404,null, 'User tidak ditemukan');
+
     }
 }

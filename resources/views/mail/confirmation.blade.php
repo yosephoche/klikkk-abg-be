@@ -152,7 +152,7 @@
               pendaftaran Anda.
             </p>
 
-            <button type="button" class="btn">Konfirmasi</button>
+            <a href="{{ route('api.verifyUsersEmail', $user->emailVerification()->first()->token ) }}" class="btn">Konfirmasi</a>
           </div>
 
         </div>

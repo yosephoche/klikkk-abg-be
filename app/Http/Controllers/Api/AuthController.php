@@ -27,4 +27,8 @@ class AuthController extends Controller
     public function getRegisterData(){
         return User::getRegisterData();
     }
+
+    public function verifyUsersEmail($token){
+        return User::verifyUsersEmail($token);
+    }
 }
