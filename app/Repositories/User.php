@@ -25,8 +25,6 @@ class User extends BaseRepository
     public function login($request){
         $user = $this->model::where('email', $request->email)->first();
 
-        $http = new \GuzzleHttp\Client;
-
         if ($user) {
             if ($user->hasVerifiedEmail()) {
                 if (Hash::check($request->password, $user->password)) {
