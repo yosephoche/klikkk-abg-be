@@ -102,7 +102,7 @@ class MasterPengujian
 
     public function storeParameter($data)
     {
-        $jenis_pengujian = $this->jenis_pengujian->first();
+        $jenis_pengujian = $this->jenis_pengujian;
 
         $data = ($data instanceof \Illuminate\Http\Request )?$data->toArray():$data;
 
@@ -127,7 +127,7 @@ class MasterPengujian
             $deletedParameter = array_diff($oldParameterId,$data['uuid']);
 
             /** delete deleted parameter by id */
-            \DB::table('parameter_pengujian')->whereIn('uuid', $deletedParameter)->delete();
+            \DB::table('parameter_pengujian')->where('id_jenis_pengujian', $this->jenis_pengujian->id)->whereIn('uuid', $deletedParameter)->delete();
 
             /** update old param or add new param */
             foreach ($data['nama'] as $key => $value) {
