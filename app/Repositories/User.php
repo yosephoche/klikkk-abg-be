@@ -6,9 +6,9 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Role;
 use Illuminate\Support\Facades\Mail;
-use App\Mail\VerifyEmail;
+use App\Notifications\VerifyEmail;
 use App\Models\EmailVerification;
-use function GuzzleHttp\json_encode;
+use Illuminate\Support\Facades\Notification;
 
 class User extends BaseRepository
 {
@@ -74,7 +74,11 @@ class User extends BaseRepository
 
         $user->emailVerification()->save($email_verification);
 
-        Mail::to($user)->send(new VerifyEmail($user));
+        // $user->notify(new VerifyEmail($user));
+        Notification::send($user, new VerifyEmail($user));
+
+        // Mail::to($user)->send(new AppVerifyEmail($user));
+        // Mail::to('muh.zulkifli@docotel.com')->send(new AppVerifyEmail('muh.zulkifli@docotel.com'));
 
         return dtcApiResponse(200, null, 'User anda berhasil terdaftar, silahkan konfirmasi email anda untuk menyelesaikan proses pendaftaran');
     }

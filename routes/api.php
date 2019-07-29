@@ -21,7 +21,6 @@ Route::group( ['middleware' => ['json.response'],'namespace' => 'Api'], function
 
     // Private Route
     Route::group( [ 'middleware' => ['auth:api'] ], function(){
-        Route::get('/test', 'TestController@index');
         Route::get('/logout', 'AuthController@logout')->name('api.logout');
         // Route::get('/home', 'HomeController@index')->name('api.home');
         Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function(){

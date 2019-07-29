@@ -1,14 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://fonts.googleapis.com/css?family=DM+Sans:700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
       rel="stylesheet">
 </head>
-<style>
-  @font-face {
+<style type="text/css">
+  /* @font-face {
   font-family: 'HKGroteskLegacy';
   src: url('{{ asset('fonts/HKGrotesk-RegularLegacy.otf') }}');
   }
@@ -16,12 +17,12 @@
   @font-face {
     font-family: 'HKGrostekBold';
     src: url('{{ asset('fonts/HKGrotesk-Bold.otf') }} ');
-  }
+  } */
 
   body {
     padding: 0;
     margin: 0;
-    font-family: 'HKGroteskLegacy', serif;
+    font-family: 'DM Sans', sans-serif;
   }
 
   .wrap {
@@ -47,6 +48,7 @@
 
   .logo {
     padding-right: 10px;
+    width: 300px;
   }
 
   h1 {
@@ -64,7 +66,7 @@
   .card {
     text-align: center;
     align-items: center;
-    box-shadow: 0 2px 10px 5px #e9eef5;
+    border : solid #E1EBF8 1px;
   }
 
   .wrap-avatar {
@@ -101,6 +103,7 @@
     color: #fff;
     box-shadow: 0 2px 8px #e1ebf8;
     transition: 0.7s;
+    text-decoration: none;
   }
 
   .btn:hover {
@@ -134,15 +137,15 @@
     <div class="container">
       <header>
         <div class="wrap-logo">
-          <img src="{{ asset('images/bs_kemnaker.svg') }}" class="logo">
-          <h1>Klikkk ABG</h1>
+          <img src="{{ $message->embed(storage_path().'/images/logo.png') }}" class="logo">
+          {{-- <h1>Klikkk ABG</h1> --}}
         </div>
       </header>
 
       <section>
         <div class="card">
           <div class="wrap-avatar">
-            <img src="{{ asset('images/ic_orang.svg') }}" class="avatar">
+            <img src="{{ $message->embed(storage_path().'/images/bs_konfirmasi.png')}}" class="avatar">
           </div>
 
           <div class="wrap-title">
@@ -152,7 +155,7 @@
               pendaftaran Anda.
             </p>
 
-            <a href="{{ route('api.verifyUsersEmail', $user->emailVerification()->first()->token ) }}" class="btn">Konfirmasi</a>
+          <a href="{{ route('api.verifyUsersEmail', $user->emailVerification()->orderBy('created_at', 'DESC')->first()->token) }}" class="btn">Konfirmasi</a>
           </div>
 
         </div>
@@ -160,9 +163,9 @@
 
       <footer>
         <div class="sosmed">
-          <img src="{{ asset('images/ic_fb.svg')}}">
-          <img src="{{ asset('images/ic_ig.svg')}}" class="ig">
-          <img src="{{ asset('images/ic_twitter.svg')}}">
+          <img src="{{ $message->embed(storage_path().'/images/ic_fb.png')}}">
+          <img src="{{ $message->embed(storage_path().'/images/ic_ig.png')}}" class="ig">
+          <img src="{{ $message->embed(storage_path().'/images/ic_twit.png')}}">
         </div>
 
         <div class="about">
