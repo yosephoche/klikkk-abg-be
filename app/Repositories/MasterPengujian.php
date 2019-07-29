@@ -64,7 +64,8 @@ class MasterPengujian
                     return [
                         'uuid' => $value->uuid,
                         'nama' => $value->nama,
-                        'biaya' => $value->biaya
+                        'biaya' => $value->biaya,
+                        'status' => $value->status
                     ];
                 });
             }
