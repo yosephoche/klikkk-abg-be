@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use Illuminate\Support\Str;
 use App\Repositories\Traits\ApiResponseTrait;
+use Illuminate\Database\QueryException;
 
 class MasterPengujian
 {
@@ -98,7 +99,11 @@ class MasterPengujian
         $jenis_pengujian->urutan = $data->urutan;
         $jenis_pengujian->status = $data->status;
 
-        return $this->apiResponse($this->jenis_pengujian->save());
+        try {
+            return dtcApiResponse(200, $jenis_pengujian->save(), responseMessage('save','success'));
+        } catch (QueryException $th) {
+            return databaseExceptionError(implode(', ',$th->errorInfo));
+        }
     }
 
     public function storeParameter($data)
@@ -111,7 +116,11 @@ class MasterPengujian
             $parameter_pengujian[$key] = $this->prepareParameter($data, $key);
         }
 
-        return $this->apiResponse($jenis_pengujian->parameterPengujian()->saveMany($parameter_pengujian));
+        try {
+            return dtcApiResponse(200, $jenis_pengujian->parameterPengujian()->saveMany($parameter_pengujian), responseMessage('save') );
+        } catch (QueryException $th) {
+            return databaseExceptionError(implode(', ',$th->errorInfo));
+        }
     }
 
     public function updateJenisPengujian($data)
@@ -147,7 +156,7 @@ class MasterPengujian
             }
 
             return dtcApiResponse(200,true,responseMessage('update'));
-        } catch (\Illuminate\Database\QueryException $th) {
+        } catch (QueryException $th) {
             return dtcApiResponse(502,false,implode($th->errorInfo));
         }
 
@@ -181,6 +190,11 @@ class MasterPengujian
 
     public function delete()
     {
-        return $this->apiResponse($this->jenis_pengujian->delete(), 'delete');
+        try {
+            return dtcApiResponse(200,$this->jenis_pengujian->delete(),responseMessage('delete'));
+        } catch (QueryException $th) {
+            return dtcApiResponse(502,false,implode($th->errorInfo));
+        }
+        // return $this->apiResponse($this->jenis_pengujian->delete(), 'delete');
     }
 }
