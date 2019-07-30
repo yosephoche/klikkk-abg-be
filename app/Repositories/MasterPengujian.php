@@ -5,6 +5,7 @@ namespace App\Repositories;
 use Illuminate\Support\Str;
 use App\Repositories\Traits\ApiResponseTrait;
 use Illuminate\Database\QueryException;
+use App\Models\ParameterPengujian;
 
 class MasterPengujian
 {
@@ -128,38 +129,21 @@ class MasterPengujian
         return $this->storeJenisPengujian($data);
     }
 
-    public function updateParameter($data)
+    public function updateParameter($uuid, $data)
     {
         try {
-            /** get list of old parameter id from parameter_pengujian property */
-            $oldParameterId = $this->parameter_pengujian->pluck('uuid')->toArray();
-            /** get deleted parameter by comparing id from form request and old parameter */
-            $deletedParameter = array_diff($oldParameterId,$data['uuid']);
+            $parameter = ParameterPengujian::where('uuid', $uuid)->first();
+            $parameter->nama = $data->nama;
+            $parameter->biaya = $data->biaya;
+            $parameter->status = $data->status;
 
-            /** delete deleted parameter by id */
-            \DB::table('parameter_pengujian')->where('id_jenis_pengujian', $this->jenis_pengujian->id)->whereIn('uuid', $deletedParameter)->delete();
+            $parameter->save();
 
-            /** update old param or add new param */
-            foreach ($data['nama'] as $key => $value) {
-                if (isset($data['uuid'][$key])) {
-                    $update[$key] = $this->prepareParameter($data,$key);
+            return dtcApiResponse(200, $parameter, responseMessage());
 
-                    $update[$key]->save();
-                }
-                else{
-                    $save[$key] = $this->prepareParameter($data,$key);
-
-                    $jenis_pengujian = $this->jenis_pengujian->first();
-
-                    $jenis_pengujian->parameterPengujian()->saveMany($save);
-                }
-            }
-
-            return dtcApiResponse(200,true,responseMessage('update'));
         } catch (QueryException $th) {
             return dtcApiResponse(502,false,implode($th->errorInfo));
         }
-
     }
 
     private function prepareParameter($data, $index)
@@ -186,6 +170,36 @@ class MasterPengujian
         $this->jenis_pengujian = $this->jenis_pengujian->where('id', $id)->orWhere('uuid', $id)->first();
 
         return $this;
+    }
+
+    public function deleteParameter($uuid){
+        try {
+            ParameterPengujian::where('uuid', $uuid)->first()->delete();
+
+            return dtcApiResponse(200, null, responseMessage('delete'));
+        } catch (QueryException $th) {
+            return dtcApiResponse(502, null,implode($th->errorInfo));
+        }
+    }
+
+    public function saveParameter($id_jenis_pengujian, $data){
+        try {
+            $jenis_pengujian = $this->jenis_pengujian->where('uuid', $id_jenis_pengujian)->first();
+
+            $parameter_pengujian = new ParameterPengujian();
+
+            $parameter_pengujian->uuid = Str::uuid();
+            $parameter_pengujian->nama = $data->nama;
+            $parameter_pengujian->biaya = $data->biaya;
+            $parameter_pengujian->status = $data->status;
+
+            $jenis_pengujian->parameterPengujian()->save($parameter_pengujian);
+
+            return dtcApiResponse(200, $parameter_pengujian, responseMessage('save'));
+
+        } catch (QueryException $th) {
+            return dtcApiResponse(502, null,implode($th->errorInfo));
+        }
     }
 
     public function delete()

@@ -36,10 +36,18 @@ class MasterPengujianController extends Controller
         return $master_pengujian->updateJenisPengujian($request);
     }
 
-    public function updateParameter(Request $request){
-        $master_pengujian = $this->master_pengujian->getJenisPengujian($request->id_jenis_pengujian);
+    public function saveParameter(Request $request)
+    {
+        return $this->master_pengujian->saveParameter($request->id_jenis_pengujian, $request);
+    }
 
-        return $master_pengujian->updateParameter($request);
+    public function deleteParameter(Request $request)
+    {
+        return $this->master_pengujian->deleteParameter($request->uuid);
+    }
+
+    public function updateParameter(Request $request){
+        return $this->master_pengujian->updateParameter($request->uuid, $request);
     }
 
     public function delete(Request $request){
