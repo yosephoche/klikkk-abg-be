@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Repositories\Traits\ApiResponseTrait;
+use Illuminate\Database\QueryException;
 
 class UserRole
 {
@@ -48,7 +49,7 @@ class UserRole
 
     public function all(){
         $user = $this->user;
-        // return $user->whereHas('roles')->get();
+
         return $user->where('jenis_akun', 1)->get()->map(function($value, $key){
             return [
                 'uuid' => $value->uuid,
@@ -65,13 +66,21 @@ class UserRole
     public function attach($data){
         $user = $this->user->where('id', $data->id_user)->orWhere('uuid', $data->id_user)->first();
 
-        return $this->apiResponse($user->roles()->attach($data->id_role));
+        try {
+            return dtcApiResponse(200,$user->roles()->attach($data->id_role));
+        } catch (QueryException $th) {
+            return databaseExceptionError(implode(', ',$th->errorInfo));
+        }
     }
 
     public function detach($data){
         $user = $this->user->where('id', $data->id_user)->orWhere('uuid', $data->id_user)->first();
 
-        return $this->apiResponse($user->roles()->detach($data->id_role));
+        try {
+            return dtcApiResponse(200,$user->roles()->detach($data->id_role));
+        } catch (QueryException $th) {
+            return databaseExceptionError(implode(', ',$th->errorInfo));
+        }
     }
 
     public function getListUser(){

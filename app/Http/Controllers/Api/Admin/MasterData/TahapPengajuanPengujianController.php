@@ -23,7 +23,7 @@ class TahapPengajuanPengujianController extends Controller
      */
     public function index()
     {
-        return dtcApiResponse(200,$this->tahap_pengujian->all());
+        return $this->tahap_pengujian->all();
     }
 
     /**
