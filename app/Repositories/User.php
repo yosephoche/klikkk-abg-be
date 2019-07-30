@@ -79,4 +79,8 @@ class User extends BaseRepository
     public function roles(){
         return $this->model = $this->model->roles();
     }
+
+    public function thread(){
+        return $this->hasMany('App\Thread');
+    }
 }

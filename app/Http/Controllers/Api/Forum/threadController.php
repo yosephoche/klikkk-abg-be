@@ -2,11 +2,25 @@
 
 namespace App\Http\Controllers\Api\Forum;
 
-use Illuminate\Http\Request;
+use Auth;
+use App\Models\Thread;
+// use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Repositories\threadRepository;
+use App\Repositories\Traits\forumTrait;
+use App\Http\Resources\threadResource;
+use App\Http\Requests\threadStoreRequest;
 
 class threadController extends Controller
 {
+    use forumTrait;
+
+    protected $thread;
+
+    public function __construct(threadRepository $thread)
+    {
+        $this->thread = $thread;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +28,9 @@ class threadController extends Controller
      */
     public function index()
     {
-        //
+        $data = $this->thread->getAllThread(10);
+        $response = threadResource::collection($data);
+        return $this->collectionHttpResponse($response,$data);
     }
 
     /**
@@ -33,9 +49,17 @@ class threadController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(threadStoreRequest $request)
     {
-        //
+        $thread = $request->all();
+        $thread['created_by'] = Auth::user()->id;
+        $store = Thread::create($thread);
+        if($store)
+        {
+            return $this->success();
+        } else {
+            return $this->serverError();
+        }
     }
 
     /**
@@ -45,8 +69,12 @@ class threadController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show($id)
-    {
-        //
+    {   
+        $data = $this->thread->findThread($id);
+        
+        $response = new threadResource($data);
+
+        return $this->singleHttpResponse($data,$response);
     }
 
     /**
@@ -67,9 +95,21 @@ class threadController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(threadStoreRequest $request, $id)
     {
-        //
+        $thread = $this->thread->findThread($id);
+        if(isset($thread))
+        {
+            if(Auth::user()->id == $thread->created_by)
+            {
+                $thread->update($request->all());
+                return $this->success();   
+            } else {
+                return $this->unprocessable();
+            }
+        } else {
+            return $this->notFound();
+        }
     }
 
     /**
@@ -80,6 +120,18 @@ class threadController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $thread = $this->thread->findThread($id);
+
+        if(isset($thread))
+        {
+            if(Auth::user()->id == $thread->created_by)
+            {
+                $thread->delete();
+            } else {
+                return $this->unprocessable();
+            }
+        } else {
+            return $this->notFound();
+        }
     }
 }
