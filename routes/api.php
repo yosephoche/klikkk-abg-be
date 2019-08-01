@@ -64,9 +64,9 @@ Route::group( ['middleware' => ['json.response'],'namespace' => 'Api'], function
 
                 Route::group(['prefix' => 'user-management'], function(){
                     Route::get('/', 'UserManagementController@index')->name('api.admin.master-data.user-management.index');
-                    Route::get('/add', 'UserManagementController@add')->name('api.admin.master-data.user-management.add');
-
-                    Route::post('/save', 'UserManagementController@save')->name('api.admin.master-data.user-management-save');
+                    Route::get('/edit/{uuid}', 'UserManagementController@edit')->name('api.admin.master-data.user-data.user-management.edit');
+                    Route::post('/save', 'UserManagementController@save')->name('api.admin.master-data.user-management.save');
+                    Route::post('/update', 'UserManagementController@update')->name('api.admin.master-data.user-management.update');
                 });
 
             });

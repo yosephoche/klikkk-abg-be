@@ -2,20 +2,21 @@
 
 namespace App\Repositories;
 
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Role;
-use Illuminate\Support\Facades\Mail;
 use App\Notifications\VerifyEmail;
 use App\Models\EmailVerification;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Carbon;
-use Illuminate\Foundation\Bootstrap\HandleExceptions;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Storage;
+use App\Repositories\Traits\UploadTrait;
 
 class User extends BaseRepository
 {
+
+    use UploadTrait;
+
     public function __construct()
     {
         parent::__construct();
@@ -148,10 +149,6 @@ class User extends BaseRepository
     {
         $user = $this->model->where('jenis_akun',1)->with('roles')->get();
         $user = $user->map(function($value){
-            if ($value->avatar) {
-                dd(Storage::url($value->avatar));
-            }
-
             return [
                 'id' => $value->id,
                 'uuid' => $value->uuid,
@@ -186,19 +183,88 @@ class User extends BaseRepository
         $user->no_telepon = $data->no_telepon;
         $user->email_verified_at = Carbon::now();
         $user->jenis_akun = 1;
+        $user->nip = $data->nip;
         $user->instansi = 'BALAI PELATIHAN K3';
 
         try {
-            $user->avatar = $data->file('avatar')->store('public/avatars');
+            if ($data->has('avatar')) {
+                $image = $data->file('avatar');
+                $name = str_slug($data->input('nama_lengkap')).'_'.time();
+                $folder = '/uploads/avatar/';
+                $filePath = $folder . $name. '.' . $image->getClientOriginalExtension();
+                $this->uploadOne($image, $folder, 'public', $name);
+                $user->avatar = $filePath;
+            }
         } catch (\Exception $e) {
             return dtcApiResponse(500,false, $e->getMessage());
         }
 
         try {
             $user->save();
+            $user->avatar = asset('storage'.$user->avatar);
             return dtcApiResponse(200,$user,responseMessage());
         } catch (QueryException $th) {
             return databaseExceptionError(implode(', ',$th->errorInfo));
+        }
+    }
+
+    public function getAdmin($uuid){
+        $user = $this->model->where('uuid', $uuid);
+
+        if ($user->first()) {
+            $user = $user->first();
+            $user->avatar = asset('storage'.$user->avatar);
+
+            return dtcApiResponse(200,$user);
+        }
+        else{
+            return dtcApiResponse(200, false,'User tidak ditemukan');
+        }
+
+    }
+
+    public function updateAdmin($data)
+    {
+        $user = $this->model->where('uuid', $data->uuid);
+
+        if ($user->first()) {
+            $user = $user->first();
+            $user->email = $data->email;
+            $user->password = Hash::make($data->password);
+            $user->nama_lengkap = $data->nama_lengkap;
+            $user->pekerjaan = $data->pekerjaan;
+            $user->no_telepon = $data->no_telepon;
+            $user->nip = $data->nip;
+
+            // dd($data);
+
+            if ($data->has('avatar')) {
+                try {
+                    Storage::disk('public')->delete($user->avatar);
+
+                    $image = $data->file('avatar');
+                    $name = str_slug($data->input('nama_lengkap')).'_'.time();
+                    $folder = '/uploads/avatar/';
+                    $filePath = $folder . $name. '.' . $image->getClientOriginalExtension();
+                    $this->uploadOne($image, $folder, 'public', $name);
+                    $user->avatar = $filePath;
+                } catch (\Exception $e) {
+                    return dtcApiResponse(500,false, $e->getMessage());
+                }
+            }
+
+            try {
+                $user->save();
+                $user->avatar = $user->avatar?asset('storage'.$user->avatar):null;
+                return dtcApiResponse(200,$user,responseMessage());
+            } catch (QueryException $th) {
+                return databaseExceptionError(implode(', ',$th->errorInfo));
+            }
+
+            return dtcApiResponse(200,$user);
+        }
+        else{
+            return dtcApiResponse(200, false,'User tidak ditemukan');
         }
     }
 }
