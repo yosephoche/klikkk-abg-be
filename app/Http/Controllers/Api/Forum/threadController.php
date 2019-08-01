@@ -11,6 +11,7 @@ use App\Repositories\Traits\forumTrait;
 use App\Http\Resources\threadResource;
 use App\Http\Requests\threadStoreRequest;
 
+
 class threadController extends Controller
 {
     use forumTrait;
@@ -29,6 +30,14 @@ class threadController extends Controller
     public function index()
     {
         $data = $this->thread->getAllThread(10);
+        $response = threadResource::collection($data);
+        return $this->collectionHttpResponse($response,$data);
+    }
+
+    
+    public function popular()
+    {
+        $data = $this->thread->orderByViews()->getAllThread(5);
         $response = threadResource::collection($data);
         return $this->collectionHttpResponse($response,$data);
     }
@@ -62,6 +71,7 @@ class threadController extends Controller
         }
     }
 
+
     /**
      * Display the specified resource.
      *
@@ -69,13 +79,54 @@ class threadController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show($id)
-    {   
+    {
+           
         $data = $this->thread->findThread($id);
-        
+        views($data)->record();
         $response = new threadResource($data);
 
         return $this->singleHttpResponse($data,$response);
     }
+
+    // thread like function
+    public function like($id)
+    {
+        // find the thread
+        $data = $this->thread->findThread($id);
+
+        /*
+        * checking if thread exist if not return 404
+        * if it exist give like to thread based by current user 
+        */ 
+        if(isset($data))
+        {
+            $data->like();
+            return $this->success();
+        } else {
+            return $this->notFound();
+        }
+
+    }
+
+     // thread dislike function
+     public function dislike($id)
+     {
+         // find the thread
+         $data = $this->thread->findThread($id);
+ 
+         /*
+         * checking if thread exist if not return 404
+         * if it exist give dislike to thread based by current user 
+         */ 
+         if(isset($data))
+         {
+             $data->dislike();
+             return $this->success();
+         } else {
+             return $this->notFound();
+         }
+ 
+     }
 
     /**
      * Show the form for editing the specified resource.

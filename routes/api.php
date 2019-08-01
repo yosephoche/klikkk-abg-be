@@ -67,9 +67,12 @@ Route::group(['middleware' => ['json.response'], 'namespace' => 'Api'], function
             Route::group(['prefix'=>'threads'], function(){
                 Route::get('/','threadController@index')->name('thread_index');
                 Route::get('/{id}','threadController@show')->name('thread_detail');
+                Route::post('like/{id}','threadController@like')->name('thread.like');
+                Route::post('dislike/{id}','threadController@dislike')->name('thread.dislike');
                 Route::put('/update/{id}','threadController@update')->name('thread_edit');
                 Route::post('/post','threadController@store')->name('thread_post');
                 Route::delete('/delete/{id}','threadController@destroy')->name('delete_thread');
+                Route::get('/popular','threadController@popular')->name('popular.thread');
             });
 
             Route::group(['prefix'=>'comment'], function(){

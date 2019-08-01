@@ -3,9 +3,16 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use CyrildeWit\EloquentViewable\Viewable;
+use Cog\Likeable\Traits\Likeable;
+use Cog\Likeable\Contracts\Likeable as LikeableContract;
+use CyrildeWit\EloquentViewable\Contracts\Viewable as ViewableContract;
 
-class Thread extends Model
+class Thread extends Model implements ViewableContract,LikeableContract
 {
+    use Likeable;
+    use Viewable;
+
     protected $table = 'forum_topic';
     protected $fillable = ['subject','created_by','category_id'];
 
