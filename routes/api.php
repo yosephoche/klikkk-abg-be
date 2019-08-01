@@ -62,6 +62,13 @@ Route::group( ['middleware' => ['json.response'],'namespace' => 'Api'], function
                     Route::post('/detach','UserRoleController@detach')->name('api.admin.master-data.user-role.detach');
                 });
 
+                Route::group(['prefix' => 'user-management'], function(){
+                    Route::get('/', 'UserManagementController@index')->name('api.admin.master-data.user-management.index');
+                    Route::get('/add', 'UserManagementController@add')->name('api.admin.master-data.user-management.add');
+
+                    Route::post('/save', 'UserManagementController@save')->name('api.admin.master-data.user-management-save');
+                });
+
             });
 
 

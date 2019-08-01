@@ -9,6 +9,10 @@ use Illuminate\Support\Facades\Mail;
 use App\Notifications\VerifyEmail;
 use App\Models\EmailVerification;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Carbon;
+use Illuminate\Foundation\Bootstrap\HandleExceptions;
+use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\Storage;
 
 class User extends BaseRepository
 {
@@ -125,17 +129,74 @@ class User extends BaseRepository
     }
 
     public static function verifyUsersEmail($token){
-        $m_token = \App\Models\EmailVerification::where('token', $token)->orderBy('created_at')->first();
         $user = (new self())->model->whereHas('emailVerification', function($q) use($token) { $q->where('token', $token); } )->first();
 
         if ($user) {
             $user->email_verified_at = \Carbon\Carbon::now();
             $user->save();
             $data['redirect'] = '/login';
-            return dtcApiResponse(200,$data);
+            return true;
         }
 
-        return dtcApiResponse(404,null, 'User tidak ditemukan');
+        return false;
 
+    }
+
+    public function getAllAdmin()
+    {
+        $user = $this->model->where('jenis_akun',1)->with('roles')->get();
+        $user = $user->map(function($value){
+            if ($value->avatar) {
+                dd(Storage::url($value->avatar));
+            }
+
+            return [
+                'id' => $value->id,
+                'uuid' => $value->uuid,
+                'user_id' => $value->user_id,
+                'nama_lengkap' => $value->nama_lengkap,
+                'email' => $value->email,
+                'nip' => $value->nip,
+                'no_telepon' => $value->no_telepon,
+                'avatar' => $value->avatar?asset('storage/'.$value->avatar):null,
+                'roles' => $value->roles->map(function($value){
+                    return [
+                        'id' => $value->id,
+                        'name' => $value->name,
+                        'display_name' => $value->display_name,
+                        'description' => $value->description
+                    ];
+                })
+            ];
+        });
+
+        return dtcApiResponse(200, $user);
+    }
+
+    public function registerAdmin($data){
+        $user = $this->model;
+
+        $user->uuid = \Str::uuid();
+        $user->email = $data->email;
+        $user->password = Hash::make($data->password);
+        $user->nama_lengkap = $data->nama_lengkap;
+        $user->pekerjaan = $data->pekerjaan;
+        $user->no_telepon = $data->no_telepon;
+        $user->email_verified_at = Carbon::now();
+        $user->jenis_akun = 1;
+        $user->instansi = 'BALAI PELATIHAN K3';
+
+        try {
+            $user->avatar = $data->file('avatar')->store('public/avatars');
+        } catch (\Exception $e) {
+            return dtcApiResponse(500,false, $e->getMessage());
+        }
+
+        try {
+            $user->save();
+            return dtcApiResponse(200,$user,responseMessage());
+        } catch (QueryException $th) {
+            return databaseExceptionError(implode(', ',$th->errorInfo));
+        }
     }
 }
