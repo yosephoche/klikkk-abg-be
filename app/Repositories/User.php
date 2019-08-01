@@ -129,13 +129,15 @@ class User extends BaseRepository
     }
 
     public static function verifyUsersEmail($token){
-        $user = (new self())->model->whereHas('emailVerification', function($q) use($token) { $q->where('token', $token); } )->first();
+        $user = (new self())->model->whereHas('emailVerification', function($q) use($token) { $q->where('token', $token); } );
 
-        if ($user) {
+        if ($user->first()) {
+            $user = $user->first();
             $user->email_verified_at = \Carbon\Carbon::now();
             $user->save();
-            $data['redirect'] = '/login';
-            return true;
+            \DB::table('email_verification')->where('token', $token)->delete();
+
+            return $user;
         }
 
         return false;

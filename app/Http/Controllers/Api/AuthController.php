@@ -31,8 +31,10 @@ class AuthController extends Controller
     public function verifyUsersEmail($token){
 
         $loginUrl = env('FE_LOGIN_URL');
-        if (User::verifyUsersEmail($token)) {
-            return view('mail.EmailConfirmed', compact('loginUrl'));
+        if ($user = User::verifyUsersEmail($token)) {
+            return view('mail.EmailConfirmed', compact('loginUrl', 'user'));
         }
+
+        return view('mail.ConfirmationError');
     }
 }

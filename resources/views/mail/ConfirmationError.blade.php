@@ -135,16 +135,13 @@
       <section>
         <div class="card">
           <div class="wrap-avatar">
-            <img src="{{ asset('storage/images/bs_konfirmasi.png') }}" class="avatar">
+            <img src="{{ asset('storage/images/bs_error.png') }}" class="avatar">
           </div>
 
           <div class="wrap-title">
-            <h3>{{ $user->nama_lengkap }},</h3>
-
-            <p>Terima kasih email kamu sudah terverifikasi. Silahkan login untuk menggunakan aplikasi KLIKK ABG.
+            <br>
+            <p>Maaf user anda tidak di temukan, mohon hubungi admin untuk informasi lebih lanjut.
             </p>
-
-          <a style="text-decoration:none" href="{{ $loginUrl }}"  class="btn">Login</a>
           </div>
 
         </div>
