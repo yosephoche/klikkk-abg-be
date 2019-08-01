@@ -52,6 +52,12 @@ if (!function_exists('separatePagingAndData')) {
                 unset($res['data']);
                 return ['pagination' => $res, 'data' => $data];
             }
+            else{
+                $res = $data->toArray();
+                $data = $res['data'];
+                unset($res['pagination']);
+                return ['data' => $data];
+            }
         }else{
             return ['data' => $data];
         }
