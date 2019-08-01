@@ -79,7 +79,8 @@ class MasterPengujian
                 'uuid' => $value->uuid,
                 'nama' => $value->nama,
                 'urutan' => $value->urutan,
-                'parameter' => $paramameter
+                'parameter' => $paramameter,
+                'status' => $value->status
             ];
         });
 
