@@ -266,5 +266,9 @@ class User extends BaseRepository
         else{
             return dtcApiResponse(200, false,'User tidak ditemukan');
         }
+    }    
+
+    public function thread(){
+        return $this->hasMany('App\Thread');
     }
 }
