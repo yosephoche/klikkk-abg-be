@@ -17,7 +17,7 @@ class Thread extends Model implements ViewableContract,LikeableContract
     protected $fillable = ['subject','created_by','category_id'];
 
     public function user(){
-        return $this->belongsTo('app\Models\User','created_by');
+        return $this->belongsTo('App\Models\User','created_by');
     }
 
     public function category(){

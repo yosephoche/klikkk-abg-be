@@ -7,8 +7,10 @@ use App\Http\Controllers\Controller;
 use App\Models\Comment;
 use App\Repositories\Traits\forumTrait;
 use App\Models\Thread;
+use App\Models\User;
 use App\Http\Requests\commentRequest;
 use Auth;
+use App\Notifications\threadMailNotification;
 class CommentController extends Controller
 {
 
@@ -48,7 +50,9 @@ class CommentController extends Controller
         $comment->user()->associate(Auth::user()->id);
         $comment->topic_id = $request->topic_id;
         
-        $thread = Thread::find($request->topic_id  );
+        $thread = Thread::find($request->topic_id);
+
+       
         $thread->comments()->save($comment);
 
         return $this->success();
@@ -64,6 +68,14 @@ class CommentController extends Controller
         $reply->replies_id = $id;
         
         $thread = Thread::find($request->topic_id);
+
+        $comment = Comment::where('id',$reply->replies_id)->first();
+        // sending notificaation
+        $user = User::find($thread->created_by);
+        $user->email = $comment->user->email;
+        $user->notify(new threadMailNotification($thread,$user,$comment));
+        
+        $thread->comments()->save($comment);
 
         $thread->comments()->save($reply);
 
@@ -137,7 +149,7 @@ class CommentController extends Controller
                 return $this->success();
             } else {
                 $data->delete();
-                return$this->success();
+                return $this->success();
             }
         } else {
             $this->notFound();

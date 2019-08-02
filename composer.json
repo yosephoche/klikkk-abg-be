@@ -12,10 +12,12 @@
         "barryvdh/laravel-cors": "^0.11.3",
         "cybercog/laravel-likeable": "^3.1",
         "doctrine/dbal": "^2.9",
+        "fedeisas/laravel-mail-css-inliner": "^2.2",
         "fideloper/proxy": "^4.0",
         "laravel/framework": "5.8.*",
         "laravel/passport": "^7.3",
         "laravel/tinker": "^1.0",
+        "league/html-to-markdown": "^4.8",
         "zizaco/entrust": "5.2.x-dev"
     },
     "require-dev": {

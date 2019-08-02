@@ -10,11 +10,19 @@ trait forumTrait
         if($response->isNotempty())
         {
             return [
-                'response' => $data,
+                'pagination' => [
+                    'total' => $data->total(),
+                    'count' => $data->count(),
+                    'perPage' => $data->perPage(),
+                    'currentPage' => $data->currentPage(),
+                    'totalPages' => $data->lastPage(),
+                ],
+                'response' => $response,
                 'diagnostic' => [
                     'code' => 200,
                     'status' => 'ok',
                 ]
+
             ];
         } else {
             return $this->notFound();
@@ -45,10 +53,12 @@ trait forumTrait
 
     public function success()
     {
-        return response([
-            'message'=>'Success',
-            'kode'=>200
-        ], 200);
+        // return response([
+        //     'message'=>'Success',
+        //     'kode'=>200
+        // ], 200);
+
+        return dtcApiResponse(200,null,'Success');
     }
 
     public function unprocessable()
