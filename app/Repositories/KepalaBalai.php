@@ -22,17 +22,16 @@ class KepalaBalai
 
     public function listPengajuan($request)
     {
-        return dtcApiResponse(200,$this->pengajuanPengujian->getListPengajuan($request));
+        return dtcApiResponse(200,$this->pengajuanPengujian->getListPengajuan($request, 1));
     }
 
     public static function showPengajuan($regId)
     {
-        // TODO::
-        /**
-        * update status pengajuan
-        * update tanggal selesesai pada proses sebelumnya
-        * tambah proses
-        */
-        return PengajuanPengujian::getOne($regId);
+        // tambah proses & update tahap pengajuan & update tanggal selesesai pada proses sebelumnya
+        $pengajuan =  PengajuanPengujian::getOne($regId);
+        \App\Repositories\ProsesPengajuan::make(2, $regId);
+        // dd($pengajuan);
+        return dtcApiResponse(200, $pengajuan);
+
     }
 }

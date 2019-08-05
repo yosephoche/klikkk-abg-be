@@ -51,6 +51,11 @@ class PengajuanPengujian extends Model
         return $query->where('status_pengajuan', '=','aktif');
     }
 
+    public function scopeTahap($query, $tahap)
+    {
+        return $query->where('tahap_pengajuan', '=', $tahap);
+    }
+
     public function users()
     {
         return $this->belongsTo('App\Models\User', 'user', 'id');

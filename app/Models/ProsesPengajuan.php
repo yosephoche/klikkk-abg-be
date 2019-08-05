@@ -29,4 +29,9 @@ class ProsesPengajuan extends Model
         return $this->belongsTo('App\Models\PengajuanPengujian','id_pengajuan', 'id');
     }
 
+    public function scopeCekSudahAda($query, $id, $tahap)
+    {
+        return $query->where('id_pengajuan', '=', $id)->where('tahap_pengajuan', '=', $tahap);
+    }
+
 }
