@@ -46,7 +46,7 @@ class User extends BaseRepository
                         'pekerjaan' => $user->pekerjaan,
                         'instansi' => $user->instansi,
                         'jenis_akun' => $jenis_akun,
-                        'avatar' => $user->avatar?asset('user/avatar'.$user->avatar):null,
+                        'avatar' => $user->avatar?asset('storage/'.$user->avatar):null,
                         'role' => $user->roles()->get()->map(function($value){ return $value->name; })
                     ];
 

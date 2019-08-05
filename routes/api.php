@@ -80,6 +80,11 @@ Route::group( ['middleware' => ['json.response'],'namespace' => 'Api'], function
 
             });
 
+            Route::group(['prefix' => 'kepala-balai'], function(){
+                Route::get('/', 'KepalaBalaiController@index')->name('api.admin.kepala-balai.index');
+                Route::get('/show/{regId}', 'KepalaBalaiController@show')->name('api.admin.kepala-balai.index');
+            });
+
 
         });
 
@@ -88,11 +93,18 @@ Route::group( ['middleware' => ['json.response'],'namespace' => 'Api'], function
             Route::group(['prefix' => 'pengajuan' , 'namespace' => 'Pengajuan'], function(){
 
                 Route::group(['prefix' => 'pengujian'], function(){
+                    Route::get('/get-jenis-pengujian', 'PengujianController@getJenisPengujian')->name('api.user.pengajuan.pengujian.get-jenis-pengujian');
+
+                    Route::get('/get-parameter-pengujian', 'PengujianController@getParameterPengujian')->name('api.user.pengajuan.pengujian.get-parameter-pengujian');
+
                     Route::get('/', 'PengujianController@index')->name('api.user.pengajuan.pengujian.index');
                     Route::get('/add', 'PengujianController@add')->name('api.user.pengajuan.pegujian.add');
                     Route::post('/store', 'PengujianController@store')->name('api.user.pengajuan.pengujian.store');
                 });
+            });
 
+            Route::group(['prefix' => 'tracking'], function(){
+                Route::get('/{regId}', 'TrackingController@index')->name('api.user.tracking.index');
             });
 
         });

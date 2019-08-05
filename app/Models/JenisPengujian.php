@@ -12,4 +12,10 @@ class JenisPengujian extends Model
     public function parameterPengujian(){
         return $this->hasMany('\App\Models\ParameterPengujian', 'id_jenis_pengujian', 'id');
     }
+
+
+    public function scopeActive($query){
+        return $query->where('status', true);
+    }
+
 }

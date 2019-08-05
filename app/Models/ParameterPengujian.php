@@ -12,4 +12,8 @@ class ParameterPengujian extends Model
     public function jenisPengujian(){
         return $this->belongsTo('\App\Models\JenisPengujian','id_jenis_pengujian','id');
     }
+
+    public function scopeActive($query){
+        return $query->where('status', true);
+    }
 }

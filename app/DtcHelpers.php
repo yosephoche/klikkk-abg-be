@@ -96,3 +96,29 @@ if (!function_exists('databaseExceptionError')) {
         return dtcApiResponse(502,false,$message);
     }
 }
+
+if (!function_exists('prettyDate')) {
+    function prettyDate($date)
+    {
+        if ($date) {
+            $time = strtotime($date);
+            return date('d', $time).' '.namaBulan(date('m', $time)).' '.date('Y', $time);
+        }
+        return null;
+    }
+}
+
+if (!function_exists('namaBulan')) {
+    function namaBulan($bulan)
+    {
+        $nama_bulan = [1=>'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+        return $nama_bulan[(int)$bulan];
+    }
+}
+
+if (!function_exists('userAvatar')) {
+    function userAvatar($avatar)
+    {
+        return $avatar?asset('storage/'.$avatar):null;
+    }
+}
