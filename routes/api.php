@@ -106,9 +106,41 @@ Route::group( ['middleware' => ['json.response'],'namespace' => 'Api'], function
             Route::group(['prefix' => 'tracking'], function(){
                 Route::get('/{regId}', 'TrackingController@index')->name('api.user.tracking.index');
             });
+        });
+        // Route FOr Forum
+        Route::group(['prefix' => 'forum', 'namespace' => 'Forum'], function(){
+            Route::group(['prefix'=>'threads'], function(){
+                Route::get('/','threadController@index')->name('thread_index');
+                Route::get('/{id}','threadController@show')->name('thread_detail');
+                Route::post('like/{id}','threadController@like')->name('thread.like');
+                Route::post('dislike/{id}','threadController@dislike')->name('thread.dislike');
+                Route::put('/update/{id}','threadController@update')->name('thread_edit');
+                Route::post('/post','threadController@store')->name('thread_post');
+                Route::delete('/delete/{id}','threadController@destroy')->name('delete_thread');
+                Route::get('/popular','threadController@popular')->name('popular.thread');
+            });
 
+            Route::group(['prefix'=>'comment'], function(){
+                Route::post('/post','CommentController@store')->name('comment.store');
+                Route::put('/edit/{id}','CommentController@edit')->name('comment.update');
+                Route::delete('/delete/{id}','CommentController@destroy')->name('comment.delete');
+            });
+
+            Route::group(['prefix'=>'replies'],function(){
+                Route::post('/post/{id}','CommentController@replyStore')->name('reply.store');
+                Route::put('/edit/{id}','CommentController@edit')->name('comment.update');
+                Route::delete('/delete/{id}','CommentController@destroy')->name('comment.delete');
+            });
+
+            Route::group(['prefix'=>'category'],function(){
+                Route::get('/','CategoryController@index')->name('category.index');
+                Route::post('/','CategoryController@store')->name('category.store');
+                Route::put('/edit/{id}','CategoryController@update')->name('category.update');
+                Route::delete('/delete/{id}','CategoryController@destroy')->name('category.delete');
+            });
         });
     });
+
 
 
 });
