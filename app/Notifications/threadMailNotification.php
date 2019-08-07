@@ -14,17 +14,20 @@ class threadMailNotification extends Notification
     protected $thread;
     protected $user;
     protected $comment;
+    protected $reply;
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct($thread,$user,$comment)
+    public function __construct($thread,$user,$comment,$reply)
     {
         $this->thread = $thread;
         $this->user = $user;
         $this->comment = $comment;
+        $this->reply = $reply;
+
     }
 
     /**
@@ -46,7 +49,7 @@ class threadMailNotification extends Notification
      */
     public function toMail($notifiable)
     {
-        return (new emailNotification($this->user,$this->thread,$this->comment));
+        return (new emailNotification($this->user,$this->thread,$this->comment,$this->reply));
         // ->greeting('HI '.$this->thread->user->nama_lengkap)
                     // ->line('The introduction to the notification.')
                     // ->action('Notification Action', url('/'))

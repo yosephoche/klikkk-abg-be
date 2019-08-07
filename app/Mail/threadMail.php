@@ -15,6 +15,7 @@ class threadMail extends Mailable
     public $user;
     public $thread;
     public $comment;
+    public $reply;
     /**
      * Create a new message instance.
      *
@@ -25,6 +26,7 @@ class threadMail extends Mailable
         $this->user = $user;
         $this->thread = $thread;
         $this->comment = $comment;
+        $this->reply = $reply;
     }
 
     /**
@@ -38,7 +40,8 @@ class threadMail extends Mailable
                     ->with([
                         'greeting' => $this->comment->user->nama_lengkap,
                         // 'thread' => $this->thread->id,
-                        'replier' => $this->comment->user->nama_lengkap,
+                        'commenter' => $this->comment->user->nama_lengkap,
+                        'replier' => $this->reply->user->nama_lengkap,
                     ])
                     ->view('mail.replyNotification');
     }

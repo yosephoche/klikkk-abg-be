@@ -111,7 +111,14 @@ Route::group( ['middleware' => ['json.response'],'namespace' => 'Api'], function
                     Route::get('/add', 'PengujianController@add')->name('api.user.pengajuan.pegujian.add');
                     Route::post('/store', 'PengujianController@store')->name('api.user.pengajuan.pengujian.store');
                 });
+
+                Route::group(['prefix' => 'pelatihan',], function(){
+                    Route::get('/','pelatihanController@index')->name('index.pelatihan');
+                    Route::get('/show/{id}','pelatihanController@show')->name('show.pelatihan');
+                    Route::post('/','pelatihanController@store')->name('store.pelatihan');
+                });
             });
+
 
             Route::group(['prefix' => 'tracking'], function(){
                 Route::get('/{regId}', 'TrackingController@index')->name('api.user.tracking.index');
@@ -144,6 +151,7 @@ Route::group( ['middleware' => ['json.response'],'namespace' => 'Api'], function
 
             Route::group(['prefix'=>'category'],function(){
                 Route::get('/','CategoryController@index')->name('category.index');
+                Route::get('/show/{id}','CategoryController@show')->name('category.detail');
                 Route::post('/','CategoryController@store')->name('category.store');
                 Route::put('/edit/{id}','CategoryController@update')->name('category.update');
                 Route::delete('/delete/{id}','CategoryController@destroy')->name('category.delete');
