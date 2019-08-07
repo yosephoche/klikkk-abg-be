@@ -106,8 +106,6 @@ Route::group( ['middleware' => ['json.response'],'namespace' => 'Api'], function
                     Route::get('/','pelatihanController@index')->name('index.pelatihan');
                     Route::post('/add','pelatihanController@store')->name('store.pelatihan');
                     Route::get('/show/{id}','pelatihanController@show')->name('show.pelatihan');
-                    Route::put('/update/{id}','pelatihanController@update')->name('update.pelatihan');
-                    Route::delete('/delete/{id}','pelatihanController@destroy')->name('destroy.pelatihan');
                 });
             });
 

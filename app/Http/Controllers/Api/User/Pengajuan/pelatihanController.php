@@ -78,7 +78,15 @@ class pelatihanController extends Controller
      */
     public function show($id)
     {
+        $data = pengajuanPelatihan::find($id);
         
+        if(isset($data))
+        {
+            $response = new pelatihanResource($data);
+            return $this->singleHttpResponse($data);
+        } else {
+            return $this->notFound();
+        }
     }
 
     /**
