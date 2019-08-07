@@ -5,6 +5,7 @@ namespace App\Repositories;
 use Illuminate\Support\Facades\DB;
 use App\Http\Resources\PengajuanPengujian as PengajuanPengujianResource;
 use Illuminate\Database\Eloquent\Builder;
+use App\Exceptions\PengajuanNotFoundException;
 
 class PengajuanPengujian
 {
@@ -158,11 +159,11 @@ class PengajuanPengujian
 
     }
 
-    public function getListPengajuan($request = null, $proses = 1)
+    public function getListPengajuan($request = null, $tahap)
     {
         $pengajuanPengujian = $this->masterPengajuanPengujian;
 
-        $pengajuanPengujian = $pengajuanPengujian->active()->latest();
+        $pengajuanPengujian = $pengajuanPengujian->tahap($tahap)->active()->latest();
         $pengajuanPengujian = $request->has('search')?$pengajuanPengujian->where('regId','like','%'.$request->search.'%'):$pengajuanPengujian;
         $pengajuanPengujian = $pengajuanPengujian->paginate($this->limit);
 
@@ -183,7 +184,7 @@ class PengajuanPengujian
     {
         $pengajuanPengujian = new self($regId);
 
-        if ($pengajuanPengujian->masterPengajuanPengujian->first()) {
+        if ($pengajuanPengujian->masterPengajuanPengujian instanceof Builder) {
             $pengajuanPengujian = $pengajuanPengujian->masterPengajuanPengujian->first();
 
             $_dataPengujian = $pengajuanPengujian->detailPengajuanPengujian()->with('parameterPengujian')->get()->groupBy('parameterPengujian.jenisPengujian.nama')->map(function($value){
@@ -225,10 +226,12 @@ class PengajuanPengujian
                 'grand_total' => $grandTotal
             ];
 
-            return dtcApiResponse(200,$data);
+            return $data;
         }
 
-        return dtcApiResponse(404, null, 'Pengajuan tidak ditemukan');
+        throw new PengajuanNotFoundException('get one');
+
+        // return dtcApiResponse(404, null, 'Pengajuan tidak ditemukan');
     }
 
     public static function trackingPengajuan($regId = null)
@@ -251,7 +254,8 @@ class PengajuanPengujian
             return dtcApiResponse(200, $prosesPengajuan);
         }
 
-        return dtcApiResponse(404, null, 'Pengajuan tidak ditemukan');
+        // return dtcApiResponse(404, null, 'Pengajuan tidak ditemukan');
+        throw new PengajuanNotFoundException();
     }
 
 }
