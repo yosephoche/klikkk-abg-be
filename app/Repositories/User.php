@@ -235,7 +235,7 @@ class User extends BaseRepository
             $user->no_telepon = $data->no_telepon;
             $user->nip = $data->nip;
 
-            if ($data->has('avatar')) {
+            if ($data->has('avatar') && $data->avatar !== null) {
                 try {
                     Storage::disk('public')->delete($user->avatar);
 
