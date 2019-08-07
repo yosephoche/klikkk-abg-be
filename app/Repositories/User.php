@@ -201,7 +201,7 @@ class User extends BaseRepository
 
         try {
             $user->save();
-            $user->avatar = asset('storage'.$user->avatar);
+            $user->avatar = userAvatar($user->avatar);
             return dtcApiResponse(200,$user,responseMessage());
         } catch (QueryException $th) {
             return databaseExceptionError(implode(', ',$th->errorInfo));
@@ -211,10 +211,9 @@ class User extends BaseRepository
     public function getAdmin($uuid){
         $user = $this->model->where('uuid', $uuid);
 
-        if ($user->first()) {
+        if ( $user->first() ) {
             $user = $user->first();
-            $user->avatar = asset('storage'.$user->avatar);
-
+            $user->avatar = userAvatar($user->avatar);
             return dtcApiResponse(200,$user);
         }
         else{
@@ -230,15 +229,13 @@ class User extends BaseRepository
         if ($user->first()) {
             $user = $user->first();
             $user->email = $data->email;
-            $user->password = Hash::make($data->password);
+            $user->password = $data->password?Hash::make($data->password):$user->password;
             $user->nama_lengkap = $data->nama_lengkap;
             $user->pekerjaan = $data->pekerjaan;
             $user->no_telepon = $data->no_telepon;
             $user->nip = $data->nip;
 
-            // dd($data);
-
-            if ($data->has('avatar')) {
+            if ($data->has('avatar') && $data->avatar !== null) {
                 try {
                     Storage::disk('public')->delete($user->avatar);
 
@@ -264,9 +261,9 @@ class User extends BaseRepository
             return dtcApiResponse(200,$user);
         }
         else{
-            return dtcApiResponse(200, false,'User tidak ditemukan');
+            return dtcApiResponse(404, false,'User tidak ditemukan');
         }
-    }    
+    }
 
     public function thread(){
         return $this->hasMany('App\Thread');
