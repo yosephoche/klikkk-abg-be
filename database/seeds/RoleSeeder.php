@@ -36,11 +36,11 @@ class RoleSeeder extends Seeder
         $penggantiKepalBalai->description = 'Pengganti Kepala balai k3 apabila kepala balai tidak di tempat';
         $penggantiKepalBalai->save();
 
-        // $staffTeknis = new Role();
-        // $staffTeknis->name = 'staf_teknis';
-        // $staffTeknis->display_name = 'Staff Teknis K3';
-        // $staffTeknis->description = 'Staff teknis k3';
-        // $staffTeknis->save();
+        $staffTeknis = new Role();
+        $staffTeknis->name = 'staf_teknis';
+        $staffTeknis->display_name = 'Staff Teknis K3';
+        $staffTeknis->description = 'Staff teknis k3';
+        $staffTeknis->save();
 
         // $kepalaBagian = new Role();
         // $kepalaBagian->name = 'kepala_bagian';

@@ -28,6 +28,7 @@ trait forumTrait
             return $this->notFound();
         }
     }
+
     public function notFound()
     {
         return response([
@@ -35,6 +36,15 @@ trait forumTrait
             'code' => 404
         ],200);
     }
+
+    public function unauthorized()
+    {
+        return response([
+            'message' => 'Unauthorized',
+            'code' => 404
+        ],200);
+    }
+
     public function singleHttpResponse($data,$response)
     {
         if(isset($data))

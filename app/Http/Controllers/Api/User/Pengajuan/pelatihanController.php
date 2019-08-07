@@ -3,12 +3,16 @@
 namespace App\Http\Controllers\Api\User\Pengajuan;
 
 use Auth;
+use App\Models\User;
 use App\Models\pengajuanPelatihan;
 use App\Models\JenisPelatihan;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Repositories\Traits\forumTrait;
 use App\Http\Resources\pelatihanResource;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\pelatihanNotification;
+use App\Mail\verifikasiPelatihan;
 
 class pelatihanController extends Controller
 {
@@ -54,6 +58,15 @@ class pelatihanController extends Controller
         $data->telepon = $request->telepon;
         $data->save();
         $data->jenisPelatihan()->sync($request->jenisPelatihan);
+
+        Mail::to($data->email)->send(new verifikasiPelatihan($data));
+
+        $staff = User::whereHas('roles', function($query){
+            $query->where('name','staf_teknis');
+        })->get();
+        foreach ($staff as $staff) {
+            Mail::to($staff->email)->send(new pelatihanNotification($data,$staff));
+        }
         return $this->success();
     }
 
@@ -65,7 +78,15 @@ class pelatihanController extends Controller
      */
     public function show($id)
     {
-        //
+        $data = pengajuanPelatihan::find($id);
+        
+        if(isset($data))
+        {
+            $response = new pelatihanResource($data);
+            return $this->singleHttpResponse($data);
+        } else {
+            return $this->notFound();
+        }
     }
 
     /**
@@ -88,7 +109,27 @@ class pelatihanController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $data = pengajuanPelatihan::find($id);
+        if(isset($data))
+        {
+            if($data->user_id == Auth::user()->id)
+            {
+                $data->nama_pemohon = $request->nama_pemohon;
+                $data->alamat = $request->alamat;
+                $data->email = $request->email;
+                $data->instansi = $request->instansi;
+                $data->telepon = $request->telepon;
+                $data->save();
+                $data->jenisPelatihan()->sync($request->jenisPelatihan);
+
+                return $this->success();
+
+            } else {
+                return $this->unauthorized();
+            }
+        } else {
+            return $this->notFound();
+        }
     }
 
     /**
@@ -99,6 +140,20 @@ class pelatihanController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $data = pengajuanPelatihan::find($id);
+        if(isset($data))
+        {
+            if($data->user_id == Auth::user()->id)
+            {
+                $data->jenisPelatihan()->detach();
+
+                $data->delete();
+                return $this->success;
+            } else {
+                return $this->unauthorized();
+            }
+        } else {
+            return $this->notFound();
+        }        
     }
 }
