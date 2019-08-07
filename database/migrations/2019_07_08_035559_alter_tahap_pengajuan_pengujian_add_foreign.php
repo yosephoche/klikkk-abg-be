@@ -28,7 +28,7 @@ class AlterTahapPengajuanPengujianAddForeign extends Migration
     public function down()
     {
         Schema::table('tahap_pengajuan_pengujian', function (Blueprint $table) {
-            $table->bigInteger('pic')->change();
+            $table->bigInteger('pic')->signed()->change();
 
             $table->dropForeign('tahap_pengajuan_pengujian_pic_foreign');
         });

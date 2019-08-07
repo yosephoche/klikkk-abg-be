@@ -42,4 +42,9 @@ class User extends Authenticatable
     {
         return $this->hasMany('App\Models\EmailVerification', 'user_id', 'id');
     }
+
+    public function pelatihan()
+    {
+        return $this->hasMany('App\Models\Pelatihan');
+    }
 }

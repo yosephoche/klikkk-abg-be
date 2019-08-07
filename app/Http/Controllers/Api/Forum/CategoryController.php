@@ -60,7 +60,9 @@ class CategoryController extends Controller
      */
     public function show($id)
     {
-        //
+        $data = Category::find($id);
+        $response = new categoryResource($data);
+        return $this->singleHttpResponse($data,$response);    
     }
 
     /**

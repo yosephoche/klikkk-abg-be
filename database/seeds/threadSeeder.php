@@ -38,7 +38,7 @@ class threadSeeder extends Seeder
 
         DB::table('forum_topic')->insert([
             'created_by' => 2,
-            'category_id'=>1,
+            'category_id'=>2,
             'subject' => 'threads 4',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
@@ -46,7 +46,7 @@ class threadSeeder extends Seeder
 
         DB::table('forum_topic')->insert([
             'created_by' => 2,
-            'category_id'=>1,
+            'category_id'=>2,
             'subject' => 'threads 5',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
