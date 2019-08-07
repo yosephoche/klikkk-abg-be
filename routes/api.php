@@ -85,6 +85,16 @@ Route::group( ['middleware' => ['json.response'],'namespace' => 'Api'], function
                 Route::get('/show/{regId}', 'KepalaBalaiController@show')->name('api.admin.kepala-balai.index');
             });
 
+            Route::group(['prefix' => 'staf-teknis'], function(){
+                Route::get('/', 'StafTeknisController@index')->name('api.admin.staf-teknis.index');
+                Route::get('/show/{regId}', 'StafTeknisController@show')->name('api.admin.staf-teknis.show');
+                Route::post('/{regId}/store-biaya-tambahan', 'StafTeknisController@storeBiayaTambahan')->name('api.admin.staf-teknis.store-biaya-tambahan');
+            });
+
+            Route::group(['prefix' => 'kepala-bagian'], function(){
+                Route::get('/', 'KepalaBagianController@index')->name('api.admin.kepala-bagian.index');
+            });
+
 
         });
 
