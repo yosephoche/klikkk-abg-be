@@ -8,7 +8,6 @@ use Illuminate\Database\QueryException;
 
 class TahapPengajuanPengujian
 {
-    // TODO :: implementasi dengan user dan hide user id
     use ApiResponseTrait;
 
     protected $tahap_pengajuan ;

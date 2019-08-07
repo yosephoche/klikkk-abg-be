@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Exceptions\PengajuanNotFoundException;
 
 class PengajuanPengujian extends Model
 {
@@ -53,12 +54,32 @@ class PengajuanPengujian extends Model
 
     public function scopeTahap($query, $tahap)
     {
-        return $query->where('tahap_pengajuan', '=', $tahap);
+        // TODO:: ganti logic berdasarkan user yang login
+        if (is_integer($tahap)) {
+            return $query->where('tahap_pengajuan', '=', $tahap);
+        }
+        else{
+            if ($tahap == 'pengujian') {
+                return $query->where('tahap_pengajuan', '=', 3);
+            }
+
+            if ($tahap == 'pembayaran') {
+                return $query->whereIn('tahap_pengajuan', [6,7]);
+            }
+
+            throw new PengajuanNotFoundException();
+
+        }
     }
 
     public function users()
     {
         return $this->belongsTo('App\Models\User', 'user', 'id');
+    }
+
+    public function biayaTambahan()
+    {
+        return $this->hasMany('App\Models\BiayaTambahan', 'id_pengajuan', 'id');
     }
 
     public function save(array $options = [])

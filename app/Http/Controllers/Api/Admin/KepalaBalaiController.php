@@ -18,4 +18,9 @@ class KepalaBalaiController extends Controller
     public function show($regId){
         return KepalaBalai::showPengajuan($regId);
     }
+
+    public function verifikasi($regId)
+    {
+        return KepalaBalai::verifikasi($regId);
+    }
 }

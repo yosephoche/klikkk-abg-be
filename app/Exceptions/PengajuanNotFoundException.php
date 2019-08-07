@@ -15,6 +15,6 @@ class PengajuanNotFoundException extends Exception
     public function render($request)
     {
         // dd($this);
-        return dtcApiResponse(404,null, $this->message);
+        return dtcApiResponse(404,null, 'Pengajuan tidak ditemukan');
     }
 }
