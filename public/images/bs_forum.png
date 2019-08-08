@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="120" height="120" viewBox="0 0 120 120">
+  <defs>
+    <clipPath id="clip-path">
+      <rect id="Rectangle_2876" data-name="Rectangle 2876" width="120" height="120" transform="translate(-8823 385)" fill="#4cb050" stroke="#707070" stroke-width="1"/>
+    </clipPath>
+  </defs>
+  <g id="bs_forum" transform="translate(8823 -385)" clip-path="url(#clip-path)">
+    <g id="surface1" transform="translate(-8815.5 396.25)">
+      <path id="Path_3236" data-name="Path 3236" d="M2,5V65H17V84.1l6.094-4.922L40.789,65H77V5Zm7.5,7.5h60v45H38.211l-1.055.82L24.5,68.4V57.5H9.5Zm75,7.5v7.5h15v45h-15V83.4L70.789,72.5H42.664L33.289,80H68.211L92,99.1V80h15V20Z" transform="translate(-2 -5)" fill="#4cb050"/>
+    </g>
+  </g>
+</svg>

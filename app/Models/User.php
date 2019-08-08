@@ -1,14 +1,15 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Laravel\Passport\HasApiTokens;
+use Zizaco\Entrust\Traits\EntrustUserTrait;
 
 class User extends Authenticatable
 {
-    use Notifiable;
+    use Notifiable,HasApiTokens,EntrustUserTrait;
 
     /**
      * The attributes that are mass assignable.
@@ -16,7 +17,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'uuid', 'nama_lengkap', 'user_id', 'email', 'password', 'pekerjaan', 'instansi', 'no_telepon', 'jenis_akun', 'avatar'
     ];
 
     /**
@@ -36,4 +37,19 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function emailVerification()
+    {
+        return $this->hasMany('App\Models\EmailVerification', 'user_id', 'id');
+    }
+
+    public function pelatihan()
+    {
+        return $this->hasMany('App\Models\Pelatihan');
+    }
+
+    public function scopeIsAdmin($query)
+    {
+        return $query->where('jenis_akun', 1);
+    }
 }

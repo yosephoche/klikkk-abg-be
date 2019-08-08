@@ -1,9 +1,11 @@
 <?php
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
-use App\User;
+use App\Models\User;
 use Illuminate\Support\Str;
+use Illuminate\Support\Arr;
 use Faker\Generator as Faker;
+use Illuminate\Support\Facades\DB;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,12 +18,20 @@ use Faker\Generator as Faker;
 |
 */
 
-$factory->define(User::class, function (Faker $faker) {
+$jenis_akun = DB::table('jenis_akun')->pluck('id')->toArray();
+
+$factory->define(User::class, function (Faker $faker) use ( $jenis_akun ) {
     return [
-        'name' => $faker->name,
+        'uuid' => Str::uuid(),
+        'user_id' => $faker->creditCardNumber,
+        'nama_lengkap' => $faker->name,
         'email' => $faker->unique()->safeEmail,
         'email_verified_at' => now(),
         'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+        'pekerjaan' => $faker->jobTitle,
+        'instansi' => $faker->company,
+        'no_telepon' => $faker->tollFreePhoneNumber,
+        'jenis_akun' => Arr::random($jenis_akun),
         'remember_token' => Str::random(10),
     ];
 });
