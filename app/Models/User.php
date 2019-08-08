@@ -47,4 +47,9 @@ class User extends Authenticatable
     {
         return $this->hasMany('App\Models\Pelatihan');
     }
+
+    public function scopeIsAdmin($query)
+    {
+        return $query->where('jenis_akun', 1);
+    }
 }
