@@ -28,7 +28,7 @@ class RegisterUser extends FormRequest
         return [
             'nama_lengkap' => 'required|string|max:255',
             'email' => 'required|unique:users',
-            'password' => 'required|string|confirmed|max:255',
+            'password' => 'required|string|confirmed|max:255|min:8',
             // 'pekerjaan' => 'required',
             'instansi' => 'string|max:255',
             'nip' => 'max:255',
@@ -46,6 +46,7 @@ class RegisterUser extends FormRequest
             'email.unique' => 'Email yang di masukkan sudah terdaftar',
             'password.required' => 'Password harus di isi',
             'password.confirmed' => 'Password tidak sama dengan konfirmasi password',
+            'password.min' => 'Password minimal 8 karakter',
             'pekerjaan.required' => 'Pekerjaan harus di isi',
             'no_telepon.required' => 'Nomor telepon harus di isi',
             'jenis_akun.required' => 'Jesni akun harus di isi'
