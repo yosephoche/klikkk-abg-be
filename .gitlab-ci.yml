@@ -36,7 +36,7 @@ build:
     - echo "build project"
 #    - cp .env.example .env
     - docker exec -i klikkk-abg-php-fpm php artisan key:generate
-    - docker exec -i klikkk-abg-php-fpm php artisan migrate --seed
+    - docker exec -i klikkk-abg-php-fpm php artisan migrate
     - docker exec -i klikkk-abg-php-fpm php artisan cache:clear
     - docker exec -i klikkk-abg-php-fpm php artisan config:clear
 #    - docker exec -i klikkk-abg-php-fpm php artisan storage:link
