@@ -169,7 +169,7 @@ Route::group( ['middleware' => ['json.response'],'namespace' => 'Api'], function
             Route::group(['prefix'=>'category'],function(){
                 Route::get('/','CategoryController@index')->name('category.index');
                 Route::get('/list','CategoryController@categoryList')->name('list.category');
-                Route::get('/show/{id}','CategoryController@show')->name('category.detail');
+                Route::get('/show/{slug}','CategoryController@show')->name('category.detail');
                 Route::post('/','CategoryController@store')->name('category.store');
                 Route::put('/edit/{id}','CategoryController@update')->name('category.update');
                 Route::delete('/delete/{id}','CategoryController@destroy')->name('category.delete');

@@ -62,6 +62,7 @@ class threadController extends Controller
     {
         $thread = new Thread;
         $thread->subject = $request->subject;
+        $thread->slug = str_slug($thread->subject);
         $thread->description = $request->description;
         $thread->category_id = $request->category_id;
         $thread->created_by = Auth::user()->id;
@@ -81,10 +82,10 @@ class threadController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($slug)
     {
            
-        $data = $this->thread->findThread($id);
+        $data = $this->thread->findBySlug($slug);
         views($data)->record();
         $response = new threadResource($data);
 

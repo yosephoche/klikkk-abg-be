@@ -23,9 +23,10 @@ class threadResource extends JsonResource
         return [
             'id' => $this->id,
             'owner' => $this->user->nama_lengkap,
-            'avatar' => $this->user->avatar?asset('storage'.$this->user->avatar):null,
+            'avatar' => userAvatar($this->user->avatar),
             'category' => $this->category->name,
             'title'=> $this->subject,
+            'slug'=> $this->slug,
             'desc' => $this->description,
             'edit_link' => $edit_links,
             'created_at' => $this->created_at->format('d,M-Y'),

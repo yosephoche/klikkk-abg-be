@@ -122,3 +122,10 @@ if (!function_exists('userAvatar')) {
         return $avatar?asset('storage/'.$avatar):null;
     }
 }
+
+if (!function_exists('str_slug')){
+    function str_slug($title, $separator = '-')
+    {
+        return Str::slug($title, $separator);
+    }
+}

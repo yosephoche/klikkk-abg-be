@@ -14,7 +14,8 @@ class AddDescriptionToTopic extends Migration
     public function up()
     {
         Schema::table('forum_topic', function (Blueprint $table) {
-            $table->string('description')->after('subject');
+            $table->text('description')->after('subject');
+            $table->string('slug')->after('description');
         });
     }
 
@@ -27,6 +28,8 @@ class AddDescriptionToTopic extends Migration
     {
         Schema::table('forum_topic', function (Blueprint $table) {
             $table->dropColumn('description');
+            $table->dropColumn('slug');
+
         });
     }
 }

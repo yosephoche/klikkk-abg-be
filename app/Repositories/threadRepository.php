@@ -22,6 +22,10 @@ class threadRepository
         return $this->thread->orderBY('created_at','DESC')->paginate($perPage);
     }
 
+    public function findBySlug($slug)
+    {
+        return $this->thread->where('slug',$slug)->first();
+    }
     public function findThread($id)
     {
         return $this->thread->find($id);
