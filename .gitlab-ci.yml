@@ -3,7 +3,7 @@ variables:
   DB_HOST: "mysql"
   DB_PORT: "3306"
   DB_DATABASE: "klikkkabg"
-  DB_USERNAME: "root
+  DB_USERNAME: "root"
   DB_PASSWORD: "dtcworld2019"
   
   MAIL_DRIVER: "smtp"
