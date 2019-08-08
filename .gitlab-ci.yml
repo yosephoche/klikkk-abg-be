@@ -6,14 +6,14 @@ variables:
   DB_USERNAME: "root
   DB_PASSWORD: "dtcworld2019"
   
-  MAIL_DRIVER=smtp
-  MAIL_HOST=smtp.gmail.com
-  MAIL_PORT=587
-  MAIL_USERNAME=tstngdv@gmail.com
-  MAIL_PASSWORD=devtest2019
-  MAIL_ENCRYPTION=tls
+  MAIL_DRIVER: "smtp"
+  MAIL_HOST: "smtp.gmail.com"
+  MAIL_PORT: "587"
+  MAIL_USERNAME: "tstngdv@gmail.com"
+  MAIL_PASSWORD: "devtest2019"
+  MAIL_ENCRYPTION: "tls"
   
-  FE_LOGIN_URL=http://165.22.250.96:2005/login
+  FE_LOGIN_URL: "http://165.22.250.96:2005/login"
 
 before_script:
   - echo "Before script"
