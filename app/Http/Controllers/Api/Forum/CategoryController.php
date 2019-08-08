@@ -37,8 +37,8 @@ class CategoryController extends Controller
 
     public function categoryList()
     {
-        $data = Category::orderBy('id','desc')->get();
-        $response = categoryResource::collection($data);
+        $data = subCategory::orderBy('id','desc')->get();
+        $response = subCategoryResource::collection($data);
         return $this->noPaging($response,$data);
     }
 
