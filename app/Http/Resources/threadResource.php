@@ -24,8 +24,8 @@ class threadResource extends JsonResource
             'id' => $this->id,
             'owner' => $this->user->nama_lengkap,
             'avatar' => userAvatar($this->user->avatar),
-            'jabatan' => $this->user->roles->pluck('name'),
-            'category' => $this->category->name,
+            'jabatan' => $this->user->roles,
+            'category' => $this->subCategory->name,
             'title'=> $this->subject,
             'slug'=> $this->slug,
             'desc' => $this->description,
@@ -35,6 +35,6 @@ class threadResource extends JsonResource
             'commentsCount' => $this->comments->count(),
             'likesCount' => $this->likesCount,
             'likes' => $this->collectLikers(),
-        ];
+        ]; 
     }
 }

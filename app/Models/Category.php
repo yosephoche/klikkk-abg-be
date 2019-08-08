@@ -8,7 +8,10 @@ class Category extends Model
 {
     protected $table = 'forum_categories';
     protected $fillable = ['name','description'];
-    public function thread(){
-        return $this->hasMany('App\Models\Thread');
+
+    
+
+    public function subCategory(){
+        return $this->hasMany('App\Models\subCategory');
     }
 }
