@@ -20,13 +20,10 @@ class Thread extends Model implements ViewableContract,LikeableContract
         return $this->belongsTo('App\Models\User','created_by');
     }
 
-    public function category(){
-        return $this->belongsTo('App\Models\Category','category_id');
+    public function subCategory(){
+        return $this->belongsTo('App\Models\subCategory','category_id');
     }
 
-    public function thread(){
-        return $this->belongsTo('app\Models\Category','category_id');
-    }
 
     public function comments()
     {

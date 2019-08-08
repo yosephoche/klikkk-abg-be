@@ -184,6 +184,15 @@ Route::group( ['middleware' => ['json.response'],'namespace' => 'Api'], function
                 Route::put('/edit/{id}','CategoryController@update')->name('category.update');
                 Route::delete('/delete/{id}','CategoryController@destroy')->name('category.delete');
             });
+
+            Route::group(['prefix'=>'subCategory'], function(){
+                Route::get('/','CategoryController@subIndex')->name('subCategory.index');
+                Route::get('/{id}','CategoryController@subShow')->name('subCategory.show');
+                Route::post('/store','CategoryController@subStore')->name('subCategory.store');
+                Route::put('/edit/{id}','CategoryController@subUpdate')->name('subCategory.update');
+                Route::delete('/delete/{id}','CategoryController@subDestroy')->name('subCategory.delete');
+
+            });
         });
     });
 

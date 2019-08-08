@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\Api\Forum;
 
 use Illuminate\Http\Request;
+use App\Models\subCategory;
 use App\Models\Thread;
 use App\Models\Comment;
 use App\Models\Category;
 use App\Repositories\Traits\forumTrait;
 use App\Http\Resources\categoryResource;
+use App\Http\Resources\subCategoryResource;
 use App\Http\Controllers\Controller;
 
 class CategoryController extends Controller
@@ -24,6 +26,13 @@ class CategoryController extends Controller
         $data = Category::orderBy('id','desc')->paginate(5);
         $response = categoryResource::collection($data);
         return $this->collectionHttpResponse($response,$data);    
+    }
+
+    public function subIndex()
+    {
+        $data = subCategory::orderBy('id','desc')->paginate(5);
+        $response = subCategoryResource::collection($data);
+        return $this->collectionHttpResponse($response,$data);
     }
 
     public function categoryList()
@@ -59,6 +68,18 @@ class CategoryController extends Controller
         }
     }
 
+    public function subStore(Request $request)
+    {
+        $data = new subCategory;
+        $data->category_id = $request->category_id;
+        $data->name = $request->name;
+        $data->save();
+        if($data->id)
+        {
+           return $this->success();
+        }
+    }
+
     /**
      * Display the specified resource.
      *
@@ -70,6 +91,13 @@ class CategoryController extends Controller
         $data = Category::find($id);
         $response = new categoryResource($data);
         return $this->singleHttpResponse($data,$response);    
+    }
+
+    public function subShow($id)
+    {
+        $data = subCategory::find($id);
+        $response = new subCategoryResource($data);
+        return $this->singleHttpResponse($data,$response);
     }
 
     /**
@@ -106,6 +134,22 @@ class CategoryController extends Controller
         }
     }
 
+    public function subUpdate(Request $request, $id)
+    {
+        $data = subCategory::find($id);
+
+        if(isset($data))
+        {
+            $data->category_id = $request->category_id;
+            $data->name = $request->name;
+            $data->save();
+
+            return $this->success();
+        } else {
+            return $this->notFound();
+        }
+    }
+
     /**
      * Remove the specified resource from storage.
      *
@@ -116,6 +160,44 @@ class CategoryController extends Controller
     {
         // find the category base on id 
         $data = Category::find($id);
+        if(isset($data))
+        {
+            $subCategory = subCategory::where('category_id',$id)->first();
+            if(isset($subCategory))
+            {
+                // delete all thread that have relationship with this Category
+                $threads = Thread::where('category_id',$subCategory->id)->get();
+                if($threads->isNotEmpty())
+                {
+                    foreach($threads as $thread)
+                    {
+                        $comments = Comment::where('topic_id',$thread->id)->first();
+                        foreach($comments as $comment)
+                        {
+                            $replies = Comment::where('replies_id',$comment->id)->first();
+                            foreach($replies as $replie)
+                            {
+                                $replie->delete();
+                            }    
+                            $comment->delete();
+                        }
+                        $thread->delete();
+                    }
+                }
+                $subCategory->delete();
+            }
+            // deleting the category
+            $data->delete();
+            return $this->success();
+        } else {
+            // returning 404 if not found
+            return $this->notFound();
+        }
+    }
+
+    public function subDestroy($id)
+    {
+        $data = subCategory::find($id);
         if(isset($data))
         {
             // delete all thread that have relationship with this Category
