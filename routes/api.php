@@ -31,6 +31,8 @@ Route::group( ['middleware' => ['json.response'],'namespace' => 'Api'], function
                 Route::group(['prefix' => 'master-pengujian'], function(){
                     Route::get('/', 'MasterPengujianController@index')->name('api.admin.master-data.master-pengujian.index');
 
+                    Route::get('/edit/{uuid}', 'MasterPengujianController@edit')->name('api.admin.master-data.master-pengujian.edit');
+
                     Route::post('/store-jenis-pengujian','MasterPengujianController@storeJenisPengujian')->name('api.admin.master-data.master-pengujian.store-jenis-pengujian');
                     Route::post('/store-parameter','MasterPengujianController@storeParameter')->name('api.admin.master-data.master-pengujian.store-parameter');
                     Route::post('/update-jenis-pengujian','MasterPengujianController@updateJenisPengujian')->name('api.admin.master-data.master-pengujian.update-jenis-pengujian');
