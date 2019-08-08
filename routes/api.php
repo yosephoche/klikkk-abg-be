@@ -115,6 +115,7 @@ Route::group( ['middleware' => ['json.response'],'namespace' => 'Api'], function
             Route::group(['prefix' => 'pengajuan' , 'namespace' => 'Pengajuan'], function(){
 
                 Route::group(['prefix' => 'pengujian'], function(){
+
                     Route::get('/get-jenis-pengujian', 'PengujianController@getJenisPengujian')->name('api.user.pengajuan.pengujian.get-jenis-pengujian');
 
                     Route::get('/get-parameter-pengujian', 'PengujianController@getParameterPengujian')->name('api.user.pengajuan.pengujian.get-parameter-pengujian');
@@ -122,6 +123,15 @@ Route::group( ['middleware' => ['json.response'],'namespace' => 'Api'], function
                     Route::get('/', 'PengujianController@index')->name('api.user.pengajuan.pengujian.index');
                     Route::get('/add', 'PengujianController@add')->name('api.user.pengajuan.pegujian.add');
                     Route::post('/store', 'PengujianController@store')->name('api.user.pengajuan.pengujian.store');
+
+                    Route::get('/get-master-data', 'PengujianController@getMasterData')->name('api.user.pengajuan.pengujian.get-master-data');
+                    Route::post('/{regId}/update-data-pemohon', 'PengujianController@updateDataPemohon')->name('api.user.pengajuan.pengujian.update-data-pemohon');
+                    Route::post('/{regId}/update-detail', 'PengujianController@updateDetail')->name('api.user.pengajuan.pengujian.update-detail');
+                    Route::post('/{regId}/update-biaya-tambahan', 'PengujianController@updateBiayaTambahan')->name('api.user.pengajuan.pengujian.update-biaya-tambahan');
+
+                    Route::get('/{regId}/kirim', 'PengujianController@kirim')->name('api.user.pengajuan.pengujian.kirim');
+                    Route::get('/{regId}/tolak', 'PengujianController@tolak')->name('api.user.pengajuan.pengujian.tolak');
+                    Route::get('/{regId}/setuju', 'PengujianController@setuju')->name('api.user.pengajuan.pengujian.setuju');
                 });
 
                 Route::group(['prefix' => 'pelatihan',], function(){

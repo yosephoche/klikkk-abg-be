@@ -171,7 +171,7 @@ class PengajuanPengujian
 
         });
 
-        return dtcApiResponse(200, null, responseMessage());
+        return $this::getOne($masterPengajuanPengujian->regId);
 
     }
 
