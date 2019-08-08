@@ -129,7 +129,7 @@ class PengajuanPengujian
     {
         $pengajuanPengujian = (new self);
 
-        $jenisPengujian = $pengajuanPengujian->jenisPengujian->active()->whereIn('uuid', $data->jenis_pengujian)->with(['parameterPengujian' => function($query){
+        $jenisPengujian = $pengajuanPengujian->jenisPengujian->active()->whereIn('id', $data->jenis_pengujian)->with(['parameterPengujian' => function($query){
             return $query->active();
         }])->get();
 
