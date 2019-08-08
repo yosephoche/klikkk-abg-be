@@ -9,12 +9,13 @@ use App\Exceptions\PengajuanNotFoundException;
 
 class PengajuanPengujian
 {
-    protected $detailPengajuanPengujian;
-    protected $masterPengajuanPengujian;
-    protected $jenisPengujian;
-    protected $parameterPengujian;
-    protected $prosesPengajuan;
-    protected $limit = 10;
+    public $detailPengajuanPengujian;
+    public $masterPengajuanPengujian;
+    public $jenisPengujian;
+    public $parameterPengujian;
+    public $prosesPengajuan;
+    public $biayaTambahan;
+    public $limit = 10;
 
     public function __construct($regId = null)
     {
@@ -24,6 +25,7 @@ class PengajuanPengujian
         $this->masterPengajuanPengujian = $this->masterPengajuanPengujian($regId);
         $this->detailPengajuanPengujian = $this->detailPengajuanPengujian();
         $this->prosesPengajuan = $this->prosesPengajuan();
+        $this->biayaTambahan = $this->biayaTambahan();
         // dd($this->prosesPengajuan );
 
         return $this;
@@ -72,6 +74,20 @@ class PengajuanPengujian
         }
 
         return $prosesPengajuan;
+    }
+
+    public function biayaTambahan()
+    {
+        $biayaTambahan = app()->make('App\Models\BiayaTambahan');
+
+        if ($this->masterPengajuanPengujian instanceof Builder) {
+            // if (count($this->masterPengajuanPengujian->first()->biayaTambahan)) {
+                return $this->masterPengajuanPengujian->first()->biayaTambahan;
+            // }
+            // return $biayaTambahan;
+        }
+
+        return $biayaTambahan;
     }
 
     public static function getAllJenisPengajuan()
@@ -159,12 +175,23 @@ class PengajuanPengujian
 
     }
 
+    public function update($data)
+    {
+
+    }
+
     public function getListPengajuan($request = null, $tahap)
     {
         $pengajuanPengujian = $this->masterPengajuanPengujian;
 
-        $pengajuanPengujian = $pengajuanPengujian->tahap($tahap)->active()->latest();
+        // dd($tahap);
+
+        $pengajuanPengujian = $pengajuanPengujian->tahap($tahap);
+
         $pengajuanPengujian = $request->has('search')?$pengajuanPengujian->where('regId','like','%'.$request->search.'%'):$pengajuanPengujian;
+
+        $pengajuanPengujian = $pengajuanPengujian->active()->latest();
+
         $pengajuanPengujian = $pengajuanPengujian->paginate($this->limit);
 
         $pengajuanPengujian->getCollection()->transform(function($value){
@@ -190,6 +217,8 @@ class PengajuanPengujian
             $_dataPengujian = $pengajuanPengujian->detailPengajuanPengujian()->with('parameterPengujian')->get()->groupBy('parameterPengujian.jenisPengujian.nama')->map(function($value){
                 return $value->map(function($value){
                     return [
+                        'id_detail' => $value->id,
+                        'id_parameter' => $value->id_parameter_pengujian,
                         'parameter' => $value->parameterPengujian->nama,
                         'jumlah_titik' => $value->jumlah_titik,
                         'biaya' => $value->parameterPengujian->biaya,
@@ -211,8 +240,21 @@ class PengajuanPengujian
                 $i++;
             }
 
-            $data =  [
-                'data_pemohon' => [
+            $biayaTambahan = [];
+
+            if ( $pengajuanPengujian->biayaTambahan->count() > 0 ) {
+                $biayaTambahan['daftar_biaya'] = $pengajuanPengujian->biayaTambahan->map(function($value){
+                    $value['total'] = $value->biaya * $value->jumlah * $value->jumlah_orang;
+                    return $value;
+                });
+
+                $biayaTambahan['total'] = $biayaTambahan['daftar_biaya']->sum('total');
+                $grandTotal += $biayaTambahan['total'];
+            }
+
+            $data = [];
+            $data['data_pemohon'] = [
+                    'regId' => $pengajuanPengujian->regId,
                     'nama_pemohon' => $pengajuanPengujian->nama_pemohon,
                     'alamat' => $pengajuanPengujian->alamat,
                     'email' => $pengajuanPengujian->email,
@@ -221,17 +263,15 @@ class PengajuanPengujian
                     'nomor_telepon' => $pengajuanPengujian->nomor_telepon,
                     'jenis_usaha' => $pengajuanPengujian->jenis_usaha,
                     'tujuan' => $pengajuanPengujian->tujuan_pengujian
-                ],
-                'data_pengujian' => $dataPengujian,
-                'grand_total' => $grandTotal
             ];
+            $data['data_pengujian'] = $dataPengujian;
+            $data['biaya_tambahan'] = $biayaTambahan;
+            $data['grand_total'] = $grandTotal;
 
             return $data;
         }
 
         throw new PengajuanNotFoundException('get one');
-
-        // return dtcApiResponse(404, null, 'Pengajuan tidak ditemukan');
     }
 
     public static function trackingPengajuan($regId = null)
@@ -255,6 +295,81 @@ class PengajuanPengujian
         }
 
         // return dtcApiResponse(404, null, 'Pengajuan tidak ditemukan');
+        throw new PengajuanNotFoundException();
+    }
+
+    public function storeBiayaTambahan($data)
+    {
+        if (count($this->biayaTambahan) == 0) {
+            $_biayaTambahan = [];
+            foreach ($data['rincian_biaya'] as $key => $value) {
+                $_biayaTambahan[$key]['nama_biaya'] = $value;
+                $_biayaTambahan[$key]['biaya'] = $data['biaya'][$key];
+                $_biayaTambahan[$key]['jumlah'] = $data['jumlah_hari'][$key];
+                $_biayaTambahan[$key]['jumlah_orang'] = $data['jumlah_orang'][$key];
+            }
+            $_biayaTambahan = $this->masterPengajuanPengujian->first()->biayaTambahan()->createMany($_biayaTambahan);
+            return $_biayaTambahan;
+        }
+    }
+
+    public function updateDataPemohon($data)
+    {
+        if ($this->masterPengajuanPengujian instanceof Builder) {
+            $pengajuan = $this->masterPengajuanPengujian->first();
+            $fillable = $data->only($pengajuan->getFillable());
+            $pengajuan->fill($fillable);
+
+            return $pengajuan->save();
+        }
+
+        throw new PengajuanNotFoundException();
+    }
+
+    public function updateDetail($data)
+    {
+        if ($this->masterPengajuanPengujian instanceof Builder) {
+            $this->masterPengajuanPengujian->first()->detailPengajuanPengujian()->delete();
+            $detailPengajuanPengujian = [];
+            $i = 0;
+            foreach ($data->id_parameter_pengujian as $key => $value) {
+                $detailPengajuanPengujian[$i]['id_parameter_pengujian'] = $value;
+                $detailPengajuanPengujian[$i]['jumlah_titik'] = $data->jumlah_titik[$i];
+                $i++;
+            }
+            return $this->masterPengajuanPengujian->first()->detailPengajuanPengujian()->createMany($detailPengajuanPengujian);
+        }
+        throw new PengajuanNotFoundException();
+    }
+
+    public function updateBiayaTambahan($data)
+    {
+        if ($this->masterPengajuanPengujian instanceof Builder) {
+            $this->masterPengajuanPengujian->first()->biayaTambahan()->delete();
+            $_biayaTambahan = [];
+            foreach ($data['rincian_biaya'] as $key => $value) {
+                $_biayaTambahan[$key]['nama_biaya'] = $value;
+                $_biayaTambahan[$key]['biaya'] = $data['biaya'][$key];
+                $_biayaTambahan[$key]['jumlah'] = $data['jumlah_hari'][$key];
+                $_biayaTambahan[$key]['jumlah_orang'] = $data['jumlah_orang'][$key];
+            }
+            $_biayaTambahan = $this->masterPengajuanPengujian->first()->biayaTambahan()->createMany($_biayaTambahan);
+
+            return $_biayaTambahan;
+        }
+        throw new PengajuanNotFoundException();
+    }
+
+    public function verifikasi($tahap)
+    {
+        if ($this->masterPengajuanPengujian instanceof Builder) {
+            $pengajuan = $this->masterPengajuanPengujian->first();
+            $pengajuan->tahap_pengajuan = $tahap;
+            $pengajuan->save;
+
+            return true;
+        }
+
         throw new PengajuanNotFoundException();
     }
 

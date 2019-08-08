@@ -41,8 +41,10 @@ class ProsesPengajuan extends BaseRepository
             }
 
 
-            $_proses_pengajuan = $_pengajuan->prosesPengajuan->sortByDesc('tanggal_mulai')->first();
+            $_proses_pengajuan = $_pengajuan->prosesPengajuan()->tahapSebelumnya($tahap)->first();
+
             $_proses_pengajuan->tanggal_selesai = Carbon::now();
+            $_proses_pengajuan->save();
 
             $_pengajuan->tahap_pengajuan = $tahap;
             $_pengajuan->save();

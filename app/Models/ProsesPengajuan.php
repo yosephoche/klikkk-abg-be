@@ -34,4 +34,9 @@ class ProsesPengajuan extends Model
         return $query->where('id_pengajuan', '=', $id)->where('tahap_pengajuan', '=', $tahap);
     }
 
+    public function scopeTahapSebelumnya($query, $tahap)
+    {
+        return $query->where('tahap_pengajuan', '<', $tahap)->orderByDesc('tanggal_mulai');
+    }
+
 }

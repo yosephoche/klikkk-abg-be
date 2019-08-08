@@ -64,6 +64,7 @@ class MasterPengujian
             if ($param) {
                 $paramameter = $param->map(function($value){
                     return [
+                        'id' => $value->id,
                         'uuid' => $value->uuid,
                         'nama' => $value->nama,
                         'biaya' => $value->biaya,
@@ -76,6 +77,7 @@ class MasterPengujian
             }
 
             return [
+                'id' => $value->id,
                 'uuid' => $value->uuid,
                 'nama' => $value->nama,
                 'urutan' => $value->urutan,

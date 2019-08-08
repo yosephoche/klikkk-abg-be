@@ -64,7 +64,7 @@ class UserRole
     }
 
     public function attach($data){
-        $user = $this->user->where('id', $data->id_user)->orWhere('uuid', $data->id_user)->first();
+        $user = $this->user->where('id', $data->id_user)->first();
 
         try {
             return dtcApiResponse(200,$user->roles()->attach($data->id_role));
@@ -74,7 +74,7 @@ class UserRole
     }
 
     public function detach($data){
-        $user = $this->user->where('id', $data->id_user)->orWhere('uuid', $data->id_user)->first();
+        $user = $this->user->where('id', $data->id_user)->first();
 
         try {
             return dtcApiResponse(200,$user->roles()->detach($data->id_role));
