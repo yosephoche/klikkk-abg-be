@@ -157,8 +157,18 @@ class threadController extends Controller
         {
             if(Auth::user()->id == $thread->created_by)
             {
-                $thread->update($request->all());
-                return $this->success();   
+                $thread->subject = $request->subject;
+                $thread->slug = str_slug($thread->subject);
+                $thread->description = $request->description;
+                $thread->category_id = $request->category_id;
+                $thread->created_by = Auth::user()->id;
+                $thread->save();
+                if(isset($thread->id))
+                {
+                    return $this->success();
+                } else {
+                    return $this->serverError();
+                }   
             } else {
                 return $this->unprocessable();
             }
