@@ -113,6 +113,7 @@ Route::group( ['middleware' => ['json.response'],'namespace' => 'Api'], function
                 Route::get('/', 'KeuanganController@index')->name('api.admin.keuangan.index');
                 Route::get('/show/{regId}', 'KeuanganController@show')->name('api.admin.keuangan.show');
                 Route::get('/input-ebilling', 'KeuanganController@inputEbilling')->name('api.admin.keuangan.input-ebilling');
+                Route::get('/{regId}/konfirmasi-pembayaran', 'KeuanganController@konfirmasiPembayaran')->name('api.admin.keuangan.konfirmasi-pembayaran');
 
             });
 

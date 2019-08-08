@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Repositories\PengajuanPengujian;
 use Illuminate\Support\Facades\Notification;
 use App\Notifications\InputEbillingNotification;
+use App\Notifications\KonfirmasiKeuanganNotification;
 
 class KeuanganController extends Controller
 {
@@ -32,8 +33,22 @@ class KeuanganController extends Controller
         return dtcApiResponse(200, true);
     }
 
+    public function show($regId)
+    {
+        $pengajuan =  PengajuanPengujian::getOne($regId);
+
+        return dtcApiResponse(200, $pengajuan);
+    }
+
     public function konfirmasiPembayaran($regId)
     {
-        // return
+        $pengajuanPengujian = new PengajuanPengujian($regId);
+
+        $pengajuanPengujian->verifikasi(9);
+        \App\Repositories\ProsesPengajuan::make(9, $regId);
+
+        Notification::send( $pengajuanPengujian->masterPengajuanPengujian->first()->users, new KonfirmasiKeuanganNotification($pengajuanPengujian->masterPengajuanPengujian->first()) );
+
+        return dtcApiResponse(200, null);
     }
 }

@@ -13,7 +13,7 @@ class KepalaBidangController extends Controller
     public function index(Request $request)
     {
         $pengajuanPengujian = new PengajuanPengujian();
-        $daftarPengajuan = $pengajuanPengujian->getListPengajuan($request, 4);
+        $daftarPengajuan = $pengajuanPengujian->getListPengajuan($request, $request->filter);
 
         return dtcApiResponse(200, $daftarPengajuan);
     }
@@ -29,12 +29,16 @@ class KepalaBidangController extends Controller
     {
         $pengajuan =  new PengajuanPengujian($regId);
 
-        // dd($pengajuan->masterPengajuanPengujian);
         $_pengajuan = $pengajuan->verifikasi(5);
         \App\Repositories\ProsesPengajuan::make(5, $regId);
 
         Notification::send( $pengajuan->masterPengajuanPengujian->first()->users, new VerifikasiKabid($pengajuan->masterPengajuanPengujian->first()) );
 
         return dtcApiResponse(200, $_pengajuan);
+    }
+
+    public function penunjukanPersonel($regId)
+    {
+
     }
 }

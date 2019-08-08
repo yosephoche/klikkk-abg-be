@@ -129,3 +129,10 @@ if (!function_exists('str_slug')){
         return Str::slug($title, $separator);
     }
 }
+
+if (!function_exists('buktiTransaksiPengajuan')) {
+    function buktiTransaksiPengajuan($bukti)
+    {
+        return $bukti?asset('storage/'.$bukti):null;
+    }
+}
