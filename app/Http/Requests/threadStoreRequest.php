@@ -26,6 +26,7 @@ class threadStoreRequest extends FormRequest
         return [
             'category_id' => 'required',
             'subject' => 'required',
+            'description' => 'required',
         ];
     }
 
@@ -39,6 +40,7 @@ class threadStoreRequest extends FormRequest
         return [
             'category_.required' => 'Pick One Category',
             'subject.required'  => 'What Is The Subject Of The Thread',
+            'description.required' => 'Please give description to this thread',
         ];
     }
 }

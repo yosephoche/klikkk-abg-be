@@ -60,10 +60,13 @@ class threadController extends Controller
      */
     public function store(threadStoreRequest $request)
     {
-        $thread = $request->all();
-        $thread['created_by'] = Auth::user()->id;
-        $store = Thread::create($thread);
-        if($store)
+        $thread = new Thread;
+        $thread->subject = $request->subject;
+        $thread->description = $request->description;
+        $thread->category_id = $request->category_id;
+        $thread->created_by = Auth::user()->id;
+        $thread->save();
+        if(isset($thread->id))
         {
             return $this->success();
         } else {
