@@ -24,6 +24,7 @@ class threadResource extends JsonResource
             'id' => $this->id,
             'owner' => $this->user->nama_lengkap,
             'avatar' => userAvatar($this->user->avatar),
+            'jabatan' => $this->user->roles->pluck('name'),
             'category' => $this->category->name,
             'title'=> $this->subject,
             'slug'=> $this->slug,
