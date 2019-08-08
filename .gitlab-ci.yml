@@ -1,0 +1,48 @@
+variables:
+  DB_CONNECTION: "mysql"
+  DB_HOST: "mysql"
+  DB_PORT: "3306"
+  DB_DATABASE: "klikkkabg"
+  DB_USERNAME: "root"
+  DB_PASSWORD: "dtcworld2019"
+  
+  MAIL_DRIVER: "smtp"
+  MAIL_HOST: "smtp.gmail.com"
+  MAIL_PORT: "587"
+  MAIL_USERNAME: "tstngdv@gmail.com"
+  MAIL_PASSWORD: "devtest2019"
+  MAIL_ENCRYPTION: "tls"
+  
+  FE_LOGIN_URL: "http://165.22.250.96:2005/login"
+
+before_script:
+  - echo "Before script"
+  - cd /var/www/klikkk-abg-be/ #your project path
+
+pulling:
+  stage: build
+  tags:
+    - klikkabg-runner
+  script:
+    - echo "Pull process run"
+    - git reset --hard
+    - git pull origin devel
+
+build:
+  stage: deploy
+  tags:
+    - klikkabg-runner
+  script:
+    - echo "build project"
+#    - cp .env.example .env
+    - docker exec -i klikkk-abg-php-fpm php artisan key:generate
+    - docker exec -i klikkk-abg-php-fpm php artisan migrate
+    - docker exec -i klikkk-abg-php-fpm php artisan cache:clear
+    - docker exec -i klikkk-abg-php-fpm php artisan config:clear
+#    - docker exec -i klikkk-abg-php-fpm php artisan storage:link
+    - sudo chown -R www-data:www-data /var/www/klikkk-abg-be/
+    - find /var/www/klikkk-abg-be/ -type f -exec chmod 664 {} \;
+    - find /var/www/klikkk-abg-be/ -type d -exec chmod 775 {} \;
+    - chgrp -R www-data storage bootstrap/cache
+    - chmod -R ug+rwx storage bootstrap/cache
+    - echo "finish build project"

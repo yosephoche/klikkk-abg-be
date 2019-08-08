@@ -6,21 +6,19 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
-use App\Mail\VerifikasiKepalaBalai as VerifikasiKepalaBalaiMail;
 
-class VerifikasiKepalaBalai extends Notification
+class VerifikasiKabid extends Notification
 {
     use Queueable;
 
-    protected $pengajuan;
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct($pengajuan)
+    public function __construct()
     {
-        $this->pengajuan = $pengajuan;
+        //
     }
 
     /**
@@ -31,7 +29,7 @@ class VerifikasiKepalaBalai extends Notification
      */
     public function via($notifiable)
     {
-        return ['mail','database'];
+        return ['mail', 'database'];
     }
 
     /**
@@ -42,7 +40,10 @@ class VerifikasiKepalaBalai extends Notification
      */
     public function toMail($notifiable)
     {
-        return ( new VerifikasiKepalaBalaiMail($this->pengajuan));
+        return (new MailMessage)
+                    ->line('The introduction to the notification.')
+                    ->action('Notification Action', url('/'))
+                    ->line('Thank you for using our application!');
     }
 
     /**
@@ -55,10 +56,10 @@ class VerifikasiKepalaBalai extends Notification
     {
         return [
             'type' => 'message',
-            'label' => 'Pengajuan',
-            'title' => 'Verifikasi Kepala Balai',
-            'path' => 'pengajuan/view/'.$this->pengajuan->regId,
-            'body' => 'Selamat, permohonan pengujian kamu telah di verifikasi oleh kepalai balai K3'
+            'label' => 'pengajuan',
+            'title' => 'Verifikasi Kepala Bidang',
+            'path' => 'pengajuan/verifikasi/'.$this->pengajuan->regId,
+            'body' => 'Permohonan kamu telah di verifikasi oleh kepala bidang, silahkan review kembali pengajuan.'
         ];
     }
 }

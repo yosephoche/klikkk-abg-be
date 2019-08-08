@@ -6,13 +6,14 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
-use App\Mail\VerifikasiKepalaBalai as VerifikasiKepalaBalaiMail;
+use App\Mail\PengajuanBaruMail;
 
-class VerifikasiKepalaBalai extends Notification
+class PengajuanBaruNotification extends Notification
 {
     use Queueable;
 
-    protected $pengajuan;
+    public $pengajuan;
+
     /**
      * Create a new notification instance.
      *
@@ -42,7 +43,7 @@ class VerifikasiKepalaBalai extends Notification
      */
     public function toMail($notifiable)
     {
-        return ( new VerifikasiKepalaBalaiMail($this->pengajuan));
+        return (new PengajuanBaruMail($this->pengajuan));
     }
 
     /**
@@ -54,11 +55,9 @@ class VerifikasiKepalaBalai extends Notification
     public function toArray($notifiable)
     {
         return [
-            'type' => 'message',
-            'label' => 'Pengajuan',
-            'title' => 'Verifikasi Kepala Balai',
-            'path' => 'pengajuan/view/'.$this->pengajuan->regId,
-            'body' => 'Selamat, permohonan pengujian kamu telah di verifikasi oleh kepalai balai K3'
+            'type' => 'notification',
+            'title' => 'Pengajuan Baru',
+            'body' => 'Pengajuan baru dengan nomor registrasi '.$this->pengajuan.' Menunggu verifikasi dari anda'
         ];
     }
 }
