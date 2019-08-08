@@ -6,9 +6,12 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Resources\PengajuanPengujian as PengajuanPengujianResource;
 use Illuminate\Database\Eloquent\Builder;
 use App\Exceptions\PengajuanNotFoundException;
+use App\Repositories\Traits\UploadTrait;
 
 class PengajuanPengujian
 {
+    use UploadTrait;
+
     public $detailPengajuanPengujian;
     public $masterPengajuanPengujian;
     public $jenisPengujian;
@@ -185,6 +188,7 @@ class PengajuanPengujian
         $pengajuanPengujian = $this->masterPengajuanPengujian;
 
         $pengajuanPengujian = $pengajuanPengujian->tahap($tahap);
+        // dd($pengajuanPengujian);
 
         $pengajuanPengujian = $request->has('search')?$pengajuanPengujian->where('regId','like','%'.$request->search.'%'):$pengajuanPengujian;
 
@@ -260,7 +264,9 @@ class PengajuanPengujian
                     'nama_peusahaan' => $pengajuanPengujian->nama_perusahaan,
                     'nomor_telepon' => $pengajuanPengujian->nomor_telepon,
                     'jenis_usaha' => $pengajuanPengujian->jenis_usaha,
-                    'tujuan' => $pengajuanPengujian->tujuan_pengujian
+                    'tujuan' => $pengajuanPengujian->tujuan_pengujian,
+                    'e_billing' => $pengajuanPengujian->e_billing,
+                    'bukti_transaksi' => $pengajuanPengujian->bukti_transaksi
             ];
             $data['data_pengujian'] = $dataPengujian;
             $data['biaya_tambahan'] = $biayaTambahan;
@@ -370,5 +376,43 @@ class PengajuanPengujian
 
         throw new PengajuanNotFoundException();
     }
+
+    public function updateEbilling($data)
+    {
+        if ($this->masterPengajuanPengujian instanceof Builder) {
+            $pengajuan = $this->masterPengajuanPengujian->first();
+            $pengajuan->e_billing = $data->e_billing;
+            $pengajuan->save();
+            return true;
+        }
+
+        throw new PengajuanNotFoundException();
+    }
+
+    public function uploadBuktiTransaksi($data)
+    {
+        if ($this->masterPengajuanPengujian instanceof Builder) {
+            try {
+                if ($data->has('bukti_transaksi')) {
+                    $pengajuan = $this->masterPengajuanPengujian->first();
+                    $image = $data->file('bukti_transaksi');
+                    $name = str_slug($data->input('nama_lengkap')).'_'.time();
+                    $folder = '/uploads/bukti_transaksi/';
+                    $filePath = $folder . $name. '.' . $image->getClientOriginalExtension();
+                    $this->uploadOne($image, $folder, 'public', $name);
+                    $pengajuan->bukti_transaksi = $filePath;
+
+                    $pengajuan->save();
+                    return $pengajuan->bukti_transaksi;
+                }
+            } catch (\Exception $e) {
+                return dtcApiResponse(500,false, $e->getMessage());
+            }
+        }
+        else{
+            throw new PengajuanNotFoundException();
+        }
+    }
+
 
 }

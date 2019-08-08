@@ -6,9 +6,9 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
-use App\Mail\VerifikasiKabidMail;
+use App\Mail\InputEbillingMail;
 
-class VerifikasiKabid extends Notification
+class InputEbillingNotification extends Notification
 {
     use Queueable;
 
@@ -42,7 +42,7 @@ class VerifikasiKabid extends Notification
      */
     public function toMail($notifiable)
     {
-        return (new VerifikasiKabidMail($this->pengajuan));
+        return (new InputEbillingMail($this->pengajuan));
     }
 
     /**
@@ -55,10 +55,10 @@ class VerifikasiKabid extends Notification
     {
         return [
             'type' => 'message',
-            'label' => 'pengajuan',
-            'title' => 'Verifikasi Kepala Bidang',
-            'path' => 'pengajuan/verifikasi/'.$this->pengajuan->regId,
-            'body' => 'Permohonan anda telah di periksa oleh pihak K3. Silahkan periksa kembali permohonan anda, lalu terima/revisi/tolak permohonan yang anda ajukan'
+            'label' => 'pembayaran',
+            'title' => 'E-Billing',
+            'path' => '/pengajuan/upload/bukti/'.$this->pengajuan->regId,
+            'body' => 'Mohon lakukan pembayaran berdasarkan kode E-Billing'
         ];
     }
 }

@@ -8,6 +8,9 @@ use App\Repositories\PengajuanPengujian;
 use App\Http\Requests\StorePengajuanPengujian;
 use App\Notifications\PengajuanBaruNotification;
 use Illuminate\Support\Facades\Notification;
+use App\Mail\VerifikasiUserMail;
+use App\Notifications\PengajuanDiSetujuiNotification;
+use App\Notifications\UploadBuktiTransaksiNotification;
 
 class PengujianController extends Controller
 {
@@ -70,19 +73,68 @@ class PengujianController extends Controller
         $pengajuan =  new PengajuanPengujian($regId);
         $_pengajuan = $pengajuan->verifikasi(3);
         \App\Repositories\ProsesPengajuan::make(3, $regId);
-        // Notification::send($pengajuan->masterPengajuanPengujian->first()->users, new VerifikasiStafTeknisNotification($pengajuan->masterPengajuanPengujian->first()));
+
+        $staf_teknis = new \App\Models\User();
+
+        $staf_teknis = $staf_teknis->whereHas('roles', function($q){
+            $q->where('name', 'staf_teknis');
+        })->first();
+
+        Notification::send($staf_teknis, new VerifikasiUserMail($pengajuan->masterPengajuanPengujian->first(),$staf_teknis));
 
         return dtcApiResponse(200, $_pengajuan);
     }
 
-    public function setuju($regId)
+    public function terima($regId)
     {
         $pengajuan =  new PengajuanPengujian($regId);
         $_pengajuan = $pengajuan->verifikasi(6);
         \App\Repositories\ProsesPengajuan::make(6, $regId);
-        // Notification::send($pengajuan->masterPengajuanPengujian->first()->users, new VerifikasiStafTeknisNotification($pengajuan->masterPengajuanPengujian->first()));
+
+        $user = new \App\Models\User();
+
+        $staf_teknis = $user->whereHas('roles', function($q){
+            $q->where('name', 'staf_teknis');
+        })->first();
+
+        $keuangan = $user->whereHas('roles', function($q){
+            $q->where('name', 'keuangan');
+        })->first();
+
+        Notification::send($staf_teknis, new PengajuanDiSetujuiNotification($pengajuan->masterPengajuanPengujian->first(),$staf_teknis));
+        Notification::send($keuangan, new PengajuanDiSetujuiNotification($pengajuan->masterPengajuanPengujian->first(),$keuangan));
 
         return dtcApiResponse(200, $_pengajuan);
     }
 
+    public function tolak($regId)
+    {
+        // TOLAK PENGAJUAN
+        // $pengajuan =  new PengajuanPengujian($regId);
+        // $_pengajuan = $pengajuan->verifikasi(6);
+        // \App\Repositories\ProsesPengajuan::make(6, $regId);
+        // // Notification::send($pengajuan->masterPengajuanPengujian->first()->users, new VerifikasiStafTeknisNotification($pengajuan->masterPengajuanPengujian->first()));
+
+        // return dtcApiResponse(200, $_pengajuan);
+    }
+
+    public function uploadBuktiTransaksi($regId, Request $request)
+    {
+        $pengajuan = new PengajuanPengujian($regId);
+        $_pengajuan = $pengajuan->uploadBuktiTransaksi($request);
+
+        $pengajuan->verifikasi(8);
+        \App\Repositories\ProsesPengajuan::make(8, $regId);
+
+        $keuangan = new \App\Models\User();
+
+        $keuangan = $keuangan->whereHas('roles', function($q){
+            $q->where('name', 'keuangan');
+        })->first();
+
+        Notification::send($keuangan, new UploadBuktiTransaksiNotification($pengajuan->masterPengajuanPengujian->first(),$keuangan) );
+
+
+        return dtcApiResponse(200, $_pengajuan, 'Terima kasih, bukti transaksi anda berhasil ter uopload');
+    }
 }

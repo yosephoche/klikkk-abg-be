@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Api\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Repositories\PengajuanPengujian;
+use Illuminate\Support\Facades\Notification;
+use App\Notifications\VerifikasiKabid;
 
 class KepalaBidangController extends Controller
 {
@@ -26,9 +28,13 @@ class KepalaBidangController extends Controller
     public function verifikasiPengajuan($regId)
     {
         $pengajuan =  new PengajuanPengujian($regId);
-        $pengajuan = $pengajuan->verifikasi(5);
+
+        // dd($pengajuan->masterPengajuanPengujian);
+        $_pengajuan = $pengajuan->verifikasi(5);
         \App\Repositories\ProsesPengajuan::make(5, $regId);
 
-        return dtcApiResponse(200, $pengajuan);
+        Notification::send( $pengajuan->masterPengajuanPengujian->first()->users, new VerifikasiKabid($pengajuan->masterPengajuanPengujian->first()) );
+
+        return dtcApiResponse(200, $_pengajuan);
     }
 }
