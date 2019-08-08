@@ -184,8 +184,6 @@ class PengajuanPengujian
     {
         $pengajuanPengujian = $this->masterPengajuanPengujian;
 
-        // dd($tahap);
-
         $pengajuanPengujian = $pengajuanPengujian->tahap($tahap);
 
         $pengajuanPengujian = $request->has('search')?$pengajuanPengujian->where('regId','like','%'.$request->search.'%'):$pengajuanPengujian;
@@ -200,7 +198,7 @@ class PengajuanPengujian
                 'nama_pemohon' => $value->nama_pemohon,
                 'tanggal_pengajuan' => prettyDate($value->created_at),
                 'tujuan_pengujian' => $value->tujuan_pengujian,
-                'avatar' => asset('storage/'.$value->users->avatar)
+                'avatar' => userAvatar($value->users->avatar)
             ];
         });
 
