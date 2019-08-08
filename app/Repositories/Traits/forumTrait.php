@@ -29,6 +29,23 @@ trait forumTrait
         }
     }
 
+    public function noPaging($response,$data)
+    {
+        if($response->isNotempty())
+        {
+            return [
+                'response' => $response,
+                'diagnostic' => [
+                    'code' => 200,
+                    'status' => 'ok',
+                ]
+
+            ];
+        } else {
+            return $this->notFound();
+        }
+    }
+
     public function notFound()
     {
         return response([

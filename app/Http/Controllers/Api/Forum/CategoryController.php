@@ -26,6 +26,13 @@ class CategoryController extends Controller
         return $this->collectionHttpResponse($response,$data);    
     }
 
+    public function categoryList()
+    {
+        $data = Category::orderBy('id','desc')->get();
+        $response = categoryResource::collection($data);
+        return $this->noPaging($response,$data);
+    }
+
     /**
      * Show the form for creating a new resource.
      *
