@@ -13,9 +13,13 @@ class JenisPengujian extends Model
         return $this->hasMany('\App\Models\ParameterPengujian', 'id_jenis_pengujian', 'id');
     }
 
-
     public function scopeActive($query){
         return $query->where('status', true);
+    }
+
+    public function peraturanParameter()
+    {
+        return $this->hasMany('App\Models\PeraturanParameter','id_jenis_pengujian','id');
     }
 
 }
