@@ -11,8 +11,9 @@ use App\Http\Controllers\Controller;
 use App\Repositories\Traits\forumTrait;
 use App\Http\Resources\pelatihanResource;
 use Illuminate\Support\Facades\Mail;
-use App\Mail\pelatihanNotification;
+use App\Notifications\pelatihanNotification;
 use App\Mail\verifikasiPelatihan;
+use Illuminate\Support\Facades\Notification;
 
 class pelatihanController extends Controller
 {
@@ -64,9 +65,8 @@ class pelatihanController extends Controller
         $staff = User::whereHas('roles', function($query){
             $query->where('name','staf_teknis');
         })->get();
-        foreach ($staff as $staff) {
-            Mail::to($staff->email)->send(new pelatihanNotification($data,$staff));
-        }
+        Notification::send($staff, new pelatihanNotification($data,$staff));
+
         return $this->success();
     }
 

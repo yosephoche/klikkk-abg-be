@@ -163,9 +163,9 @@
           </div>
       
           <div class="wrap-title">
-            <h3>Hi {{$greeting->nama_lengkap}}</h3>
+            <h3>Hi </h3>
 
-            <p>{{$data->nama_pemohon}} melakukan pengajuan untuk melakukan pelatihan sebagai berikut :</p>
+            <p> melakukan pengajuan untuk melakukan pelatihan sebagai berikut :</p>
             <div class="wrap-table">
             <table>
               <tr>
@@ -173,13 +173,7 @@
                 <th>Durasi</th>
                 <th>Biaya</th>
               </tr>
-              @foreach($jenisPelatihan as $jenisPelatihan)
-              <tr>
-                <td>{{ $jenisPelatihan->parameter }}</td>
-                <td>{{ $jenisPelatihan->durasi }}</td>
-                <td>{{ $jenisPelatihan->biaya }}</td>
-              </tr>
-              @endforeach
+             
             </table>
             </div>
 

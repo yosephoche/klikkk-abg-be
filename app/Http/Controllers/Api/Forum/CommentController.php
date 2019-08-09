@@ -11,6 +11,7 @@ use App\Models\User;
 use App\Http\Requests\commentRequest;
 use Auth;
 use App\Notifications\threadMailNotification;
+use App\Notifications\commentNotification;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\commentMail;
 class CommentController extends Controller
@@ -56,7 +57,7 @@ class CommentController extends Controller
 
         $user =  User::find($thread->created_by);
         $user->email = $thread->user->email;
-        Mail::to($user->email)->send(new commentMail($user,$thread,$comment));
+        $user->notify(new commentNotification($user,$thread,$comment));
         $thread->comments()->save($comment);
 
         return $this->success();
