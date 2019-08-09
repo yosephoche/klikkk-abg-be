@@ -151,8 +151,8 @@
           <div class="wrap-title">
             <h3>Hi, {{ \Str::title($pengajuan->users->nama_lengkap) }},</h3>
 
-            <p>Permohonan anda telah di periksa oleh pihak K3.</p>
-            <p>Silahkan periksa kembali permohonan anda, lalu terima/revisi/tolak permohonan yang anda ajukan</p>
+            <p>Selamat, bagian keuangan kami telah mengkonfirmasi pembayaran anda<b>.
+            </p>
 
         </div>
       </section>

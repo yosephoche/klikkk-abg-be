@@ -54,8 +54,9 @@ class PengajuanPengujian extends Model
 
     public function scopeTahap($query, $tahap)
     {
+        // dd(is_integer((int)$tahap));
         // TODO:: ganti logic berdasarkan user yang login
-        if (is_integer($tahap)) {
+        if (is_integer((int)$tahap)) {
             return $query->where('tahap_pengajuan', '=', $tahap);
         }
         else{

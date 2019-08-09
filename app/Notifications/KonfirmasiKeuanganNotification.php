@@ -6,13 +6,14 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
-use App\Mail\VerifikasiKabidMail;
+use App\Mail\KonfirmasiKeuanganMail;
 
-class VerifikasiKabid extends Notification
+class KonfirmasiKeuanganNotification extends Notification
 {
     use Queueable;
 
     public $pengajuan;
+
     /**
      * Create a new notification instance.
      *
@@ -31,7 +32,7 @@ class VerifikasiKabid extends Notification
      */
     public function via($notifiable)
     {
-        return ['mail', 'database'];
+        return ['mail','database'];
     }
 
     /**
@@ -42,7 +43,7 @@ class VerifikasiKabid extends Notification
      */
     public function toMail($notifiable)
     {
-        return (new VerifikasiKabidMail($this->pengajuan));
+        return (new KonfirmasiKeuanganMail($this->pengajuan));
     }
 
     /**
@@ -55,10 +56,10 @@ class VerifikasiKabid extends Notification
     {
         return [
             'type' => 'message',
-            'label' => 'pengajuan',
-            'title' => 'Verifikasi Kepala Bidang',
-            'path' => 'pengajuan/verifikasi/'.$this->pengajuan->regId,
-            'body' => 'Permohonan anda telah di periksa oleh pihak K3. Silahkan periksa kembali permohonan anda, lalu terima/revisi/tolak permohonan yang anda ajukan'
+            'label' => 'Pengujian',
+            'title' => 'Konfirmasi pembayaran',
+            'body' => 'Selamat, bagian keuangan kami telah mengkonfirmasi pembayaran anda',
+            'path' => null
         ];
     }
 }

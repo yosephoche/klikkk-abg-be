@@ -31,6 +31,8 @@ Route::group( ['middleware' => ['json.response'],'namespace' => 'Api'], function
                 Route::group(['prefix' => 'master-pengujian'], function(){
                     Route::get('/', 'MasterPengujianController@index')->name('api.admin.master-data.master-pengujian.index');
 
+                    Route::get('/edit/{uuid}', 'MasterPengujianController@edit')->name('api.admin.master-data.master-pengujian.edit');
+
                     Route::post('/store-jenis-pengujian','MasterPengujianController@storeJenisPengujian')->name('api.admin.master-data.master-pengujian.store-jenis-pengujian');
                     Route::post('/store-parameter','MasterPengujianController@storeParameter')->name('api.admin.master-data.master-pengujian.store-parameter');
                     Route::post('/update-jenis-pengujian','MasterPengujianController@updateJenisPengujian')->name('api.admin.master-data.master-pengujian.update-jenis-pengujian');
@@ -107,6 +109,14 @@ Route::group( ['middleware' => ['json.response'],'namespace' => 'Api'], function
                 Route::get('/{regId}/verifikasi-pengajuan', 'KepalaBidangController@verifikasiPengajuan')->name('api.admin.kepala-bidang.verifikasi-pengajuan');
             });
 
+            Route::group(['prefix' => 'keuangan'], function(){
+                Route::get('/', 'KeuanganController@index')->name('api.admin.keuangan.index');
+                Route::get('/show/{regId}', 'KeuanganController@show')->name('api.admin.keuangan.show');
+                Route::get('/input-ebilling', 'KeuanganController@inputEbilling')->name('api.admin.keuangan.input-ebilling');
+                Route::get('/{regId}/konfirmasi-pembayaran', 'KeuanganController@konfirmasiPembayaran')->name('api.admin.keuangan.konfirmasi-pembayaran');
+
+            });
+
 
         });
 
@@ -131,7 +141,9 @@ Route::group( ['middleware' => ['json.response'],'namespace' => 'Api'], function
 
                     Route::get('/{regId}/kirim', 'PengujianController@kirim')->name('api.user.pengajuan.pengujian.kirim');
                     Route::get('/{regId}/tolak', 'PengujianController@tolak')->name('api.user.pengajuan.pengujian.tolak');
-                    Route::get('/{regId}/setuju', 'PengujianController@setuju')->name('api.user.pengajuan.pengujian.setuju');
+                    Route::get('/{regId}/terima', 'PengujianController@terima')->name('api.user.pengajuan.pengujian.terima');
+
+                    Route::post('/{regId}/upload-bukti-transaksi', 'PengujianController@uploadBuktiTransaksi')->name('api.user.pengajuan.pengujian.upload-bukti-transaksi');
                 });
 
                 Route::group(['prefix' => 'pelatihan',], function(){

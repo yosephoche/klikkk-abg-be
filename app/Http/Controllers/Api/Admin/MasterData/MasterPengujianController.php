@@ -55,4 +55,10 @@ class MasterPengujianController extends Controller
 
         return $master_pengujian->delete();
     }
+
+    public function edit($uuid)
+    {
+        return $this->master_pengujian->getParameter($uuid);
+
+    }
 }

@@ -6,21 +6,24 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
-use App\Mail\VerifikasiKabidMail;
+use App\Mail\VerifikasiUserMail;
 
-class VerifikasiKabid extends Notification
+class VerifikasiUserNotification extends Notification
 {
     use Queueable;
 
     public $pengajuan;
+    public $staf_teknis;
+
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct($pengajuan)
+    public function __construct($pengajuan, $stafTeknis)
     {
         $this->pengajuan = $pengajuan;
+        $this->staf_teknis = $stafTeknis;
     }
 
     /**
@@ -42,7 +45,7 @@ class VerifikasiKabid extends Notification
      */
     public function toMail($notifiable)
     {
-        return (new VerifikasiKabidMail($this->pengajuan));
+        return (new VerifikasiUserMail($this->pengajuan, $this->staf_teknis));
     }
 
     /**
@@ -54,11 +57,9 @@ class VerifikasiKabid extends Notification
     public function toArray($notifiable)
     {
         return [
-            'type' => 'message',
-            'label' => 'pengajuan',
-            'title' => 'Verifikasi Kepala Bidang',
-            'path' => 'pengajuan/verifikasi/'.$this->pengajuan->regId,
-            'body' => 'Permohonan anda telah di periksa oleh pihak K3. Silahkan periksa kembali permohonan anda, lalu terima/revisi/tolak permohonan yang anda ajukan'
+            'type' => 'notification',
+            'title' => 'verifikasi pengajuan oleh pemohon',
+            'body' => 'Pengajuan baru dengan nomor registrasi '.$this->pengajuan->regId.' Menunggu verifikasi dari anda'
         ];
     }
 }

@@ -6,21 +6,22 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
-use App\Mail\VerifikasiKabidMail;
+use App\Mail\UploadBuktiTransaksiMail;
 
-class VerifikasiKabid extends Notification
+class UploadBuktiTransaksiNotification extends Notification
 {
     use Queueable;
 
-    public $pengajuan;
+    public $pengajuan,$user;
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct($pengajuan)
+    public function __construct($pengajuan, $user)
     {
         $this->pengajuan = $pengajuan;
+        $this->user = $user;
     }
 
     /**
@@ -31,7 +32,7 @@ class VerifikasiKabid extends Notification
      */
     public function via($notifiable)
     {
-        return ['mail', 'database'];
+        return ['mail','database'];
     }
 
     /**
@@ -42,7 +43,7 @@ class VerifikasiKabid extends Notification
      */
     public function toMail($notifiable)
     {
-        return (new VerifikasiKabidMail($this->pengajuan));
+        return (new UploadBuktiTransaksiMail($this->pengajuan,$this->user));
     }
 
     /**
@@ -54,11 +55,9 @@ class VerifikasiKabid extends Notification
     public function toArray($notifiable)
     {
         return [
-            'type' => 'message',
-            'label' => 'pengajuan',
-            'title' => 'Verifikasi Kepala Bidang',
-            'path' => 'pengajuan/verifikasi/'.$this->pengajuan->regId,
-            'body' => 'Permohonan anda telah di periksa oleh pihak K3. Silahkan periksa kembali permohonan anda, lalu terima/revisi/tolak permohonan yang anda ajukan'
+            'type' => 'notification',
+            'title' => 'Upload bukti transaksi',
+            'body' => 'Pemohon dengan nomor registrasi '.$this->pengajuan->regId.' telah mengupload bukti transaksi pembayaran'
         ];
     }
 }

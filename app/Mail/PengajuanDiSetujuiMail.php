@@ -7,19 +7,22 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class VerifikasiKabidMail extends Mailable
+class PengajuanDiSetujuiMail extends Mailable
 {
     use Queueable, SerializesModels;
 
     public $pengajuan;
+    public $user;
+
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($pengajuan)
+    public function __construct($pengajuan, $user)
     {
         $this->pengajuan = $pengajuan;
+        $this->user = $user;
     }
 
     /**
@@ -29,8 +32,7 @@ class VerifikasiKabidMail extends Mailable
      */
     public function build()
     {
-        // dd($this->pengajuan);
-        return $this->to($this->pengajuan->users)->subject('Perubahan status permohonan pengujian')
-                    ->view('mail.verifikasiKabid');
+        return $this->to($this->user)->subject('Pengajuan disetujui oleh user')
+                    ->view('mail.pengajuanDisetujui');
     }
 }

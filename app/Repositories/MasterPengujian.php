@@ -214,4 +214,10 @@ class MasterPengujian
         }
         // return $this->apiResponse($this->jenis_pengujian->delete(), 'delete');
     }
+
+    public function getParameter($uuid)
+    {
+        return dtcApiResponse(200, ParameterPengujian::where('uuid', $uuid)->first());
+
+    }
 }

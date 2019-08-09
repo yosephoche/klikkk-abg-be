@@ -7,7 +7,7 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class VerifikasiKabidMail extends Mailable
+class KonfirmasiKeuanganMail extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -29,8 +29,6 @@ class VerifikasiKabidMail extends Mailable
      */
     public function build()
     {
-        // dd($this->pengajuan);
-        return $this->to($this->pengajuan->users)->subject('Perubahan status permohonan pengujian')
-                    ->view('mail.verifikasiKabid');
+        return $this->to($this->pengajuan->users)->subject('Konfirmasi pembayaran')->view('mail.konfirmasiKeuangan');
     }
 }
