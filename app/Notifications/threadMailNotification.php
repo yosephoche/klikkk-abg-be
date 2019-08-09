@@ -38,7 +38,7 @@ class threadMailNotification extends Notification
      */
     public function via($notifiable)
     {
-        return ['mail'];
+        return ['mail','database'];
     }
 
     /**
@@ -62,10 +62,12 @@ class threadMailNotification extends Notification
      * @param  mixed  $notifiable
      * @return array
      */
-    public function toArray($notifiable)
+    public function toDatabase($notifiable)
     {
         return [
-            //
+            'jenisNotification' => $this->thread->status,
+            'replier' => $this->reply->user->nama_lengkap,
+            'judulThread' => $this->thread->subject,
         ];
     }
 }

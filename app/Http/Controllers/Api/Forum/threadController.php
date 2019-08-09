@@ -9,7 +9,9 @@ use App\Http\Controllers\Controller;
 use App\Repositories\threadRepository;
 use App\Repositories\Traits\forumTrait;
 use App\Http\Resources\threadResource;
+use App\Http\Resources\notificationResource;
 use App\Http\Requests\threadStoreRequest;
+use App\Http\Requests\notificationStoreRequest;
 
 
 class threadController extends Controller
@@ -40,6 +42,14 @@ class threadController extends Controller
         $data = Thread::orderByUniqueViews()->paginate(10);
         $response = threadResource::collection($data);
         return $this->collectionHttpResponse($response,$data);
+    }
+
+    public function notification()
+    {
+        $data = Auth::user()->notifications;
+        $response = notificationResource::collection($data);
+        return $this->noPaging($response,$data);
+        
     }
 
     /**

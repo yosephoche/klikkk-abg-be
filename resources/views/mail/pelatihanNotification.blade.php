@@ -159,13 +159,13 @@
       <section>
         <div class="card">
           <div class="wrap-avatar">
-            <img src="{{$message->embed('storage/images/bs_balasan.png') }}">
+            <img src="{{$message->embed('storage/images/bs_konfirmasi.png') }}">
           </div>
       
           <div class="wrap-title">
-            <h3>Hi </h3>
+            <h3>Hi {{$staff->nama_lengkap}}</h3>
 
-            <p> melakukan pengajuan untuk melakukan pelatihan sebagai berikut :</p>
+            <p>{{$data->nama_pemohon}} melakukan pengajuan untuk melakukan pelatihan sebagai berikut :</p>
             <div class="wrap-table">
             <table>
               <tr>
@@ -173,7 +173,13 @@
                 <th>Durasi</th>
                 <th>Biaya</th>
               </tr>
-             
+              @foreach($data->jenisPelatihan as $jenisPelatihan)
+              <tr>
+                <td>{{ $jenisPelatihan->parameter }}</td>
+                <td>{{ $jenisPelatihan->durasi }} Jam</td>
+                <td>{{ $jenisPelatihan->biaya }}</td>
+              </tr>
+              @endforeach
             </table>
             </div>
 

@@ -54,6 +54,7 @@ class CommentController extends Controller
         $comment->topic_id = $request->topic_id;
         
         $thread = Thread::find($request->topic_id);
+        $thread['status'] = 'Comment';
 
         $user =  User::find($thread->created_by);
         $user->email = $thread->user->email;
@@ -73,7 +74,7 @@ class CommentController extends Controller
         $reply->replies_id = $id;
         
         $thread = Thread::find($request->topic_id);
-
+        $thread['status'] = "Reply";
         $comment = Comment::where('id',$reply->replies_id)->first();
         // sending notificaation
         $user = User::find($comment->user_id);

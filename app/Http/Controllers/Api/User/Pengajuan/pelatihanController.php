@@ -12,6 +12,7 @@ use App\Repositories\Traits\forumTrait;
 use App\Http\Resources\pelatihanResource;
 use Illuminate\Support\Facades\Mail;
 use App\Notifications\pelatihanNotification;
+use App\Notifications\verifyPelatihan;
 use App\Mail\verifikasiPelatihan;
 use Illuminate\Support\Facades\Notification;
 

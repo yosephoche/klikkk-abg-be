@@ -6,25 +6,21 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
-use App\Mail\commentMail;
 
-
-class commentNotification extends Notification
+class verifyPelatihan extends Notification
 {
     use Queueable;
-    public $user;
-    public $thread;
-    public $comment;
+
+    public $data;
+
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct($user, $thread, $comment)
+    public function __construct($data)
     {
-        $this->user = $user;
-        $this->thread = $thread;
-        $this->comment = $comment;
+        $this->data = $data;
     }
 
     /**
@@ -35,7 +31,7 @@ class commentNotification extends Notification
      */
     public function via($notifiable)
     {
-        return ['mail','database'];
+        return ['mail'];
     }
 
     /**
@@ -46,7 +42,11 @@ class commentNotification extends Notification
      */
     public function toMail($notifiable)
     {
-        return (new commentMail($this->user,$this->thread,$this->comment))->to($this->user->email);
+        return (new MailMessage)->view('
+                                    mail.verifikasiPelatihan',
+                                    [
+                                        'data' => $data,
+                                    ]);
     }
 
     /**
@@ -55,12 +55,10 @@ class commentNotification extends Notification
      * @param  mixed  $notifiable
      * @return array
      */
-    public function toDatabase ($notifiable)
+    public function toArray($notifiable)
     {
         return [
-            'jenisNotification' => $this->thread->status,
-            'judulThread' => $this->thread->subject,
-            'commenter' => $this->comment->user->nama_lengkap,
+            //
         ];
     }
 }

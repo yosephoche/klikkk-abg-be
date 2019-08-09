@@ -43,7 +43,14 @@ class pelatihanNotification extends Notification
      */
     public function toMail($notifiable)
     {
-        return (new Mailable($this->staff,$this->data));
+        foreach ($this->staff as $staff) {
+            return (new MailMessage)->view('
+                                mail.pelatihanNotification',
+                                [   
+                                    'staff' => $staff,
+                                    'data' => $this->data,
+                                ]);   
+        }
     }
 
     /**
