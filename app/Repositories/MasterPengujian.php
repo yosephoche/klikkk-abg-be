@@ -13,6 +13,7 @@ class MasterPengujian
 
     public $jenis_pengujian;
     public $parameter_pengujian;
+    public $peraturanParameter;
 
     public function __construct( $id_jenis_pengujian = null )
     {
@@ -54,39 +55,17 @@ class MasterPengujian
 
     }
 
+    public function peraturanParameter()
+    {
+        return app()->make('\App\Models\PeraturanParameter');
+    }
+
     public function all()
     {
         $jenis_pengujian = $this->jenis_pengujian;
 
-        $res = $jenis_pengujian->all()->map(function($value){
-            $param = $this->parameter_pengujian($value->id);
+        return $jenis_pengujian->with(['parameterPengujian', 'peraturanParameter'])->orderBy('urutan')->get()->toArray();
 
-            if ($param) {
-                $paramameter = $param->map(function($value){
-                    return [
-                        'id' => $value->id,
-                        'uuid' => $value->uuid,
-                        'nama' => $value->nama,
-                        'biaya' => $value->biaya,
-                        'status' => $value->status
-                    ];
-                });
-            }
-            else{
-                $paramameter=null;
-            }
-
-            return [
-                'id' => $value->id,
-                'uuid' => $value->uuid,
-                'nama' => $value->nama,
-                'urutan' => $value->urutan,
-                'parameter' => $paramameter,
-                'status' => $value->status
-            ];
-        });
-
-        return $res;
     }
 
     public function storeJenisPengujian($data)
@@ -125,6 +104,43 @@ class MasterPengujian
         } catch (QueryException $th) {
             return databaseExceptionError(implode(', ',$th->errorInfo));
         }
+    }
+
+    public function storePeraturan($data)
+    {
+        $jenis_pengujian = $this->jenis_pengujian;
+
+        $data = ($data instanceof \Illuminate\Http\Request )?$data->toArray():$data;
+
+        $peraturan = $this->peraturanParameter();
+        $peraturan->peraturan = $data['peraturan'];
+
+        $jenis_pengujian = $jenis_pengujian->where('uuid', $data['id_jenis_pengujian'])->first();
+
+        try {
+            return dtcApiResponse(200, $jenis_pengujian->peraturanParameter()->save($peraturan), responseMessage('save') );
+        } catch (QueryException $th) {
+            return databaseExceptionError(implode(', ',$th->errorInfo));
+        }
+    }
+
+    public function updatePeraturan($data)
+    {
+        $peraturan = $this->peraturanParameter();
+        $peraturan = $peraturan->where('id', $data->id_peraturan)->first();
+        $peraturan->peraturan = $data->peraturan;
+        $peraturan->save();
+
+        return dtcApiResponse(200, $peraturan);
+    }
+
+    public function deletePeraturan($data)
+    {
+        $peraturan = $this->peraturanParameter();
+        $peraturan = $peraturan->where('id', $data->id_peraturan)->first();
+        $peraturan->delete();
+
+        return dtcApiResponse(200, null,'Data berhasil di hapus');
     }
 
     public function updateJenisPengujian($data)

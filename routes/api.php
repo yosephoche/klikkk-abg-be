@@ -41,6 +41,12 @@ Route::group( ['middleware' => ['json.response'],'namespace' => 'Api'], function
 
                     Route::post('/save-parameter', 'MasterPengujianController@saveParameter')->name('api.admin.master-data.master-pengujian.saveParameter');
                     Route::post('/delete-parameter', 'MasterPengujianController@deleteParameter')->name('api.admin.master-data.master-pengujian.delete-parameter');
+
+                    Route::post('/save-peraturan', 'MasterPengujianController@savePeraturan')->name('api.admin.master-data.master-pengujian.savePeraturan');
+
+                    Route::post('/update-peraturan', 'MasterPengujianController@updatePeraturan')->name('api.admin.master-data.master-pengujian.updatePeraturan');
+
+                    Route::post('/delete-peraturan', 'MasterPengujianController@deletePeraturan')->name('api.admin.master-data.master-pengujian.delete-peraturan');
                 });
 
                 /** Master Data tahap pengajuan pengujian */

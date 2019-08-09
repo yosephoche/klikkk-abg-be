@@ -41,6 +41,21 @@ class MasterPengujianController extends Controller
         return $this->master_pengujian->saveParameter($request->id_jenis_pengujian, $request);
     }
 
+    public function savePeraturan(Request $request)
+    {
+        return $this->master_pengujian->storePeraturan($request);
+    }
+
+    public function updatePeraturan(Request $request)
+    {
+        return $this->master_pengujian->updatePeraturan($request);
+    }
+
+    public function deletePeraturan(Request $request)
+    {
+        return $this->master_pengujian->deletePeraturan($request);
+    }
+
     public function deleteParameter(Request $request)
     {
         return $this->master_pengujian->deleteParameter($request->uuid);
