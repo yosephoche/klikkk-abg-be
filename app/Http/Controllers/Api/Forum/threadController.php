@@ -192,6 +192,7 @@ class threadController extends Controller
             if(Auth::user()->id == $thread->created_by)
             {
                 $thread->delete();
+                return $this->success();
             } else {
                 return $this->unprocessable();
             }
