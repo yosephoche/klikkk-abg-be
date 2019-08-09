@@ -20,6 +20,13 @@ class threadResource extends JsonResource
         } else {
             $edit_links = null;
         }
+
+        if ($this->liked)
+        {
+            $likeStatus = True;
+        } else {
+            $likeStatus = False;
+        }
         return [
             'id' => $this->id,
             'owner' => $this->user->nama_lengkap,
@@ -35,6 +42,7 @@ class threadResource extends JsonResource
             'commentsCount' => $this->comments->count(),
             'likesCount' => $this->likesCount,
             'likes' => $this->collectLikers(),
+            'likeStatus' => $likeStatus,
         ]; 
     }
 }
