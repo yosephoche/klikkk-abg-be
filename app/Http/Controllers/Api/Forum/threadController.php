@@ -37,7 +37,7 @@ class threadController extends Controller
     
     public function popular()
     {
-        $data = $this->thread->orderByViews()->getAllThread(5);
+        $data = Thread::orderByUniqueViews()->paginate(10);
         $response = threadResource::collection($data);
         return $this->collectionHttpResponse($response,$data);
     }
@@ -85,7 +85,7 @@ class threadController extends Controller
     public function show($slug)
     {
            
-        $data = $this->thread->findBySlug($slug);
+        $data = Thread::where('slug',$slug)->first();
         views($data)->record();
         $response = new threadResource($data);
 
