@@ -14,12 +14,12 @@ class threadResource extends JsonResource
      */
     public function toArray($request)
     {
-        if(Auth::user()->id == $this->created_by)
-        {
-            $edit_links = route('thread_edit',$this->id);
-        } else {
-            $edit_links = null;
-        }
+        // if(Auth::user()->id == $this->created_by)
+        // {
+        //     $edit_links = route('thread_edit',$this->id);
+        // } else {
+        //     $edit_links = null;
+        // }
 
         if ($this->liked)
         {
@@ -36,7 +36,7 @@ class threadResource extends JsonResource
             'title'=> $this->subject,
             'slug'=> $this->slug,
             'desc' => $this->description,
-            'edit_link' => $edit_links,
+            // 'edit_link' => $edit_links,
             'created_at' => $this->created_at->format('d,M-Y'),
             'comments' => commentResource::collection($this->comments),
             'commentsCount' => $this->comments->count(),

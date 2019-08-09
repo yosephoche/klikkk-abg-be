@@ -6,28 +6,25 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
-use App\Mail\threadMail as emailNotification;
+use App\Mail\commentMail;
 
-class threadMailNotification extends Notification
+
+class commentNotification extends Notification
 {
     use Queueable;
-    protected $thread;
-    protected $user;
-    protected $comment;
-    protected $reply;
-
+    public $user;
+    public $thread;
+    public $comment;
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct($thread,$user,$comment,$reply)
+    public function __construct($user, $thread, $comment)
     {
-        $this->thread = $thread;
         $this->user = $user;
+        $this->thread = $thread;
         $this->comment = $comment;
-        $this->reply = $reply;
-
     }
 
     /**
@@ -49,11 +46,7 @@ class threadMailNotification extends Notification
      */
     public function toMail($notifiable)
     {
-        return (new emailNotification($this->user,$this->thread,$this->comment,$this->reply));
-        // ->greeting('HI '.$this->thread->user->nama_lengkap)
-                    // ->line('The introduction to the notification.')
-                    // ->action('Notification Action', url('/'))
-                    // ->line('Thank you for using our application!')
+        return (new commentMail($this->user,$this->thread,$this->comment))->to($this->user->email);
     }
 
     /**
@@ -62,12 +55,12 @@ class threadMailNotification extends Notification
      * @param  mixed  $notifiable
      * @return array
      */
-    public function toDatabase($notifiable)
+    public function toDatabase ($notifiable)
     {
         return [
             'jenisNotification' => $this->thread->status,
-            'replier' => $this->reply->user->nama_lengkap,
             'judulThread' => $this->thread->subject,
+            'commenter' => $this->comment->user->nama_lengkap,
         ];
     }
 }

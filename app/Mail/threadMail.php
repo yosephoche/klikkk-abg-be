@@ -21,7 +21,7 @@ class threadMail extends Mailable
      *
      * @return void
      */
-    public function __construct($user,$thread,$comment)
+    public function __construct($user,$thread,$comment,$reply)
     {
         $this->user = $user;
         $this->thread = $thread;
