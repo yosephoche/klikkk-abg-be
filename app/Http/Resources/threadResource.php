@@ -32,7 +32,7 @@ class threadResource extends JsonResource
             'owner' => $this->user->nama_lengkap,
             'avatar' => userAvatar($this->user->avatar),
             'jabatan' => $this->user->roles,
-            'category' => $this->subCategory->name,
+            'category' => $this->subCategory->names,
             'title'=> $this->subject,
             'slug'=> $this->slug,
             'desc' => $this->description,

@@ -175,7 +175,8 @@ Route::group( ['middleware' => ['json.response'],'namespace' => 'Api'], function
                 Route::get('/','threadController@index')->name('thread_index');
                 Route::get('/popular','threadController@popular')->name('popular.thread');
                 Route::get('/notification','threadController@notification')->name('notifikasi.thread');
-                Route::get('/{id}','threadController@show')->name('thread_detail');
+                Route::get('/{id}','threadController@show')->name('thread.detail');
+                Route::get('/related/{id}','threadController@relatedThread')->name('thread.related');
                 Route::post('like/{id}','threadController@like')->name('thread.like');
                 Route::post('dislike/{id}','threadController@dislike')->name('thread.dislike');
                 Route::put('/update/{id}','threadController@update')->name('thread_edit');
