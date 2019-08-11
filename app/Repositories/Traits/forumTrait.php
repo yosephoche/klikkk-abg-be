@@ -64,34 +64,17 @@ trait forumTrait
 
     public function singleHttpResponse($data,$response)
     {
-        if($data->related->isNotEmpty())
-        {
-            if(isset($data))
-            {   
-                return[
-                    'response' => $response,
-                    'relatedThread' => $data->related,
-                    'diagnostic' => [
-                        'code' => 200,
-                        'status' => 'ok',
-                    ]
-                ];
-            } else {
-                return $this->notFound();
-            }    
+        if(isset($data))
+        {   
+            return[
+                'response' => $response,
+                'diagnostic' => [
+                    'code' => 200,
+                    'status' => 'ok',
+                ]
+            ];
         } else {
-            if(isset($data))
-            {   
-                return[
-                    'response' => $response,
-                    'diagnostic' => [
-                        'code' => 200,
-                        'status' => 'ok',
-                    ]
-                ];
-            } else {
-                return $this->notFound();
-            }
+            return $this->notFound();
         }
     }
 
