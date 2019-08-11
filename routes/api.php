@@ -188,7 +188,7 @@ Route::group( ['middleware' => ['json.response'],'namespace' => 'Api'], function
                 Route::post('/post','CommentController@store')->name('comment.store');
                 Route::put('/edit/{id}','CommentController@edit')->name('comment.update');
                 Route::post('/like/{id}','CommentController@like')->name('comment.like');
-                Route::post('dislike/{id}','CommentConroller@dislike')->name('comment.dislike');
+                Route::post('dislike/{id}','CommentController@dislike')->name('comment.dislike');
                 Route::delete('/delete/{id}','CommentController@destroy')->name('comment.delete');
             });
 
