@@ -151,6 +151,8 @@ Route::group( ['middleware' => ['json.response'],'namespace' => 'Api'], function
                     Route::get('/{regId}/tolak', 'PengujianController@tolak')->name('api.user.pengajuan.pengujian.tolak');
                     Route::get('/{regId}/terima', 'PengujianController@terima')->name('api.user.pengajuan.pengujian.terima');
 
+                    Route::get('/{regId}/get-kode-ebilling', 'PengujianController@getKodeEbilling')->name('api.user.pengajuan.pengujian.get-kode-ebilling');
+
                     Route::post('/{regId}/upload-bukti-transaksi', 'PengujianController@uploadBuktiTransaksi')->name('api.user.pengajuan.pengujian.upload-bukti-transaksi');
                 });
 
@@ -168,6 +170,7 @@ Route::group( ['middleware' => ['json.response'],'namespace' => 'Api'], function
 
             Route::group(['prefix' => 'message'], function(){
                 Route::get('/', 'MessageController@index')->name('api.user.message.index');
+                Route::get('/unread-count', 'MessageController@unreadCount')->name('api.user.message.unread-count');
             });
 
             Route::group(['prefix' => 'riwayat'], function(){

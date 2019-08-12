@@ -14,4 +14,11 @@ class MessageController extends Controller
 
         return dtcApiResponse(200, $message->index());
     }
+
+    public function unreadCount()
+    {
+        $message = new Message();
+
+        return dtcApiResponse(200, $message->unreadCount());
+    }
 }

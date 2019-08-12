@@ -23,7 +23,16 @@ class Message
             ];
         });
 
-        return $message->toArray();
+        return $message->values()->toArray();
 
     }
+
+    public function unreadCount()
+    {
+        $message = $this->user->unreadNotifications()->get()->where('data.type','message')->count();
+
+        return $message;
+    }
+
+
 }
