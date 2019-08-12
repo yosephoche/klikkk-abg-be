@@ -20,9 +20,9 @@ class KeuanganController extends Controller
         return dtcApiResponse(200, $daftarPengajuan);
     }
 
-    public function inputEbilling(Request $request)
+    public function inputEbilling($regId, Request $request)
     {
-        $pengajuanPengujian = new PengajuanPengujian($request->regId);
+        $pengajuanPengujian = new PengajuanPengujian($regId);
         $pengajuanPengujian->updateEbilling($request);
 
         $pengajuanPengujian->verifikasi(7);

@@ -31,7 +31,10 @@ class VerifikasiKabid extends Notification
      */
     public function via($notifiable)
     {
-        return ['mail', 'database'];
+        if ($this->pengajuan->users->email_notification) {
+            return ['mail', 'database'];
+        }
+        return ['database'];
     }
 
     /**
@@ -42,10 +45,7 @@ class VerifikasiKabid extends Notification
      */
     public function toMail($notifiable)
     {
-        if ($this->pengajuan->users->email_notification) {
-            return (new VerifikasiKabidMail($this->pengajuan));
-
-        }
+        return (new VerifikasiKabidMail($this->pengajuan));
     }
 
     /**

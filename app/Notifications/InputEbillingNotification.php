@@ -31,7 +31,11 @@ class InputEbillingNotification extends Notification
      */
     public function via($notifiable)
     {
-        return ['mail', 'database'];
+        if ($this->pengajuan->users->email_notification) {
+            return ['mail', 'database'];
+        }
+        return ['database'];
+
     }
 
     /**
@@ -42,9 +46,8 @@ class InputEbillingNotification extends Notification
      */
     public function toMail($notifiable)
     {
-        if ($this->pengajuan->users->email_notification) {
-            return (new InputEbillingMail($this->pengajuan));
-        }
+
+        return (new InputEbillingMail($this->pengajuan));
     }
 
     /**

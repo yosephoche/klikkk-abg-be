@@ -32,7 +32,10 @@ class KonfirmasiKeuanganNotification extends Notification
      */
     public function via($notifiable)
     {
-        return ['mail','database'];
+        if ($this->pengajuan->users->email_notification) {
+            return ['mail','database'];
+        }
+        return ['database'];
     }
 
     /**
@@ -43,9 +46,9 @@ class KonfirmasiKeuanganNotification extends Notification
      */
     public function toMail($notifiable)
     {
-        if ($this->pengajuan->users->email_notification) {
-            return (new KonfirmasiKeuanganMail($this->pengajuan));
-        }
+
+        return (new KonfirmasiKeuanganMail($this->pengajuan));
+
     }
 
     /**
