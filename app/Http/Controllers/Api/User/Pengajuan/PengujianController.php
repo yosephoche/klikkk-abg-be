@@ -134,7 +134,13 @@ class PengujianController extends Controller
 
         Notification::send($keuangan, new UploadBuktiTransaksiNotification($pengajuan->masterPengajuanPengujian->first(),$keuangan) );
 
-
         return dtcApiResponse(200, $_pengajuan, 'Terima kasih, bukti transaksi anda berhasil ter uopload');
+    }
+
+    public function getKodeEbilling($regId)
+    {
+        $pengajuan = new PengajuanPengujian($regId);
+
+        return dtcApiResponse(200, $pengajuan->masterPengajuanPengujian->first()->e_billing);
     }
 }

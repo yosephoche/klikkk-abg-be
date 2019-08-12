@@ -188,7 +188,6 @@ class PengajuanPengujian
         $pengajuanPengujian = $this->masterPengajuanPengujian;
 
         $pengajuanPengujian = $pengajuanPengujian->tahap($tahap);
-        // dd($pengajuanPengujian);
 
         $pengajuanPengujian = $request->has('search')?$pengajuanPengujian->where('regId','like','%'.$request->search.'%'):$pengajuanPengujian;
 

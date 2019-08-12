@@ -42,7 +42,9 @@ class PenunjukanPersonelNotification extends Notification
      */
     public function toMail($notifiable)
     {
-        return (new PenunjukanPersonelMail($this->pengajuan));
+        if ($this->pengajuan->users->email_notification) {
+            return (new PenunjukanPersonelMail($this->pengajuan));
+        }
     }
 
     /**

@@ -43,7 +43,9 @@ class KonfirmasiKeuanganNotification extends Notification
      */
     public function toMail($notifiable)
     {
-        return (new KonfirmasiKeuanganMail($this->pengajuan));
+        if ($this->pengajuan->users->email_notification) {
+            return (new KonfirmasiKeuanganMail($this->pengajuan));
+        }
     }
 
     /**

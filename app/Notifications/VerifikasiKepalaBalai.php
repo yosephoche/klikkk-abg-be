@@ -42,7 +42,9 @@ class VerifikasiKepalaBalai extends Notification
      */
     public function toMail($notifiable)
     {
-        return ( new VerifikasiKepalaBalaiMail($this->pengajuan));
+        if ($this->pengajuan->users->email_notification) {
+            return ( new VerifikasiKepalaBalaiMail($this->pengajuan));
+        }
     }
 
     /**

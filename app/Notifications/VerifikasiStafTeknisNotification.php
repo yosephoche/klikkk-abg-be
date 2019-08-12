@@ -42,7 +42,9 @@ class VerifikasiStafTeknisNotification extends Notification
      */
     public function toMail($notifiable)
     {
-        return (new VerifikasiStafTeknisMail($this->pengajuan));
+        if ($this->pengajuan->users->email_notification) {
+            return (new VerifikasiStafTeknisMail($this->pengajuan));
+        }
     }
 
     /**
