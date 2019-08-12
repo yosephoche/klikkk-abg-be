@@ -56,6 +56,11 @@ class MasterPengujianController extends Controller
         return $this->master_pengujian->deletePeraturan($request);
     }
 
+    public function editPeraturan($id)
+    {
+        return $this->master_pengujian->editPeraturan($id);
+    }
+
     public function deleteParameter(Request $request)
     {
         return $this->master_pengujian->deleteParameter($request->uuid);

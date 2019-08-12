@@ -46,6 +46,8 @@ Route::group( ['middleware' => ['json.response'],'namespace' => 'Api'], function
 
                     Route::post('/update-peraturan', 'MasterPengujianController@updatePeraturan')->name('api.admin.master-data.master-pengujian.updatePeraturan');
 
+                    Route::get('/edit-peraturan/{id}', 'MasterPengujianController@editPeraturan')->name('api.admin.master-data.master-pengujian.editPeraturan');
+
                     Route::post('/delete-peraturan', 'MasterPengujianController@deletePeraturan')->name('api.admin.master-data.master-pengujian.delete-peraturan');
                 });
 
