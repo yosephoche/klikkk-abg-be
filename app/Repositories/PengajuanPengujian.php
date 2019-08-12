@@ -415,5 +415,23 @@ class PengajuanPengujian
         }
     }
 
+    public function historyUser()
+    {
+        $pengajuan = $this->masterPengajuanPengujian;
+        $pengajuan = $pengajuan->history()->get()->map(function($value){
+            return [
+                'nomor_pengajuan' => $value->regId,
+                'nama_pemohon' => $value->nama_pemohon,
+                'tanggal_pengajuan' => prettyDate($value->created_at),
+                'tujuan_pengujian' => $value->tujuan_pengujian,
+                'avatar' => userAvatar($value->users->avatar),
+                'status_pengajuan' => $value->status_pengajuan,
+                'path' => 'pengajuan/view/'.$value->regId
+            ];
+        });
+
+        return $pengajuan;
+    }
+
 
 }

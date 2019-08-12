@@ -90,4 +90,10 @@ class PengajuanPengujian extends Model
 
         parent::save();
     }
+
+    public function scopeHistory($query)
+    {
+        $userId = auth('api')->user()->id;
+        return $query->where('user', $userId);
+    }
 }

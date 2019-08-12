@@ -170,6 +170,10 @@ Route::group( ['middleware' => ['json.response'],'namespace' => 'Api'], function
                 Route::get('/', 'MessageController@index')->name('api.user.message.index');
             });
 
+            Route::group(['prefix' => 'riwayat'], function(){
+                Route::get('/', 'RiwayatController@index')->name('api.user.riwayat.index');
+            });
+
         });
         // Route FOr Forum
         Route::group(['prefix' => 'forum', 'namespace' => 'Forum'], function(){
