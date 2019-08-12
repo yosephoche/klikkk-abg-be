@@ -64,6 +64,44 @@ class CommentController extends Controller
         return $this->success();
     }
 
+    // like comment
+    public function like($id)
+    {
+        // find the Comment or Reply
+        $data = Comment::find($id);
+        /*
+        * checking if thread exist if not return 404
+        * if it exist give like to thread based by current user 
+        */ 
+        if(isset($data))
+        {
+            $data->like();
+            return $this->success();
+        } else {
+            return $this->notFound();
+        }
+
+    }
+
+    // thread dislike function
+    public function dislike($id)
+    {
+        // find the thread
+        $data = Comment::find($id);
+        /*
+        * checking if thread exist if not return 404
+        * if it exist give dislike to thread based by current user 
+        */ 
+        if(isset($data))
+        {
+            $data->dislike();
+            return $this->success();
+        } else {
+            return $this->notFound();
+        }
+
+    }
+
     // Function for replly the comments of a thread
 
     public function replyStore(commentRequest $request,$id)

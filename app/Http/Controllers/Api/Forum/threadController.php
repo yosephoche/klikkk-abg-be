@@ -98,7 +98,6 @@ class threadController extends Controller
         $data = Thread::where('slug',$slug)->first();
         if(isset($data))
         {
-            $data['related'] = Thread::where('category_id','like',"%$data->category_id%")->get(); 
             views($data)->record();
             $response = new threadResource($data);
             return $this->singleHttpResponse($data,$response);
@@ -106,6 +105,21 @@ class threadController extends Controller
             return $this->notFound();
         }
         
+    }
+
+
+    public function relatedThread($id)
+    {
+            $thread = Thread::find($id); 
+            if(isset($thread))
+            {
+                $data = Thread::where('category_id',$thread->category_id)
+                                ->where('id','!=',$thread->id)->take(5)->get();
+                $response = threadResource::collection($data);
+                return $this->noPaging($response,$data);
+            } else {
+                return $this->notFound();
+            }  
     }
 
     // thread like function

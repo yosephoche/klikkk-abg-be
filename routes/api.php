@@ -177,7 +177,8 @@ Route::group( ['middleware' => ['json.response'],'namespace' => 'Api'], function
                 Route::get('/','threadController@index')->name('thread_index');
                 Route::get('/popular','threadController@popular')->name('popular.thread');
                 Route::get('/notification','threadController@notification')->name('notifikasi.thread');
-                Route::get('/{id}','threadController@show')->name('thread_detail');
+                Route::get('/{id}','threadController@show')->name('thread.detail');
+                Route::get('/related/{id}','threadController@relatedThread')->name('thread.related');
                 Route::post('like/{id}','threadController@like')->name('thread.like');
                 Route::post('dislike/{id}','threadController@dislike')->name('thread.dislike');
                 Route::put('/update/{id}','threadController@update')->name('thread_edit');
@@ -188,12 +189,16 @@ Route::group( ['middleware' => ['json.response'],'namespace' => 'Api'], function
             Route::group(['prefix'=>'comment'], function(){
                 Route::post('/post','CommentController@store')->name('comment.store');
                 Route::put('/edit/{id}','CommentController@edit')->name('comment.update');
+                Route::post('/like/{id}','CommentController@like')->name('comment.like');
+                Route::post('dislike/{id}','CommentController@dislike')->name('comment.dislike');
                 Route::delete('/delete/{id}','CommentController@destroy')->name('comment.delete');
             });
 
             Route::group(['prefix'=>'replies'],function(){
                 Route::post('/post/{id}','CommentController@replyStore')->name('reply.store');
                 Route::put('/edit/{id}','CommentController@edit')->name('comment.update');
+                Route::post('/like/{id}','CommentController@like')->name('comment.like');
+                Route::post('dislike/{id}','CommentConroller@dislike')->name('comment.dislike');
                 Route::delete('/delete/{id}','CommentController@destroy')->name('comment.delete');
             });
 
