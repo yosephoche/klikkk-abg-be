@@ -221,6 +221,13 @@ class MasterPengujian
         }
     }
 
+    public function editPeraturan($id)
+    {
+        $peraturanParameter = $this->peraturanParameter();
+        $peraturanParameter = $peraturanParameter->where('id', $id)->first();
+        return dtcApiResponse(200, $peraturanParameter);
+    }
+
     public function delete()
     {
         try {
