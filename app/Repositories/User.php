@@ -42,6 +42,7 @@ class User extends BaseRepository
                     $response = [
                         'user_id' => $user->user_id,
                         'token' => $token,
+                        'email' => $user->email,
                         'nama_lengkap' => $user->nama_lengkap,
                         'pekerjaan' => $user->pekerjaan,
                         'instansi' => $user->instansi,
