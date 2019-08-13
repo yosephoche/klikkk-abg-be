@@ -37,6 +37,17 @@ class KepalaBidangController extends Controller
         return dtcApiResponse(200, $_pengajuan);
     }
 
+    public function revisiStafTeknis($regId)
+    {
+        $pengajuan =  new PengajuanPengujian($regId);
+        $_pengajuan = $pengajuan->verifikasi(3);
+        \App\Repositories\ProsesPengajuan::make(3, $regId);
+
+        // Notification::send($pengajuan->masterPengajuanPengujian->first()->users, new VerifikasiKepalaBalai($pengajuan->masterPengajuanPengujian->first()));
+
+        return dtcApiResponse(200, $_pengajuan);
+    }
+
     public function penunjukanPersonel($regId)
     {
 
