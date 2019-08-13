@@ -116,6 +116,7 @@ Route::group( ['middleware' => ['json.response'],'namespace' => 'Api'], function
                 Route::get('/show/{regId}', 'KepalaBidangController@show')->name('api.admin.kepala-bidang.show');
                 Route::get('/{regId}/revisi-staf-teknis', 'KepalaBidangController@revisiStafTeknis')->name('api.admin.kepala-bidang.revisi-staf-teknis');
                 Route::get('/{regId}/verifikasi-pengajuan', 'KepalaBidangController@verifikasiPengajuan')->name('api.admin.kepala-bidang.verifikasi-pengajuan');
+                Route::get('/{regId}/verifikasi-akhir', 'KepalaBidangController@verifikasiAkhir')->name('api.admin.kepala-bidang.verifikasi-akhir');
             });
 
             Route::group(['prefix' => 'keuangan'], function(){
