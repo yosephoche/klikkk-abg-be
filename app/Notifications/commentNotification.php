@@ -35,7 +35,12 @@ class commentNotification extends Notification
      */
     public function via($notifiable)
     {
-        return ['mail','database'];
+        if($this->user->email_notification == 1)
+        {
+            return ['mail','database'];
+        } else {
+            return ['database'];
+        };
     }
 
     /**

@@ -155,7 +155,6 @@
 
             <p>{{$comment->nama_lengkap}} membalas komentar anda pada thread {{$thread->subject}}</p>
 
-            <button type="button" class="btn">Konfirmasi</button>
           </div>
 
         </div>

@@ -32,7 +32,12 @@ class pelatihanNotification extends Notification
      */
     public function via($notifiable)
     {
-        return ['mail'];
+        if($this->staff->email_notification == 1)
+        {
+            return ['mail','database'];
+        } else  {
+            return ['database'];
+        }
     }
 
     /**
@@ -43,14 +48,12 @@ class pelatihanNotification extends Notification
      */
     public function toMail($notifiable)
     {
-        foreach ($this->staff as $staff) {
-            return (new MailMessage)->view('
-                                mail.pelatihanNotification',
-                                [   
-                                    'staff' => $staff,
-                                    'data' => $this->data,
-                                ]);   
-        }
+        return (new MailMessage)->view('
+                            mail.pelatihanNotification',
+                            [   
+                                'staff' => $this->staff,
+                                'data' => $this->data,
+                            ]);   
     }
 
     /**

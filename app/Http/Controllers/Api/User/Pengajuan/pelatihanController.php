@@ -66,7 +66,10 @@ class pelatihanController extends Controller
         $staff = User::whereHas('roles', function($query){
             $query->where('name','staf_teknis');
         })->get();
-        Notification::send($staff, new pelatihanNotification($data,$staff));
+
+        foreach ($staff as $staff) {
+            Notification::send($staff, new pelatihanNotification($data,$staff));        
+        }
 
         return $this->success();
     }

@@ -18,8 +18,8 @@ class notificationResource extends JsonResource
         {
             return [
                 'id' => $this->id,
-                'typeNotification' => $this->data['jenisNotification'],
-                'message' => $this->data['commenter']." Memberi Komentar Pada Thread ". $this->data['judulThread'], 
+                'label' => $this->data['jenisNotification'],
+                'body' => $this->data['commenter']." Memberi Komentar Pada Thread ". $this->data['judulThread'],  
             ];
         }
 

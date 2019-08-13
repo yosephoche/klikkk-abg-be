@@ -183,7 +183,6 @@
             </table>
             </div>
 
-            <button type="button" class="btn">Konfirmasi</button>
           </div>
 
         </div>
