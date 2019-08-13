@@ -16,6 +16,8 @@ class subCategoryResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'parentCategory' => $this->category->name,
+            'parentCategoryId' => $this->category->id,
             'name' => $this->name,
             'thread' => threadResource::collection($this->thread),
         ];
