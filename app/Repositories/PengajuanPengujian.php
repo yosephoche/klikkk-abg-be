@@ -274,7 +274,7 @@ class PengajuanPengujian
                     'tujuan' => $pengajuanPengujian->tujuan_pengujian,
                     'e_billing' => $pengajuanPengujian->e_billing,
                     'bukti_transaksi' => buktiTransaksiPengajuan($pengajuanPengujian->bukti_transaksi),
-                    'komentar' => $pengajuanPengujian->komentar
+                    'komentar' => $pengajuanPengujian->keterangan
             ];
             $data['data_pengujian'] = $dataPengujian;
             $data['biaya_tambahan'] = $biayaTambahan;
