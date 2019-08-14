@@ -6,7 +6,8 @@ use Illuminate\Http\Request;
 Route::group( ['middleware' => ['json.response'],'namespace' => 'Api'], function(){
 
     Route::group(['prefix' => 'public','namespace'=>'Forum'],function(){
-        Route::get('forum','threadController@index')->name('thread_index');
+        Route::get('forum','threadController@index')->name('thread_index.public');
+        Route::get('forum/{id}','threadController@show')->name('thread_detail.public');
     });
     Route::middleware('auth:api')->get('/user', function (Request $request) {
         return $request->user();
@@ -196,6 +197,7 @@ Route::group( ['middleware' => ['json.response'],'namespace' => 'Api'], function
                 Route::get('/','threadController@index')->name('thread_index');
                 Route::get('/popular','threadController@popular')->name('popular.thread');
                 Route::get('/notification','threadController@notification')->name('notifikasi.thread');
+                Route::post('/notification/read/{id}','threadController@readNotification')->name('notifikasi.read');
                 Route::get('/{id}','threadController@show')->name('thread.detail');
                 Route::get('/related/{id}','threadController@relatedThread')->name('thread.related');
                 Route::post('like/{id}','threadController@like')->name('thread.like');
@@ -203,6 +205,11 @@ Route::group( ['middleware' => ['json.response'],'namespace' => 'Api'], function
                 Route::put('/update/{id}','threadController@update')->name('thread_edit');
                 Route::post('/post','threadController@store')->name('thread_post');
                 Route::delete('/delete/{id}','threadController@destroy')->name('delete_thread');
+            });
+
+            Route::group(['prefix'=>'galery'], function(){
+                Route::post('/add','galleryController@store')->name('galery.add');
+                Route::delete('/delete/{id}','galleryController@destroy')->name('galery.delete');
             });
 
             Route::group(['prefix'=>'comment'], function(){

@@ -21,4 +21,9 @@ class Comment extends Model implements LikeableContract
     {
         return $this->hasMany('app\Models\Comment','replies_id');
     }
+
+    public function galery(){
+        return $this->hasMany('App\Models\Galery');
+    }
+
 }

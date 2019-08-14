@@ -25,6 +25,8 @@ class commentResource extends JsonResource
             'owner' => $this->user->nama_lengkap,
             'avatar' => userAvatar($this->user->avatar),
             'comment' => $this->comment,
+            'images' => galeryResource::collection($this->galery->where('type','image')),
+            'videos' => galeryResource::collection($this->galery->where('type','video')),
             'created_at' => $this->created_at->format('d MY'),
             'reply' => commentResource::collection($this->replies),
             'likesCount' => $this->likesCount,
