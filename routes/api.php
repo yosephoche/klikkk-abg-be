@@ -6,7 +6,8 @@ use Illuminate\Http\Request;
 Route::group( ['middleware' => ['json.response'],'namespace' => 'Api'], function(){
 
     Route::group(['prefix' => 'public','namespace'=>'Forum'],function(){
-        Route::get('forum','threadController@index')->name('thread_index');
+        Route::get('forum','threadController@index')->name('thread_index.public');
+        Route::get('forum/{id}','threadController@show')->name('thread_detail.public');
     });
     Route::middleware('auth:api')->get('/user', function (Request $request) {
         return $request->user();
