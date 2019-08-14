@@ -249,7 +249,7 @@ class PengajuanPengujian
                 $i++;
             }
 
-            $biayaTambahan = [];
+            $biayaTambahan = null;
 
             if ( $pengajuanPengujian->biayaTambahan->count() > 0 ) {
                 $biayaTambahan['daftar_biaya'] = $pengajuanPengujian->biayaTambahan->map(function($value){
