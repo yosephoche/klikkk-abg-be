@@ -24,6 +24,9 @@ class Thread extends Model implements ViewableContract,LikeableContract
         return $this->belongsTo('App\Models\subCategory','category_id');
     }
 
+    public function galery(){
+        return $this->hasMany('App\Models\Galery');
+    }
 
     public function comments()
     {
