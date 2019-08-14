@@ -216,7 +216,11 @@ class PengajuanPengujian
             $pengajuanPengujian = $pengajuanPengujian->masterPengajuanPengujian->first();
 
             $_dataPengujian = $pengajuanPengujian->detailPengajuanPengujian()->with('parameterPengujian')->get()->groupBy('parameterPengujian.jenisPengujian.nama')->map(function($value){
+
+
                 return $value->map(function($value){
+                    // dd();
+                    // dump($value->parameterPengujian->jenisPengujian);
                     return [
                         'id_detail' => $value->id,
                         'id_parameter' => $value->id_parameter_pengujian,
@@ -224,6 +228,7 @@ class PengajuanPengujian
                         'jumlah_titik' => $value->jumlah_titik,
                         'biaya' => $value->parameterPengujian->biaya,
                         'total' => $value->jumlah_titik * $value->parameterPengujian->biaya,
+                        'id_jenis_pengujian' => $value->parameterPengujian->jenisPengujian->id
                     ];
                 });
             });
@@ -231,7 +236,10 @@ class PengajuanPengujian
             $dataPengujian = [];
             $i = 0;
             $grandTotal = 0;
+            // dd($_dataPengujian);
             foreach ($_dataPengujian as $key => $value) {
+                // dd($value->first()['id_jenis_pengujian']);
+                $dataPengujian[$i]['id_group'] = $value->first()['id_jenis_pengujian'];
                 $dataPengujian[$i]['group'] = $key;
                 $dataPengujian[$i]['parameter'] = $value->toArray();
                 $dataPengujian[$i]['total'] = $value->sum('total');
