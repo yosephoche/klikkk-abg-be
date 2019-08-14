@@ -68,6 +68,72 @@ class TahapPengajuanSeeder extends Seeder
                 'urutan' => 9,
                 'pic' => 2,
             ],
+            [
+                'uuid' => Str::uuid(),
+                'nama' => 'Persiapan Pengujian',
+                'urutan' => 10,
+                'pic' => 2,
+            ],
+            [
+                'uuid' => Str::uuid(),
+                'nama' => 'Pelaksanaan Pengujian',
+                'urutan' => 11,
+                'pic' => 2,
+            ],
+            [
+                'uuid' => Str::uuid(),
+                'nama' => 'Penerimaan sampel dan pencatatan data lapangan',
+                'urutan' => 12,
+                'pic' => 2,
+            ],
+            [
+                'uuid' => Str::uuid(),
+                'nama' => 'Pencatatan FPPS',
+                'urutan' => 13,
+                'pic' => 2,
+            ],
+            [
+                'uuid' => Str::uuid(),
+                'nama' => 'Pengolahan data fisik',
+                'urutan' => 14,
+                'pic' => 2,
+            ],
+            [
+                'uuid' => Str::uuid(),
+                'nama' => 'Penerimaan data kimia dan analisa sampel',
+                'urutan' => 15,
+                'pic' => 2,
+            ],
+            [
+                'uuid' => Str::uuid(),
+                'nama' => 'Pengetikan laporan',
+                'urutan' => 16,
+                'pic' => 2,
+            ],
+            [
+                'uuid' => Str::uuid(),
+                'nama' => 'Verifikasi dan validasi laporan hasil uji',
+                'urutan' => 17,
+                'pic' => 2,
+            ],
+            [
+                'uuid' => Str::uuid(),
+                'nama' => 'Pembuatan laporan lengkap',
+                'urutan' => 18,
+                'pic' => 2,
+            ],
+            [
+                'uuid' => Str::uuid(),
+                'nama' => 'Penyerahan laporan ke staf',
+                'urutan' => 19,
+                'pic' => 2,
+            ],
+            [
+                'uuid' => Str::uuid(),
+                'nama' => 'Pengujian Selesai',
+                'urutan' => 20,
+                'pic' => 2,
+            ],
 
         ]);
     }

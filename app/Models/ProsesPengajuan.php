@@ -39,4 +39,9 @@ class ProsesPengajuan extends Model
         return $query->where('tahap_pengajuan', '<', $tahap)->orderByDesc('tanggal_mulai');
     }
 
+    public function scopePelaksanaan($query)
+    {
+        return $query->whereIn('id', [10,11,12,13,14,15,16,17,18,19,20]);
+    }
+
 }
