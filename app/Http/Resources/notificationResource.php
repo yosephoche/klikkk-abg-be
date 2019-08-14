@@ -14,20 +14,27 @@ class notificationResource extends JsonResource
      */
     public function toArray($request)
     {
-        if($this->data['jenisNotification'] == "Comment")
+        if($this->data['label'] == "Comment")
         {
+
             return [
                 'id' => $this->id,
-                'label' => $this->data['jenisNotification'],
+                'type' => $this->data['type'],
+                'label' => $this->data['label'],
+                'title' => $this->data['title'],
+                'path' => $this->data['path'],
                 'body' => $this->data['commenter']." Memberi Komentar Pada Thread ". $this->data['judulThread'],  
             ];
         }
 
-        if($this->data['jenisNotification'] == "Reply")
+        if($this->data['label'] == "Reply")
         {
             return [
                 'id' => $this->id,
-                'typeNotification' => $this->data['jenisNotification'],
+                'type' => $this->data['type'],
+                'label' => $this->data['label'],
+                'title' => $this->data['title'],
+                'path' => $this->data['path'],
                 'message' => $this->data['replier']." Memberi Balasan Pada Komentar Anda Pada Thread ".$this->data['judulThread'], 
             ];
         }
