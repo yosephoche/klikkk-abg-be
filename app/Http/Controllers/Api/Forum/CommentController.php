@@ -64,6 +64,12 @@ class CommentController extends Controller
         return $this->success();
     }
 
+    public function upload(Request $request)
+    {
+        
+    }
+
+
     // like comment
     public function like($id)
     {

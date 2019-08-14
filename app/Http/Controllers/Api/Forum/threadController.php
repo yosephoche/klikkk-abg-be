@@ -148,9 +148,8 @@ class threadController extends Controller
         } else {
             return $this->notFound();
         }
-        
+         
     }
-
 
     public function relatedThread($id)
 

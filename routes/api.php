@@ -204,6 +204,11 @@ Route::group( ['middleware' => ['json.response'],'namespace' => 'Api'], function
                 Route::delete('/delete/{id}','threadController@destroy')->name('delete_thread');
             });
 
+            Route::group(['prefix'=>'galery'], function(){
+                Route::post('/add','galleryController@store')->name('galery.add');
+                Route::delete('/delete/{id}','galleryController@destroy')->name('galery.delete');
+            });
+
             Route::group(['prefix'=>'comment'], function(){
                 Route::post('/post','CommentController@store')->name('comment.store');
                 Route::put('/edit/{id}','CommentController@edit')->name('comment.update');
