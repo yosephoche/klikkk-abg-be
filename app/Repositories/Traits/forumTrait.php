@@ -48,18 +48,13 @@ trait forumTrait
 
     public function notFound()
     {
-        return response([
-            'message' => 'Not Found',
-            'code' => 404
-        ],200);
+        return dtcApiResponse(200,null,'Empty Result');
     }
 
     public function unauthorized()
     {
-        return response([
-            'message' => 'Unauthorized',
-            'code' => 404
-        ],200);
+        return dtcApiResponse(401,null,'Unatuhorized');
+
     }
 
     public function singleHttpResponse($data,$response)
@@ -90,10 +85,7 @@ trait forumTrait
     
     public function unprocessable()
     {
-        return response([
-            'message'=>'Unprocessable Request',
-            'kode'=>422,
-        ], 200);
+        return dtcApiResponse(500,null,'Unprocessable Process');
     }
 
 
@@ -101,8 +93,6 @@ trait forumTrait
 
     public function serverError()
     {
-        return response([
-            'message'=>'Server Error'
-        ], 500);
+        return dtcApiResponse(500,null,'Server Error');        
     }
 }

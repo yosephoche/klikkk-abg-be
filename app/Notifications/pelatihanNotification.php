@@ -62,10 +62,13 @@ class pelatihanNotification extends Notification
      * @param  mixed  $notifiable
      * @return array
      */
-    public function toArray($notifiable)
+    public function toDatabase($notifiable)
     {
         return [
-            //
+            'type' => "notification",
+            'label' => "Pengajuan",
+            'title' => "Permohonan Pengajuan Pelatihan",
+            'path' => route('show.pelatihan',['id' => $this->thread->id]),
         ];
     }
 }

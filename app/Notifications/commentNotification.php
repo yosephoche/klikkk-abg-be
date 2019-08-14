@@ -63,6 +63,10 @@ class commentNotification extends Notification
     public function toDatabase ($notifiable)
     {
         return [
+            'type' => "notification",
+            'label' => $this->thread->status,
+            'title' => "Comment Ke Thread",
+            'path' => $this->thread->slug,
             'jenisNotification' => $this->thread->status,
             'judulThread' => $this->thread->subject,
             'commenter' => $this->comment->user->nama_lengkap,

@@ -37,6 +37,8 @@ class threadResource extends JsonResource
             'title'=> $this->subject,
             'slug'=> $this->slug,
             'desc' => $this->description,
+            'images' => galeryResource::collection($this->galery->where('type','image')),
+            'videos' => galeryResource::collection($this->galery->where('type','video')),
             // 'edit_link' => $edit_links,
             'created_at' => $this->created_at->format('d,M-Y'),
             'comments' => commentResource::collection($this->comments),

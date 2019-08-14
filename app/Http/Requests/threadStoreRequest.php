@@ -27,6 +27,8 @@ class threadStoreRequest extends FormRequest
             'category_id' => 'required',
             'subject' => 'required',
             'description' => 'required',
+            'images.*' => 'mimes:jpeg,bmp,png,jpg',
+            'videos.*' => 'mimetypes:video/avi,video/mpeg,video/quicktime',
         ];
     }
 
@@ -41,6 +43,8 @@ class threadStoreRequest extends FormRequest
             'category_.required' => 'Pick One Category',
             'subject.required'  => 'What Is The Subject Of The Thread',
             'description.required' => 'Please give description to this thread',
+            'images.mimes' => 'This Type Of File Is Not Supported',
+            'video.mimetypes' => 'This Type Of File Is Not Supported',
         ];
     }
 }

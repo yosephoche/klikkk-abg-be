@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Api\Forum;
 
 use Auth;
 use App\Models\Thread;
+use Illuminate\Support\Str;
+use App\Models\Galery;
 // use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Repositories\threadRepository;
@@ -46,7 +48,7 @@ class threadController extends Controller
 
     public function notification()
     {
-        $data = Auth::user()->notifications;
+        $data = Auth::user()->notifications()->get()->where('data.type','notification')->sortBYDesc('created_at');
         $response = notificationResource::collection($data);
         return $this->noPaging($response,$data);
         
@@ -72,11 +74,44 @@ class threadController extends Controller
     {
         $thread = new Thread;
         $thread->subject = $request->subject;
-        $thread->slug = str_slug($thread->subject);
+        $thread->slug = $this->makeSlugFromTitle($request->subject);
         $thread->description = $request->description;
         $thread->category_id = $request->category_id;
         $thread->created_by = Auth::user()->id;
         $thread->save();
+
+        if($request->hasFile('images'))
+        {
+            foreach ($request->images as $image) {
+                $galery = new Galery;
+                $uploadFile = $image;
+                $filename = time()."."."images".".".$uploadFile->getClientOriginalExtension();
+                $destination = 'upload/images';
+                $uploadFile->move(public_path($destination),$filename);
+                $galery->file = $filename;
+                $galery->user_id = Auth::user()->id;
+                $galery->thread_id = $thread->id;
+                $galery->type = "image";
+                $galery->save();
+            }
+        }
+
+        if($request->hasFile('videos'))
+        {
+            foreach ($request->videos as $video) {
+                $galery = new Galery;
+                $uploadFile = $video;
+                $filename = time()."video".".".$uploadFile->getClientOriginalExtension();
+                $destination = 'upload/videos';
+                $uploadFile->move(public_path($destination),$filename);
+                $galery->file = $filename;
+                $galery->user_id = Auth::user()->id;
+                $galery->thread_id = $thread->id;
+                $galery->type = "video";
+                $galery->save();
+            }
+        }
+
         if(isset($thread->id))
         {
             return $this->success();
@@ -84,6 +119,15 @@ class threadController extends Controller
             return $this->serverError();
         }
     }
+    
+    // Make Unique Slug
+    public function makeSlugFromTitle($title)
+    {
+        $slug = Str::slug($title);
+        $count = Thread::whereRaw("slug RLIKE '^{$slug}(-[0-9]+)?$'")->count();
+        return $count ? "{$slug}-{$count}" : $slug;
+    }
+
 
 
     /**
@@ -109,6 +153,7 @@ class threadController extends Controller
 
 
     public function relatedThread($id)
+
     {
             $thread = Thread::find($id); 
             if(isset($thread))

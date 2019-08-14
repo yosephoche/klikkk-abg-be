@@ -70,7 +70,10 @@ class threadMailNotification extends Notification
     public function toDatabase($notifiable)
     {
         return [
-            'jenisNotification' => $this->thread->status,
+            'type' => "notification",
+            'label' => $this->thread->status,
+            'title' => "Reply Ke Komment",
+            'path' => $this->thread->slug,
             'replier' => $this->reply->user->nama_lengkap,
             'judulThread' => $this->thread->subject,
         ];
