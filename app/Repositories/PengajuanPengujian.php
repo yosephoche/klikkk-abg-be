@@ -139,7 +139,7 @@ class PengajuanPengujian
         return dtcApiResponse(200, $jenisPengujian);
     }
 
-    public function store($data)
+    public function     store($data)
     {
         $masterPengajuanPengujian = $this->masterPengajuanPengujian;
 
@@ -267,9 +267,9 @@ class PengajuanPengujian
                     'nama_pemohon' => $pengajuanPengujian->nama_pemohon,
                     'alamat' => $pengajuanPengujian->alamat,
                     'email' => $pengajuanPengujian->email,
-                    'lokasi_pengajuan' => $pengajuanPengujian->lokasi_pengajuan,
-                    'nama_peusahaan' => $pengajuanPengujian->nama_perusahaan,
-                    'nomor_telepon' => $pengajuanPengujian->nomor_telepon,
+                    'rencana_lokasi_pengujian' => $pengajuanPengujian->rencana_lokasi_pengujian,
+                    'nama_perusahaan' => $pengajuanPengujian->nama_perusahaan,
+                    'nomor_telepon' => $pengajuanPengujian->no_telepon,
                     'jenis_usaha' => $pengajuanPengujian->jenis_usaha,
                     'tujuan' => $pengajuanPengujian->tujuan_pengujian,
                     'e_billing' => $pengajuanPengujian->e_billing,
