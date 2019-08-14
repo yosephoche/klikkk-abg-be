@@ -87,7 +87,7 @@ class pelatihanController extends Controller
         if(isset($data))
         {
             $response = new pelatihanResource($data);
-            return $this->singleHttpResponse($data);
+            return $this->singleHttpResponse($data,$response);
         } else {
             return $this->notFound();
         }
