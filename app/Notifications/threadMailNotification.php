@@ -73,7 +73,7 @@ class threadMailNotification extends Notification
             'type' => "notification",
             'label' => $this->thread->status,
             'title' => "Reply Ke Komment",
-            'path' => route('thread.detail',['id' => $this->thread->id]),
+            'path' => $this->thread->slug,
             'replier' => $this->reply->user->nama_lengkap,
             'judulThread' => $this->thread->subject,
         ];

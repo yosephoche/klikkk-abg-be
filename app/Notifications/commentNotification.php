@@ -66,7 +66,7 @@ class commentNotification extends Notification
             'type' => "notification",
             'label' => $this->thread->status,
             'title' => "Comment Ke Thread",
-            'path' => route('thread.detail',['id' => $this->thread->id]),
+            'path' => $this->thread->slug,
             'jenisNotification' => $this->thread->status,
             'judulThread' => $this->thread->subject,
             'commenter' => $this->comment->user->nama_lengkap,
