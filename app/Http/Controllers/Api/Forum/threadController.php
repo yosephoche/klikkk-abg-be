@@ -48,8 +48,10 @@ class threadController extends Controller
 
     public function notification()
     {
-        $data = Auth::user()->notifications()->get()->where('data.type','notification')->sortBYDesc('created_at');
+        $data = Auth::user()->unreadNotifications()->get()->where('data.type','notification')->sortBYDesc('created_at');
         $response = notificationResource::collection($data);
+
+        Auth::user()->unreadNotifications->markAsRead();
         return $this->noPaging($response,$data);
         
     }
