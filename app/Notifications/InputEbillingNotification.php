@@ -60,9 +60,9 @@ class InputEbillingNotification extends Notification
     {
         return [
             'type' => 'message',
-            'label' => 'pembayaran',
+            'label' => 'Pembayaran',
             'title' => 'E-Billing',
-            'path' => '/pengajuan/upload/bukti/'.$this->pengajuan->regId,
+            'path' => '/pengajuan/pengujian/upload/bukti/'.$this->pengajuan->regId,
             'body' => 'Mohon lakukan pembayaran berdasarkan kode E-Billing'
         ];
     }

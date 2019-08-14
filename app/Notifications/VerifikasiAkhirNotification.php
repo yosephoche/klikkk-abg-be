@@ -2,17 +2,17 @@
 
 namespace App\Notifications;
 
+use App\Mail\VerifikasiAkhirMail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
-use App\Mail\VerifikasiKepalaBalai as VerifikasiKepalaBalaiMail;
 
-class VerifikasiKepalaBalai extends Notification
+class VerifikasiAkhirNotification extends Notification
 {
     use Queueable;
 
-    protected $pengajuan;
+    public $pengajuan;
     /**
      * Create a new notification instance.
      *
@@ -45,7 +45,7 @@ class VerifikasiKepalaBalai extends Notification
      */
     public function toMail($notifiable)
     {
-        return ( new VerifikasiKepalaBalaiMail($this->pengajuan));
+        return (new VerifikasiAkhirMail($this->pengajuan));
     }
 
     /**
@@ -58,10 +58,10 @@ class VerifikasiKepalaBalai extends Notification
     {
         return [
             'type' => 'message',
-            'label' => 'Pengujian',
-            'title' => 'Verifikasi Kepala Balai',
-            'path' => 'pengajuan/pengujian/view/'.$this->pengajuan->regId,
-            'body' => 'Selamat, permohonan pengujian kamu telah di verifikasi oleh kepalai balai K3'
+            'label' => 'pengujian',
+            'title' => 'Update status pengujian',
+            'path' => null,
+            'body' => 'Kepala bidang kami telah menunjuk personel untuk melakukan pengujian.'
         ];
     }
 }

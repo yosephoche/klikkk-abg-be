@@ -58,9 +58,9 @@ class VerifikasiKabid extends Notification
     {
         return [
             'type' => 'message',
-            'label' => 'pengajuan',
+            'label' => 'Pengujian',
             'title' => 'Verifikasi Kepala Bidang',
-            'path' => 'pengajuan/verifikasi/'.$this->pengajuan->regId,
+            'path' => 'pengajuan/pengujian/verifikasi/'.$this->pengajuan->regId,
             'body' => 'Permohonan anda telah di periksa oleh pihak K3. Silahkan periksa kembali permohonan anda, lalu terima/revisi/tolak permohonan yang anda ajukan'
         ];
     }

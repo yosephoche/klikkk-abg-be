@@ -216,7 +216,11 @@ class PengajuanPengujian
             $pengajuanPengujian = $pengajuanPengujian->masterPengajuanPengujian->first();
 
             $_dataPengujian = $pengajuanPengujian->detailPengajuanPengujian()->with('parameterPengujian')->get()->groupBy('parameterPengujian.jenisPengujian.nama')->map(function($value){
+
+
                 return $value->map(function($value){
+                    // dd();
+                    // dump($value->parameterPengujian->jenisPengujian);
                     return [
                         'id_detail' => $value->id,
                         'id_parameter' => $value->id_parameter_pengujian,
@@ -224,6 +228,7 @@ class PengajuanPengujian
                         'jumlah_titik' => $value->jumlah_titik,
                         'biaya' => $value->parameterPengujian->biaya,
                         'total' => $value->jumlah_titik * $value->parameterPengujian->biaya,
+                        'id_jenis_pengujian' => $value->parameterPengujian->jenisPengujian->id
                     ];
                 });
             });
@@ -231,7 +236,10 @@ class PengajuanPengujian
             $dataPengujian = [];
             $i = 0;
             $grandTotal = 0;
+            // dd($_dataPengujian);
             foreach ($_dataPengujian as $key => $value) {
+                // dd($value->first()['id_jenis_pengujian']);
+                $dataPengujian[$i]['id_group'] = $value->first()['id_jenis_pengujian'];
                 $dataPengujian[$i]['group'] = $key;
                 $dataPengujian[$i]['parameter'] = $value->toArray();
                 $dataPengujian[$i]['total'] = $value->sum('total');
@@ -417,19 +425,36 @@ class PengajuanPengujian
     public function historyUser()
     {
         $pengajuan = $this->masterPengajuanPengujian;
-        $pengajuan = $pengajuan->history()->get()->map(function($value){
-            return [
-                'nomor_pengajuan' => $value->regId,
-                'nama_pemohon' => $value->nama_pemohon,
-                'tanggal_pengajuan' => prettyDate($value->created_at),
-                'tujuan_pengujian' => $value->tujuan_pengujian,
-                'avatar' => userAvatar($value->users->avatar),
-                'status_pengajuan' => $value->status_pengajuan,
-                'path' => 'pengajuan/view/'.$value->regId
-            ];
+        $pengajuan = $pengajuan->history()->get()->groupBy('status_pengajuan')->map(function($value, $key){
+
+            return $value->map(function($value) use ($key){
+
+                $data['nomor_pengajuan'] = $value->regId;
+                $data['nama_pemohon'] = $value->nama_pemohon;
+                $data['tanggal_pengajuan'] = prettyDate($value->created_at);
+                $data['tujuan_pengujian'] = $value->tujuan_pengujian;
+                $data['avatar'] = userAvatar($value->users->avatar);
+                $data['status_pengajuan'] = $value->status_pengajuan;
+                $data['path'] = $key=="draft"?'pengajuan/pengujian/draft/'.$value->regId:'pengajuan/pengujian/view/'.$value->regId;
+
+                return $data;
+            });
         });
 
-        return $pengajuan;
+        if (isset($pengajuan['aktif']) && isset($pengajuan['tidak aktif'])) {
+            $daftarPengajuan = collect(array_merge($pengajuan['aktif']->toArray(), $pengajuan['tidak aktif']->toArray()));
+            $daftarPengajuan = $daftarPengajuan->sortByDesc('tanggal_pengajuan');
+        }
+        else{
+            $daftarPengajuan = isset($pengajuan['aktif'])?$pengajuan['aktif']->sortByDesc('tanggal_pengajuan')->values():null;
+        }
+
+        $daftarDraft = isset($pengajuan['draft'])?$pengajuan['draft']->toArray():null;
+
+        return [
+            'riwayat' => $daftarPengajuan,
+            'draft' => $daftarDraft
+        ];
     }
 
 

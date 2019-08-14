@@ -66,6 +66,10 @@ class PengajuanPengujian extends Model
                 return $query->whereIn('tahap_pengajuan', [6,7]);
             }
 
+            if ($tahap == 'pelaksanaan') {
+                return $query->where('tahap_pengajuan', '>=', 10);
+            }
+
             throw new PengajuanNotFoundException();
 
         }
