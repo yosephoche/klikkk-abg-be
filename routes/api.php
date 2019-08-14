@@ -133,6 +133,8 @@ Route::group( ['middleware' => ['json.response'],'namespace' => 'Api'], function
             Route::group(['prefix' => 'personel-k3'], function(){
                 Route::get('/', 'PersonelK3Controller@index')->name('api.admin.personel-k3.index');
                 Route::get('/{regId}/pelaksanaan', 'PersonelK3Controller@pelaksanaan')->name('api.admin.personel-k3.pelaksanaan');
+                Route::get('/mulai/{regId}/{tahap}', 'PersonelK3Controller@mulai')->name('api.admin.personel-k3.mulai');
+                Route::get('/selesai/{regId}/{tahap}', 'PersonelK3Controller@selesai')->name('api.admin.personel-k3.selesai');
             });
 
 
