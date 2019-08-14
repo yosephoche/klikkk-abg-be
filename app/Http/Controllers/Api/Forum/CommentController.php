@@ -8,6 +8,7 @@ use App\Models\Comment;
 use App\Repositories\Traits\forumTrait;
 use App\Models\Thread;
 use App\Models\User;
+use App\Models\Galery;
 use App\Http\Requests\commentRequest;
 use Auth;
 use App\Notifications\threadMailNotification;
@@ -52,6 +53,7 @@ class CommentController extends Controller
         $comment->comment = $request->comment;  
         $comment->user()->associate(Auth::user()->id);
         $comment->topic_id = $request->topic_id;
+
         
         $thread = Thread::find($request->topic_id);
         $thread['status'] = 'Comment';
@@ -61,13 +63,41 @@ class CommentController extends Controller
         $user->notify(new commentNotification($user,$thread,$comment));
         $thread->comments()->save($comment);
 
+        if($request->hasFile('images'))
+        {
+            foreach ($request->images as $image) {
+                $galery = new Galery;
+                $uploadFile = $image;
+                $filename = time()."."."images".".".$uploadFile->getClientOriginalExtension();
+                $destination = 'upload/images';
+                $uploadFile->move(public_path($destination),$filename);
+                $galery->file = $filename;
+                $galery->user_id = Auth::user()->id;
+                $galery->comment_id = $comment->id;
+                $galery->type = "image";
+                $galery->save();
+            }
+        }
+
+        if($request->hasFile('videos'))
+        {
+            foreach ($request->videos as $video) {
+                $galery = new Galery;
+                $uploadFile = $video;
+                $filename = time()."video".".".$uploadFile->getClientOriginalExtension();
+                $destination = 'upload/videos';
+                $uploadFile->move(public_path($destination),$filename);
+                $galery->file = $filename;
+                $galery->user_id = Auth::user()->id;
+                $galery->comment_id = $comment->id;
+                $galery->type = "video";
+                $galery->save();
+            }
+        }
+
         return $this->success();
     }
 
-    public function upload(Request $request)
-    {
-        
-    }
 
 
     // like comment
@@ -86,7 +116,6 @@ class CommentController extends Controller
         } else {
             return $this->notFound();
         }
-
     }
 
     // thread dislike function
@@ -129,6 +158,37 @@ class CommentController extends Controller
 
         $thread->comments()->save($reply);
 
+        if($request->hasFile('images'))
+        {
+            foreach ($request->images as $image) {
+                $galery = new Galery;
+                $uploadFile = $image;
+                $filename = time()."."."images".".".$uploadFile->getClientOriginalExtension();
+                $destination = 'upload/images';
+                $uploadFile->move(public_path($destination),$filename);
+                $galery->file = $filename;
+                $galery->user_id = Auth::user()->id;
+                $galery->comment_id = $reply->id;
+                $galery->type = "image";
+                $galery->save();
+            }
+        }
+
+        if($request->hasFile('videos'))
+        {
+            foreach ($request->videos as $video) {
+                $galery = new Galery;
+                $uploadFile = $video;
+                $filename = time()."video".".".$uploadFile->getClientOriginalExtension();
+                $destination = 'upload/videos';
+                $uploadFile->move(public_path($destination),$filename);
+                $galery->file = $filename;
+                $galery->user_id = Auth::user()->id;
+                $galery->comment_id = $reply->id;
+                $galery->type = "video";
+                $galery->save();
+            }
+        }
         return $this->success();
     }
     /**
