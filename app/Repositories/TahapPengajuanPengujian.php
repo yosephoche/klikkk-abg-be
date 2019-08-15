@@ -27,7 +27,8 @@ class TahapPengajuanPengujian
                 'uuid' => $value->uuid,
                 'nama' => $value->nama,
                 'urutan' => $value->urutan,
-                'pic' => $value->user->nama_lengkap
+                'pic' => $value->pic,
+                'nama_pic' => $value->user->nama_lengkap
             ];
         });
 
