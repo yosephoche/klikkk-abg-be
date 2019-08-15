@@ -87,9 +87,9 @@ class TahapPengajuanPengujian
 
         $pic = (int) $data->pic ? $data->pic: \App\Models\User::where('uuid', $data->pic)->first()->id;
 
-        $tahap_pengajuan->nama = $data->nama;
-        $tahap_pengajuan->uuid = $data->uuid?$data->uuid:Str::uuid();
-        $tahap_pengajuan->urutan = $data->urutan;
+        // $tahap_pengajuan->nama = $data->nama;
+        // $tahap_pengajuan->uuid = $data->uuid?$data->uuid:Str::uuid();
+        // $tahap_pengajuan->urutan = $data->urutan;
         $tahap_pengajuan->pic = $pic;
 
         return $tahap_pengajuan;
