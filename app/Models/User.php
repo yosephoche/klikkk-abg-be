@@ -28,7 +28,7 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
-    
+
 
     /**
      * The attributes that should be cast to native types.
@@ -52,5 +52,10 @@ class User extends Authenticatable
     public function scopeIsAdmin($query)
     {
         return $query->where('jenis_akun', 1);
+    }
+
+    public static function stafTeknis()
+    {
+        return (new self)->whereHas('roles' , function($q){ $q->where('name', 'staf_teknis'); })->get();
     }
 }

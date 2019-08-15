@@ -163,7 +163,7 @@ Route::group( ['middleware' => ['json.response'],'namespace' => 'Api'], function
                     Route::post('/{regId}/update-biaya-tambahan', 'PengujianController@updateBiayaTambahan')->name('api.user.pengajuan.pengujian.update-biaya-tambahan');
 
                     Route::get('/{regId}/kirim', 'PengujianController@kirim')->name('api.user.pengajuan.pengujian.kirim');
-                    Route::get('/{regId}/tolak', 'PengujianController@tolak')->name('api.user.pengajuan.pengujian.tolak');
+                    Route::post('/{regId}/tolak', 'PengujianController@tolak')->name('api.user.pengajuan.pengujian.tolak');
                     Route::get('/{regId}/terima', 'PengujianController@terima')->name('api.user.pengajuan.pengujian.terima');
 
                     Route::get('/{regId}/get-kode-ebilling', 'PengujianController@getKodeEbilling')->name('api.user.pengajuan.pengujian.get-kode-ebilling');

@@ -457,5 +457,18 @@ class PengajuanPengujian
         ];
     }
 
+    public function tolak($komentar)
+    {
+        if ($this->masterPengajuanPengujian instanceof Builder) {
+            $pengajuan = $this->masterPengajuanPengujian->first();
+            $pengajuan->status_pengajuan = 'tolak';
+            $pengajuan->keterangan = $komentar;
+
+            $pengajuan->save();
+            return true;
+        }
+        throw new PengajuanNotFoundException();
+    }
+
 
 }

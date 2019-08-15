@@ -10,6 +10,7 @@ use App\Notifications\PengajuanBaruNotification;
 use Illuminate\Support\Facades\Notification;
 use App\Mail\VerifikasiUserMail;
 use App\Notifications\PengajuanDiSetujuiNotification;
+use App\Notifications\PengajuanDiTolakNotification;
 use App\Notifications\UploadBuktiTransaksiNotification;
 
 class PengujianController extends Controller
@@ -107,15 +108,19 @@ class PengujianController extends Controller
         return dtcApiResponse(200, $_pengajuan);
     }
 
-    public function tolak($regId)
+    public function tolak($regId, Request $request)
     {
         // TOLAK PENGAJUAN
-        // $pengajuan =  new PengajuanPengujian($regId);
-        // $_pengajuan = $pengajuan->verifikasi(6);
-        // \App\Repositories\ProsesPengajuan::make(6, $regId);
-        // // Notification::send($pengajuan->masterPengajuanPengujian->first()->users, new VerifikasiStafTeknisNotification($pengajuan->masterPengajuanPengujian->first()));
+        $pengajuan =  new PengajuanPengujian($regId);
+        $pengajuan->tolak($request->komentar);
 
-        // return dtcApiResponse(200, $_pengajuan);
+        $stafTeknis = \App\Models\User::stafTeknis();
+
+        foreach ($stafTeknis as $key => $value) {
+            Notification::send($value, new PengajuanDiTolakNotification($pengajuan->masterPengajuanPengujian->first()));
+        }
+
+        return dtcApiResponse(200, $pengajuan);
     }
 
     public function uploadBuktiTransaksi($regId, Request $request)

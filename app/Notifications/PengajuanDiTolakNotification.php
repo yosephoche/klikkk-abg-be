@@ -2,17 +2,18 @@
 
 namespace App\Notifications;
 
+use App\Mail\PengajuanDiTolakMail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
-use App\Mail\VerifikasiStafTeknisMail;
 
-class VerifikasiStafTeknisNotification extends Notification
+class PengajuanDiTolakNotification extends Notification
 {
     use Queueable;
 
     public $pengajuan;
+
     /**
      * Create a new notification instance.
      *
@@ -31,10 +32,7 @@ class VerifikasiStafTeknisNotification extends Notification
      */
     public function via($notifiable)
     {
-        if ($this->pengajuan->users->email_notification) {
-            return ['mail', 'database'];
-        }
-        return ['database'];
+        return ['mail','database'];
     }
 
     /**
@@ -45,7 +43,7 @@ class VerifikasiStafTeknisNotification extends Notification
      */
     public function toMail($notifiable)
     {
-        return (new VerifikasiStafTeknisMail($this->pengajuan));
+        return (new PengajuanDiTolakMail($this->pengajuan,$notifiable));
     }
 
     /**
@@ -57,11 +55,9 @@ class VerifikasiStafTeknisNotification extends Notification
     public function toArray($notifiable)
     {
         return [
-            'type' => 'message',
-            'label' => 'Pengujian' ,
-            'title' => 'Verifikasi Staf Teknis',
-            'path' => 'pengajuan/pengujian/view/'.$this->pengajuan->regId,
-            'body' => 'Selamat, permohonan pengujian kamu telah berubah dari verifikasi staf teknis ke verifikasi kepala bidang'
+            'type' => 'notification',
+            'title' => 'User telah menyetujui revisi pengajuan',
+            'body' => 'Pemohon dengan nomor registrasi pengajuan '.$this->pengajuan->regId .'telah menolak untuk melanjutkan ke proses selanjutnya',
         ];
     }
 }
