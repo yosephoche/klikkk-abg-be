@@ -97,6 +97,8 @@ Route::group( ['middleware' => ['json.response'],'namespace' => 'Api'], function
             Route::group(['prefix' => 'kepala-balai'], function(){
                 Route::get('/', 'KepalaBalaiController@index')->name('api.admin.kepala-balai.index');
                 Route::get('/{regId}/verifikasi', 'KepalaBalaiController@verifikasi')->name('api.admin.kepala-balai.verifikasi');
+                Route::get('/{regId}/disposisi', 'KepalaBalaiController@disposisi')->name('api.admin.kepala-balai.disposisi');
+                Route::get('/disposisi-all', 'KepalaBalaiController@disposisiAll')->name('api.admin.kepala-balai.disposisiAll');
                 Route::get('/show/{regId}', 'KepalaBalaiController@show')->name('api.admin.kepala-balai.index');
             });
 

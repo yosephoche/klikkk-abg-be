@@ -48,4 +48,27 @@ class KepalaBalai
         return dtcApiResponse(200, $_pengajuan);
 
     }
+
+    public static function disposisi($regId)
+    {
+        $pengajuan =  new PengajuanPengujian($regId);
+        $_pengajuan = $pengajuan->verifikasi(2);
+        \App\Repositories\ProsesPengajuan::make(2, $regId);
+
+        return dtcApiResponse(200, $_pengajuan);
+    }
+
+    public function disposisiAll($request)
+    {
+        $listPengajuan = $this->pengajuanPengujian->getListPengajuan($request,1);
+        foreach ($listPengajuan as $key => $value) {
+
+            $pengajuaPengujian = new PengajuanPengujian($value['nomor_pengajuan']);
+            $pengajuaPengujian->verifikasi(2);
+
+            \App\Repositories\ProsesPengajuan::make(2, $value['nomor_pengajuan']);
+        }
+
+        return dtcApiResponse(200, null, count($listPengajuan).' Pengajuan Telah berhasil di disposisikan');
+    }
 }

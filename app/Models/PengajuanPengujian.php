@@ -55,6 +55,9 @@ class PengajuanPengujian extends Model
     public function scopeTahap($query, $tahap)
     {
         if ((int)$tahap > 0) {
+            if ($tahap == 1) {
+                $tahap = auth('api')->user()->roles->first()->name == 'pengganti_kepala_balai'?2:1;
+            }
             return $query->where('tahap_pengajuan', '=', $tahap);
         }
         else{

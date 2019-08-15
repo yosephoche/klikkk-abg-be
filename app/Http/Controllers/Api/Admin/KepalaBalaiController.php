@@ -23,4 +23,16 @@ class KepalaBalaiController extends Controller
     {
         return KepalaBalai::verifikasi($regId);
     }
+
+    public function disposisi($regId)
+    {
+        return KepalaBalai::disposisi($regId);
+    }
+
+    public function disposisiAll(Request $request)
+    {
+        $kepalaBalai = new KepalaBalai();
+        return $kepalaBalai->disposisiAll($request);
+
+    }
 }
