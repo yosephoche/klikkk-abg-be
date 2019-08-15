@@ -35,4 +35,9 @@ class KepalaBalaiController extends Controller
         return $kepalaBalai->disposisiAll($request);
 
     }
+
+    public function riwayat(Request $request)
+    {
+        return KepalaBalai::riwayat($request);
+    }
 }

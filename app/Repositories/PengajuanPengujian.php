@@ -470,5 +470,25 @@ class PengajuanPengujian
         throw new PengajuanNotFoundException();
     }
 
+    public static function riwayat($tahap, $request)
+    {
+        $pengajuanPengujian = new \App\Models\PengajuanPengujian();
+
+        $pengajuanPengujian = $pengajuanPengujian->where('tahap_pengajuan','>',$tahap)->latest()->paginate(10);
+        $pengajuanPengujian->getCollection()->transform(function($value){
+            return [
+                'nomor_pengajuan' => $value->regId,
+                'nama_pemohon' => $value->nama_pemohon,
+                'tanggal_pengajuan' => prettyDate($value->created_at),
+                'tujuan_pengujian' => $value->tujuan_pengujian,
+                'avatar' => userAvatar($value->users->avatar)
+            ];
+
+        });
+
+        return $pengajuanPengujian;
+
+    }
+
 
 }

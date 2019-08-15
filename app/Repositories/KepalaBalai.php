@@ -71,4 +71,9 @@ class KepalaBalai
 
         return dtcApiResponse(200, null, count($listPengajuan).' Pengajuan Telah berhasil di disposisikan');
     }
+
+    public static function riwayat($request)
+    {
+        return dtcApiResponse(200, PengajuanPengujian::riwayat(1, $request));
+    }
 }

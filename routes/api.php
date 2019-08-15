@@ -96,6 +96,7 @@ Route::group( ['middleware' => ['json.response'],'namespace' => 'Api'], function
 
             Route::group(['prefix' => 'kepala-balai'], function(){
                 Route::get('/', 'KepalaBalaiController@index')->name('api.admin.kepala-balai.index');
+                Route::get('/riwayat', 'KepalaBalaiController@riwayat')->name('api.admin.kepala-balai.riwayat');
                 Route::get('/{regId}/verifikasi', 'KepalaBalaiController@verifikasi')->name('api.admin.kepala-balai.verifikasi');
                 Route::get('/{regId}/disposisi', 'KepalaBalaiController@disposisi')->name('api.admin.kepala-balai.disposisi');
                 Route::get('/disposisi-all', 'KepalaBalaiController@disposisiAll')->name('api.admin.kepala-balai.disposisiAll');
@@ -104,6 +105,7 @@ Route::group( ['middleware' => ['json.response'],'namespace' => 'Api'], function
 
             Route::group(['prefix' => 'staf-teknis'], function(){
                 Route::get('/', 'StafTeknisController@index')->name('api.admin.staf-teknis.index');
+                Route::get('/riwayat', 'StafTeknisController@riwayat')->name('api.admin.staf-teknis.riwayat');
                 Route::get('/show/{regId}', 'StafTeknisController@show')->name('api.admin.staf-teknis.show');
 
                 Route::get('/get-master-data', 'StafTeknisController@getMasterData')->name('api.admin.staf-teknis.get-master-data');
@@ -119,6 +121,7 @@ Route::group( ['middleware' => ['json.response'],'namespace' => 'Api'], function
 
             Route::group(['prefix' => 'kepala-bidang'], function(){
                 Route::get('/', 'KepalaBidangController@index')->name('api.admin.kepala-bidang.index');
+                Route::get('/riwayat', 'KepalaBidangController@riwayat')->name('api.admin.kepala-bidang.riwayat');
                 Route::get('/show/{regId}', 'KepalaBidangController@show')->name('api.admin.kepala-bidang.show');
                 Route::get('/{regId}/revisi-staf-teknis', 'KepalaBidangController@revisiStafTeknis')->name('api.admin.kepala-bidang.revisi-staf-teknis');
                 Route::get('/{regId}/verifikasi-pengajuan', 'KepalaBidangController@verifikasiPengajuan')->name('api.admin.kepala-bidang.verifikasi-pengajuan');
@@ -127,6 +130,7 @@ Route::group( ['middleware' => ['json.response'],'namespace' => 'Api'], function
 
             Route::group(['prefix' => 'keuangan'], function(){
                 Route::get('/', 'KeuanganController@index')->name('api.admin.keuangan.index');
+                Route::get('/riwayat', 'KeuanganController@riwayat')->name('api.admin.keuangan.riwayat');
                 Route::get('/show/{regId}', 'KeuanganController@show')->name('api.admin.keuangan.show');
                 Route::post('/{regId}/input-ebilling', 'KeuanganController@inputEbilling')->name('api.admin.keuangan.input-ebilling');
                 Route::get('/{regId}/konfirmasi-pembayaran', 'KeuanganController@konfirmasiPembayaran')->name('api.admin.keuangan.konfirmasi-pembayaran');

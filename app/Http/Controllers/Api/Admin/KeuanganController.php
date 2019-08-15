@@ -20,6 +20,11 @@ class KeuanganController extends Controller
         return dtcApiResponse(200, $daftarPengajuan);
     }
 
+    public function riwayat(Request $request)
+    {
+        return dtcApiResponse(200, PengajuanPengujian::riwayat(6, $request));
+    }
+
     public function inputEbilling($regId, Request $request)
     {
         $pengajuanPengujian = new PengajuanPengujian($regId);
