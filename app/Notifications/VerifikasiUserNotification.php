@@ -58,6 +58,7 @@ class VerifikasiUserNotification extends Notification
     {
         return [
             'type' => 'notification',
+            'label' => 'pengujian',
             'title' => 'verifikasi pengajuan oleh pemohon',
             'body' => 'Pengajuan baru dengan nomor registrasi '.$this->pengajuan->regId.' Menunggu verifikasi dari anda'
         ];
