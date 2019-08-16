@@ -164,7 +164,7 @@ class PengajuanPengujian
             $i++;
         }
 
-        DB::transaction(function() use($masterPengajuanPengujian, $detailPengajuanPengujian, $prosesPengajuan) {
+        DB::transaction(function() use($masterPengajuanPengujian, $detailPengajuanPengujian, $prosesPengajuan, $status) {
             $masterPengajuanPengujian->status = $status;
             $masterPengajuanPengujian->save();
 
