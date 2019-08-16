@@ -160,6 +160,7 @@ Route::group( ['middleware' => ['json.response'],'namespace' => 'Api'], function
                     Route::get('/', 'PengujianController@index')->name('api.user.pengajuan.pengujian.index');
                     Route::get('/add', 'PengujianController@add')->name('api.user.pengajuan.pegujian.add');
                     Route::post('/store', 'PengujianController@store')->name('api.user.pengajuan.pengujian.store');
+                    Route::post('/store', 'PengujianController@draft')->name('api.user.pengajuan.pengujian.draft');
 
                     Route::get('/get-master-data', 'PengujianController@getMasterData')->name('api.user.pengajuan.pengujian.get-master-data');
                     Route::post('/{regId}/update-data-pemohon', 'PengujianController@updateDataPemohon')->name('api.user.pengajuan.pengujian.update-data-pemohon');

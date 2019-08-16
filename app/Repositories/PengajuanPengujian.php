@@ -139,7 +139,7 @@ class PengajuanPengujian
         return dtcApiResponse(200, $jenisPengujian);
     }
 
-    public function     store($data)
+    public function store($data, $status = 'aktif')
     {
         $masterPengajuanPengujian = $this->masterPengajuanPengujian;
 
@@ -165,7 +165,7 @@ class PengajuanPengujian
         }
 
         DB::transaction(function() use($masterPengajuanPengujian, $detailPengajuanPengujian, $prosesPengajuan) {
-            $masterPengajuanPengujian->status = 'aktif';
+            $masterPengajuanPengujian->status = $status;
             $masterPengajuanPengujian->save();
 
             $masterPengajuanPengujian->detailPengajuanPengujian()->createmany($detailPengajuanPengujian);

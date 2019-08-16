@@ -42,6 +42,22 @@ class PengujianController extends Controller
         return dtcApiResponse(200, $pengajuanPengujian);
     }
 
+    public function draft(Request $request)
+    {
+        $pengajuanPengujian = new PengajuanPengujian();
+        $pengajuanPengujian = $pengajuanPengujian->store($request,'draft');
+
+        $kepala_balai = new \App\Models\User();
+
+        $kepala_balai = $kepala_balai->whereHas('roles', function($q){
+            $q->where('name', 'kepala_balai');
+        })->first();
+
+        Notification::send($kepala_balai, new PengajuanBaruNotification($pengajuanPengujian['data_pemohon']['regId']));
+
+        return dtcApiResponse(200, $pengajuanPengujian);
+    }
+
     public function updateDataPemohon($regId, Request $request)
     {
         $pengajuan = new PengajuanPengujian($regId);
