@@ -46,7 +46,7 @@ class notificationResource extends JsonResource
                 'type' => $this->data['type'],
                 'label' => $this->data['label'],
                 'title' => $this->data['title'],
-                'body' => $this->data['replier']." Memberi Balasan Pada Komentar Anda Pada Thread ".$this->data['judulThread'], 
+                'body' => $this->data['body'], 
             ];
         }
     }
