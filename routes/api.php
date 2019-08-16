@@ -159,6 +159,7 @@ Route::group( ['middleware' => ['json.response'],'namespace' => 'Api'], function
 
                     Route::get('/', 'PengujianController@index')->name('api.user.pengajuan.pengujian.index');
                     Route::get('/add', 'PengujianController@add')->name('api.user.pengajuan.pegujian.add');
+                    Route::get('/view/{regId}', 'PengujianController@view')->name('api.user.pengajuan.pegujian.view');
                     Route::post('/store', 'PengujianController@store')->name('api.user.pengajuan.pengujian.store');
                     Route::post('/draft', 'PengujianController@draft')->name('api.user.pengajuan.pengujian.draft');
 
