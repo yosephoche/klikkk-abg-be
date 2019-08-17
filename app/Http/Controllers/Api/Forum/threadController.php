@@ -6,7 +6,7 @@ use Auth;
 use App\Models\Thread;
 use Illuminate\Support\Str;
 use App\Models\Galery;
-// use Illuminate\Http\Request;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Repositories\threadRepository;
 use App\Repositories\Traits\forumTrait;
@@ -36,6 +36,17 @@ class threadController extends Controller
         $data = $this->thread->getAllThread(10);
         $response = threadResource::collection($data);
         return $this->collectionHttpResponse($response,$data);
+    }
+
+    public function search(Request $request)
+    {
+        if($request->has('key'))
+        {
+            $key = $request->key;
+            $data = $this->thread->searchThread($key);
+            $response = threadResource::collection($data);
+            return $this->collectionHttpResponse($response,$data);
+        }
     }
 
     

@@ -56,6 +56,7 @@ class PengajuanDiTolakNotification extends Notification
     {
         return [
             'type' => 'notification',
+            'label' => 'pengujian',
             'title' => 'User telah menyetujui revisi pengajuan',
             'body' => 'Pemohon dengan nomor registrasi pengajuan '.$this->pengajuan->regId .'telah menolak untuk melanjutkan ke proses selanjutnya',
         ];

@@ -56,6 +56,7 @@ class UploadBuktiTransaksiNotification extends Notification
     {
         return [
             'type' => 'notification',
+            'label' => 'pengujian',
             'title' => 'Upload bukti transaksi',
             'body' => 'Pemohon dengan nomor registrasi '.$this->pengajuan->regId.' telah mengupload bukti transaksi pembayaran'
         ];

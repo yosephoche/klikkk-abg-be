@@ -57,6 +57,7 @@ class PengajuanDiSetujuiNotification extends Notification
     {
         return [
             'type' => 'notification',
+            'label' => 'pengujian',
             'title' => 'User telah menyetujui revisi pengajuan',
             'body' => 'Pemohon telah menyetujui revisi pengajuan dengan nomor registrasi '.$this->pengajuan->regId,
         ];

@@ -56,6 +56,7 @@ class PengajuanBaruNotification extends Notification
     {
         return [
             'type' => 'notification',
+            'label' => 'pengujian',
             'title' => 'Pengajuan Baru',
             'body' => 'Pengajuan baru dengan nomor registrasi '.$this->pengajuan.' Menunggu verifikasi dari anda'
         ];
