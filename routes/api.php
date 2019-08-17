@@ -200,6 +200,11 @@ Route::group( ['middleware' => ['json.response'],'namespace' => 'Api'], function
                 Route::get('/', 'RiwayatController@index')->name('api.user.riwayat.index');
             });
 
+            Route::group(['prefix'=>'survey'], function(){
+                Route::get('/show-survey', 'SurveyController@showSurvey');
+                Route::post('/submit-survey', 'SurveyController@store');
+            });
+
         });
         // Route FOr Forum
         Route::group(['prefix' => 'forum', 'namespace' => 'Forum'], function(){

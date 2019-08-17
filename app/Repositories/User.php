@@ -47,6 +47,7 @@ class User extends BaseRepository
                         'pekerjaan' => $user->pekerjaan,
                         'instansi' => $user->instansi,
                         'jenis_akun' => $jenis_akun,
+                        'survey'=> count($user->survey) > 0?true:false,
                         'avatar' => $user->avatar?asset('storage/'.$user->avatar):null,
                         'role' => $user->roles()->get()->map(function($value){ return $value->name; })
                     ];

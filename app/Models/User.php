@@ -61,6 +61,6 @@ class User extends Authenticatable
 
     public function survey()
     {
-        return $this->belongsToMany('App\Models\SurveyQuestion','survey_results','user_id','question_id');
+        return $this->belongsToMany('App\Models\SurveyQuestion','survey_results','user_id','question_id')->withTimestamps();
     }
 }
