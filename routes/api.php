@@ -204,6 +204,7 @@ Route::group( ['middleware' => ['json.response'],'namespace' => 'Api'], function
             Route::group(['prefix'=>'threads'], function(){
                 Route::get('/','threadController@index')->name('thread_index');
                 Route::get('/popular','threadController@popular')->name('popular.thread');
+                Route::get('/search','threadController@search')->name('search.thread');
                 Route::get('/notification','threadController@notification')->name('notifikasi.thread');
                 Route::post('/notification/read/{id}','threadController@readNotification')->name('notifikasi.read');
                 Route::get('/{id}','threadController@show')->name('thread.detail');
