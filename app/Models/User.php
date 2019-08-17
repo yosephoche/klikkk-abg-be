@@ -58,4 +58,9 @@ class User extends Authenticatable
     {
         return (new self)->whereHas('roles' , function($q){ $q->where('name', 'staf_teknis'); })->get();
     }
+
+    public function survey()
+    {
+        return $this->belongsToMany('App\Models\SurveyQuestion','survey_results','user_id','question_id')->withTimestamps();
+    }
 }
