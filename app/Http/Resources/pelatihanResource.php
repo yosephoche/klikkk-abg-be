@@ -22,6 +22,7 @@ class pelatihanResource extends JsonResource
             'email' => $this->email,
             'instansi' => $this->instansi,
             'telepon' => $this->telepon,
+            'komentar' => $this->komentar,
             'jenisPelatihan' => $this->jenisPelatihan,
         ];
     }

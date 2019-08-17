@@ -68,7 +68,7 @@ class pelatihanNotification extends Notification
             'type' => "notification",
             'label' => "Pengajuan",
             'title' => "Permohonan Pengajuan Pelatihan",
-            'path' => route('show.pelatihan',['id' => $this->thread->id]),
+            // 'path' => route('show.pelatihan',['id' => $this->data->id]),
         ];
     }
 }

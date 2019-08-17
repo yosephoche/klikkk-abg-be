@@ -58,6 +58,7 @@ class pelatihanController extends Controller
         $data->email = $request->email;
         $data->instansi = $request->instansi;
         $data->telepon = $request->telepon;
+        $data->komentar = $request->komentar;
         $data->save();
         $data->jenisPelatihan()->sync($request->jenisPelatihan);
 
@@ -123,6 +124,7 @@ class pelatihanController extends Controller
                 $data->email = $request->email;
                 $data->instansi = $request->instansi;
                 $data->telepon = $request->telepon;
+                $data->komentar = $request->komentar;
                 $data->save();
                 $data->jenisPelatihan()->sync($request->jenisPelatihan);
 
