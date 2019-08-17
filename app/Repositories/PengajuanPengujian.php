@@ -165,7 +165,7 @@ class PengajuanPengujian
         }
 
         DB::transaction(function() use($masterPengajuanPengujian, $detailPengajuanPengujian, $prosesPengajuan, $status) {
-            $masterPengajuanPengujian->status = $status;
+            $masterPengajuanPengujian->status_pengajuan = $status;
             $masterPengajuanPengujian->save();
 
             $masterPengajuanPengujian->detailPengajuanPengujian()->createmany($detailPengajuanPengujian);

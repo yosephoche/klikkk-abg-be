@@ -42,28 +42,28 @@ class RoleSeeder extends Seeder
         $staffTeknis->description = 'Staff teknis k3';
         $staffTeknis->save();
 
-        // $kepalaBagian = new Role();
-        // $kepalaBagian->name = 'kepala_bagian';
-        // $kepalaBagian->display_name = 'Kepala Bagian K3';
-        // $kepalaBagian->description = 'Kepala Bagian K3';
-        // $kepalaBagian->save();
+        $kepalaBagian = new Role();
+        $kepalaBagian->name = 'kepala_bagian';
+        $kepalaBagian->display_name = 'Kepala Bagian K3';
+        $kepalaBagian->description = 'Kepala Bagian K3';
+        $kepalaBagian->save();
 
-        // $keuangan = new Role();
-        // $keuangan->name = 'keuangan';
-        // $keuangan->display_name = 'Staf Keuangan K3';
-        // $keuangan->description = 'Bagian keuangan k3';
-        // $keuangan->save();
+        $keuangan = new Role();
+        $keuangan->name = 'keuangan';
+        $keuangan->display_name = 'Staf Keuangan K3';
+        $keuangan->description = 'Bagian keuangan k3';
+        $keuangan->save();
 
-        // $kepalaPenguji = new Role();
-        // $kepalaPenguji->name = 'kepala_penguji';
-        // $kepalaPenguji->display_name = 'Kepala Penguji K3';
-        // $kepalaPenguji->description = 'Kepala Penguji teknis k3';
-        // $kepalaPenguji->save();
+        $kepalaPenguji = new Role();
+        $kepalaPenguji->name = 'kepala_penguji';
+        $kepalaPenguji->display_name = 'Kepala Penguji K3';
+        $kepalaPenguji->description = 'Kepala Penguji teknis k3';
+        $kepalaPenguji->save();
 
-        // $staffPenguji = new Role();
-        // $staffPenguji->name = 'staf_penguji';
-        // $staffPenguji->display_name = 'Staf Penguji K3';
-        // $staffPenguji->description = 'Staf K3 yang melakukan pengujian';
-        // $staffPenguji->save();
+        $staffPenguji = new Role();
+        $staffPenguji->name = 'staf_penguji';
+        $staffPenguji->display_name = 'Staf Penguji K3';
+        $staffPenguji->description = 'Staf K3 yang melakukan pengujian';
+        $staffPenguji->save();
     }
 }
