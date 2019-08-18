@@ -73,6 +73,10 @@ trait forumTrait
         }
     }
 
+    public function successGalery($filename){
+        return dtcApiResponse(200, url('upload/images/'.$filename),'Success');
+    }
+    
     public function success()
     {
         // return response([

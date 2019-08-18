@@ -40,12 +40,12 @@ class galleryController extends Controller
      */
     public function store(Request $request)
     {
+        
         if($request->hasFile('images'))
         {
-            foreach ($request->images as $image) {
                 $galery = new Galery;
-                $uploadFile = $image;
-                $filename = time()."."."images".".".$uploadFile->getClientOriginalExtension();
+                $uploadFile = $request->images;
+                $filename = time()."images".".".$uploadFile->getClientOriginalExtension();
                 $destination = 'upload/images';
                 $uploadFile->move(public_path($destination),$filename);
                 $galery->file = $filename;
@@ -54,14 +54,12 @@ class galleryController extends Controller
                 $galery->comment_id = $request->comment_id;
                 $galery->type = "image";
                 $galery->save();
-            }
         }
 
         if($request->hasFile('videos'))
         {
-            foreach ($request->videos as $video) {
                 $galery = new Galery;
-                $uploadFile = $video;
+                $uploadFile = $request->videos;
                 $filename = time()."video".".".$uploadFile->getClientOriginalExtension();
                 $destination = 'upload/videos';
                 $uploadFile->move(public_path($destination),$filename);
@@ -71,10 +69,9 @@ class galleryController extends Controller
                 $galery->comment_id = $request->comment_id;
                 $galery->type = "video";
                 $galery->save();
-            }
         }
 
-        return $this->success();
+        return $this->successGalery($filename);
     }
 
     /**
