@@ -442,15 +442,16 @@ class PengajuanPengujian
             });
         });
 
-        if (isset($pengajuan['aktif']) && isset($pengajuan['tidak aktif'])) {
-            $daftarPengajuan = collect(array_merge($pengajuan['aktif']->toArray(), $pengajuan['tidak aktif']->toArray()));
-            $daftarPengajuan = $daftarPengajuan->sortByDesc('tanggal_pengajuan');
-        }
-        else{
-            $daftarPengajuan = isset($pengajuan['aktif'])?$pengajuan['aktif']->sortByDesc('tanggal_pengajuan')->values():null;
-        }
+        // dd($pengajuan);
 
-        $daftarDraft = isset($pengajuan['draft'])?$pengajuan['draft']->toArray():null;
+        $aktif = isset($pengajuan['aktif'])?$pengajuan['aktif']->toArray():[];
+        $tidakAktif = isset($pengajuan['tidak aktif'])?$pengajuan['tidak aktif']->toArray():[];
+        $draft = isset($pengajuan['draft'])?$pengajuan['draft']->toArray():null;
+        $tolak = isset($pengajuan['tolak'])?$pengajuan['tolak']->toArray():[];
+        $selesai = isset($pengajuan['selesai'])?$pengajuan['selesai']->toArray():[];
+
+        $daftarPengajuan = collect(array_merge($aktif,$tidakAktif,$tolak,$selesai))->sortByDesc('tanggal_pengajuan');
+        $daftarDraft = collect($draft)->sortByDesc('tanggal_pengajuan');
 
         return [
             'riwayat' => $daftarPengajuan,
