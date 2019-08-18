@@ -4,8 +4,11 @@ namespace App\Http\Controllers\Api\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Notifications\PengajuanSelesaiNotification;
+use App\Notifications\ProgresPengujianNotification;
 use App\Repositories\Pelaksanaan;
 use App\Repositories\PengajuanPengujian;
+use Illuminate\Support\Facades\Notification;
 
 class PersonelK3Controller extends Controller
 {
@@ -28,6 +31,9 @@ class PersonelK3Controller extends Controller
     {
         $pelaksanaan = new Pelaksanaan($regId);
         $pelaksanaan->mulai($tahap);
+
+        Notification::send($pelaksanaan->pengajuanPengujian->first()->users, new ProgresPengujianNotification($pelaksanaan->pengajuanPengujian->first()));
+
         return dtcApiResponse(200, $pelaksanaan->pengajuanPengujian);
     }
 
@@ -35,6 +41,11 @@ class PersonelK3Controller extends Controller
     {
         $pelaksanaan = new Pelaksanaan($regId);
         $pelaksanaan->selesai($tahap);
+
+        if ($tahap == 19) {
+            Notification::send($pelaksanaan->pengajuanPengujian->first()->users, new PengajuanSelesaiNotification($pelaksanaan->pengajuanPengujian->first()));
+        }
+
         return dtcApiResponse(200, $pelaksanaan->pengajuanPengujian);
     }
 }
