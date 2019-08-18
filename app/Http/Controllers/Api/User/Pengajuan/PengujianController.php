@@ -40,9 +40,12 @@ class PengujianController extends Controller
 
         $kepala_balai = $kepala_balai->whereHas('roles', function($q){
             $q->where('name', 'kepala_balai');
-        })->first();
+        })->get();
 
-        Notification::send($kepala_balai, new PengajuanBaruNotification($pengajuanPengujian['data_pemohon']['regId']));
+        foreach ($kepala_balai as $key => $value) {
+            Notification::send($value, new PengajuanBaruNotification($pengajuanPengujian['data_pemohon']['regId']));
+        }
+
 
         return dtcApiResponse(200, $pengajuanPengujian);
     }
