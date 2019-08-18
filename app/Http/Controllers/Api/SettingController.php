@@ -11,8 +11,8 @@ class SettingController extends Controller
     public function changePassword(Request $request)
     {
         $user = auth('api')->user();
-        if (Hash::make($request->old_password) == $user->password ) {
-            $user->password = $request->new_password;
+        if (Hash::check($request->old_password, $user->password)) {
+            $user->password = Hash::make($request->new_password);
             $user->save();
         }
         else{
