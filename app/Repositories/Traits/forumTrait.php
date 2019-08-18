@@ -76,14 +76,9 @@ trait forumTrait
     public function successGalery($filename){
         return dtcApiResponse(200, url('upload/images/'.$filename),'Success');
     }
-    
+
     public function success()
     {
-        // return response([
-        //     'message'=>'Success',
-        //     'kode'=>200
-        // ], 200);
-
         return dtcApiResponse(200,null,'Success');
     }
     

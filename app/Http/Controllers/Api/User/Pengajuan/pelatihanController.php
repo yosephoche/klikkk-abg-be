@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\User\Pengajuan;
 use Auth;
 use App\Models\User;
 use App\Models\pengajuanPelatihan;
+use App\Http\Requests\pelatihanRequest;
 use App\Models\JenisPelatihan;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -49,7 +50,7 @@ class pelatihanController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(pelatihanRequest $request)
     {
         $data = new pengajuanPelatihan;
         $data->user_id = Auth::user()->id;
@@ -112,7 +113,7 @@ class pelatihanController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(pelatihanRequest $request, $id)
     {
         $data = pengajuanPelatihan::find($id);
         if(isset($data))
