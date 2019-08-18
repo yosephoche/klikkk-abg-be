@@ -262,6 +262,10 @@ Route::group( ['middleware' => ['json.response'],'namespace' => 'Api'], function
 
             });
         });
+
+        Route::group(['prefix' => 'setting'], function(){
+            Route::post('/change-password', 'SettingController@changePassword');
+        });
     });
 
 

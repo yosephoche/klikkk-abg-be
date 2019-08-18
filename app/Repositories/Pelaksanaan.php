@@ -146,6 +146,12 @@ class Pelaksanaan
             if ($prosesPengajuan = $prosesPengajuan->where('tahap_pengajuan',$tahap)->first()) {
                 $prosesPengajuan->tanggal_selesai = \Carbon\Carbon::now();
                 $prosesPengajuan->save();
+
+                if ($tahap == 19) {
+                    $pengajuanPengujian->status_pengajuan = 'selesai';
+                    $pengajuanPengujian->save();
+                }
+
                 return $pengajuanPengujian;
             }else{
                 throw new DataNotFoundException('Proses pengajuan tidak ditemukan');
