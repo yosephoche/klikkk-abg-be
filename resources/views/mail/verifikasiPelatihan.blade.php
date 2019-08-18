@@ -168,7 +168,7 @@
             <p>Terima kasih telah menghubungi kami untuk mengikuti pelatihan.</p><br>
             <p>Saat ini nomer kontak anda telah kami daftar dan akan kami hubungi begitu pelatihan berikutnya kami adakan. Terima kasih.</p>
 
-            <button type="button" class="btn">Konfirmasi</button>
+          
           </div>
 
         </div>
