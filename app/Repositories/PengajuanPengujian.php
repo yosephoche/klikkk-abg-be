@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Resources\PengajuanPengujian as PengajuanPengujianResource;
 use Illuminate\Database\Eloquent\Builder;
 use App\Exceptions\PengajuanNotFoundException;
+use App\Exceptions\ProsesDoubleException;
 use App\Repositories\Traits\UploadTrait;
 
 class PengajuanPengujian
@@ -377,6 +378,14 @@ class PengajuanPengujian
     {
         if ($this->masterPengajuanPengujian instanceof Builder) {
             $pengajuan = $this->masterPengajuanPengujian->first();
+            // cek proses sudah ada
+            $proses = $pengajuan->prosesPengajuan->sortByDesc('tanggal_mulai');
+            if ($proses = $proses->first()) {
+                if($proses->tahap_pengajuan == $tahap){
+                    throw new ProsesDoubleException();
+                }
+            }
+
             $pengajuan->tahap_pengajuan = $tahap;
             $pengajuan->save;
 

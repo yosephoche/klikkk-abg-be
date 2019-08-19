@@ -98,7 +98,6 @@ class PengujianController extends Controller
     {
         $pengajuan =  new PengajuanPengujian($regId);
 
-
         $_pengajuan = $pengajuan->verifikasi(3);
         \App\Repositories\ProsesPengajuan::make(3, $regId);
 
