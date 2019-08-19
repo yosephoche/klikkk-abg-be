@@ -34,11 +34,11 @@ class SettingController extends Controller
             {
                 $user->email_notification = '0';
                 $user->save();
-                return dtcApiResponse(200,'true','Email Notification Di Nonaktifkan');
+                return dtcApiResponse(200,'false','Email Notification Di Nonaktifkan');
             } else {
                 $user->email_notification = '1';
                 $user->save();
-                return dtcApiResponse(200,'false','Email Notification Di aktifkan');
+                return dtcApiResponse(200,'true','Email Notification Di aktifkan');
             }
         } else {
             return dtcApiResponse(404, null,'User Tidak Di temukan');        
