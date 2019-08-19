@@ -152,14 +152,14 @@
     <div class="container">
       <header>
         <div class="wrap-logo">
-          <img src="{{ $message->embed('storage/images/logo.png') }}" class="logo">
+          <img src="{{asset('storage/images/logo.png') }}" class="logo">
         </div>
       </header>
 
       <section>
         <div class="card">
           <div class="wrap-avatar">
-            <img src="{{$message->embed('storage/images/bs_konfirmasi.png') }}">
+            <img src="{{asset('storage/images/bs_konfirmasi.png') }}">
           </div>
       
           <div class="wrap-title">
@@ -190,9 +190,9 @@
 
       <footer>
         <div class="sosmed">
-          <img src="{{  $message->embed('storage/images/ic_fb.png') }}">
-          <img src="{{  $message->embed('storage/images/ic_ig.png') }}" class="ig">
-          <img src="{{  $message->embed('storage/images/ic_twit.png') }}">
+          <img src="{{ asset('storage/images/ic_fb.png') }}">
+          <img src="{{ asset('storage/images/ic_ig.png') }}" class="ig">
+          <img src="{{ asset('storage/images/ic_twit.png') }}">
         </div>
 
         <div class="about">

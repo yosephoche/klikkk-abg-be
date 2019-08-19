@@ -8,7 +8,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use App\Mail\trainingNotification as Mailable;
 
-class pelatihanNotification extends Notification
+class pelatihanNotification extends Notification implements ShouldQueue
 {
     use Queueable;
     public $data;

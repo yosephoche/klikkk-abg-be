@@ -63,7 +63,7 @@ class pelatihanController extends Controller
         $data->save();
         $data->jenisPelatihan()->sync($request->jenisPelatihan);
 
-        Mail::to($data->email)->send(new verifikasiPelatihan($data));
+        Mail::to($data->email)->queue(new verifikasiPelatihan($data));
 
         $staff = User::whereHas('roles', function($query){
             $query->where('name','staf_teknis');
