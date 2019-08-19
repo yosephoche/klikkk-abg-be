@@ -58,6 +58,7 @@ class PenunjukanPersonelNotification extends Notification
         return [
             'type' => 'message',
             'label' => 'Pengujian',
+            'nomor_registrasi' => $this->pengajuan->regId,
             'title' => 'Penunjukan Personel Pengujian',
             'body' => 'Selamat, pengujian anda akan segera di laksanakan',
             'path' => null

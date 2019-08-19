@@ -59,6 +59,7 @@ class VerifikasiAkhirNotification extends Notification
         return [
             'type' => 'message',
             'label' => 'pengujian',
+            'nomor_registrasi' => $this->pengajuan->regId,
             'title' => 'Update status pengujian',
             'path' => null,
             'body' => 'Kepala bidang kami telah menunjuk personel untuk melakukan pengujian.'
