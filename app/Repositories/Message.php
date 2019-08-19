@@ -19,6 +19,7 @@ class Message
                 'tanggal' => prettyDate($value->created_at),
                 'label' => $value->data['label'],
                 'body' => $value->data['body'],
+                'nomor_registrasi' => isset($value['nomor_registrasi'])?$value['nomor_registrasi']:null,
                 'path' => isset($value->data['path'])?$value->data['path']:null,
             ];
         });
