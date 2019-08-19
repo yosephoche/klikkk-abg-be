@@ -49,5 +49,15 @@ class notificationResource extends JsonResource
                 'body' => $this->data['body'], 
             ];
         }
+
+        if( $this->data['label'] == "Pengajuan")
+        {
+            return [
+                'id' => $this->id,
+                'type' => $this->data['type'],
+                'label' => $this->data['label'],
+                'title' => $this->data['title'],
+            ];
+        }
     }
 }
