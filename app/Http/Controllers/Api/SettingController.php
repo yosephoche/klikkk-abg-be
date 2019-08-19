@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\Api;
 
+use Auth;
 use Illuminate\Http\Request;
+use App\Models\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 
@@ -20,5 +22,26 @@ class SettingController extends Controller
         }
 
         return dtcApiResponse(200, null,'Password berhasil di ganti');
+    }
+
+
+    public function emailNotification(Request $request)
+    {
+        $user = User::find(Auth::user()->id);
+        if(isset($user))
+        {
+            if($user->email_notification == '1')
+            {
+                $user->email_notification = '0';
+                $user->save();
+                return dtcApiResponse(200,'true','Email Notification Di Nonaktifkan');
+            } else {
+                $user->email_notification = '1';
+                $user->save();
+                return dtcApiResponse(200,'false','Email Notification Di aktifkan');
+            }
+        } else {
+            return dtcApiResponse(404, null,'User Tidak Di temukan');        
+        }
     }
 }
