@@ -39,7 +39,7 @@ class notificationResource extends JsonResource
             ];
         }
 
-        if($this->data['label'] == "pengujian")
+        if($this->data['label'] == "pengujian" || $this->data['label'] == "pengajuan")
         {
             return [
                 'id' => $this->id,
