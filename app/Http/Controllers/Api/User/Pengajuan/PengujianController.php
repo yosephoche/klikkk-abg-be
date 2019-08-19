@@ -103,9 +103,12 @@ class PengujianController extends Controller
 
         $staf_teknis = $staf_teknis->whereHas('roles', function($q){
             $q->where('name', 'staf_teknis');
-        })->first();
+        })->get();
 
-        Notification::send($staf_teknis, new VerifikasiUserMail($pengajuan->masterPengajuanPengujian->first(),$staf_teknis));
+        foreach ($staf_teknis as $key => $value) {
+            Notification::send($value, new VerifikasiUserMail($pengajuan->masterPengajuanPengujian->first(),$staf_teknis));
+        }
+
 
         return dtcApiResponse(200, $_pengajuan);
     }
