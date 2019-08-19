@@ -1,7 +1,7 @@
 <?php
-    
+
 namespace App\Repositories;
-    
+
 use App\Models\Thread;
 use App\Models\User;
 
@@ -16,15 +16,15 @@ class threadRepository
         $this->thread = $thread;
     }
 
-    
+
     public function getAllThread($perPage)
     {
-        return $this->thread->orderBY('created_at','DESC')->paginate($perPage);
+        return $this->thread->orderBy('created_at','DESC')->paginate($perPage);
     }
 
     public function searchThread($key)
     {
-        return $this->thread->where('subject','like',"%$key%")->paginate(10);
+        return $this->thread->where('subject','like',"%$key%")->orderBy('created_at','DESC')->paginate(10);
     }
 
     public function findBySlug($slug)
