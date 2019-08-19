@@ -23,6 +23,10 @@ class Message
             ];
         });
 
+        foreach ($this->user->unreadNotifications as $notification) {
+            $notification->markAsRead();
+        }
+
         return $message->values()->toArray();
 
     }
