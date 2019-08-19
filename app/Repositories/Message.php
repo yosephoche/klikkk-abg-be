@@ -14,7 +14,7 @@ class Message
 
     public function index()
     {
-        $message = $this->user->unreadNotifications()->get()->where('data.type','message')->sortByDesc('created_at')->map(function($value){
+        $message = $this->user->notifications()->get()->where('data.type','message')->sortByDesc('created_at')->map(function($value){
             return [
                 'tanggal' => prettyDate($value->created_at),
                 'label' => $value->data['label'],
