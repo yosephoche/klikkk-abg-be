@@ -39,7 +39,7 @@ class notificationResource extends JsonResource
             ];
         }
 
-        if($this->data['label'] == "pengujian" || $this->data['label'] == "Pengajuan")
+        if($this->data['label'] == "pengujian")
         {
             return [
                 'id' => $this->id,
@@ -47,6 +47,16 @@ class notificationResource extends JsonResource
                 'label' => $this->data['label'],
                 'title' => $this->data['title'],
                 'body' => $this->data['body'], 
+            ];
+        }
+
+        if( $this->data['label'] == "Pengajuan")
+        {
+            return [
+                'id' => $this->id,
+                'type' => $this->data['type'],
+                'label' => $this->data['label'],
+                'title' => $this->data['title'],
             ];
         }
     }
