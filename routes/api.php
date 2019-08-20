@@ -109,6 +109,7 @@ Route::group( ['middleware' => ['json.response'],'namespace' => 'Api'], function
                 Route::get('/', 'StafTeknisController@index')->name('api.admin.staf-teknis.index');
                 Route::get('/riwayat', 'StafTeknisController@riwayat')->name('api.admin.staf-teknis.riwayat');
                 Route::get('/show/{regId}', 'StafTeknisController@show')->name('api.admin.staf-teknis.show');
+                Route::get('/pelatihan/show/{id}','StafTeknisController@showPelatihan')->name('api.admin.staf-teknis.showPelatihan');
 
                 Route::get('/get-master-data', 'StafTeknisController@getMasterData')->name('api.admin.staf-teknis.get-master-data');
                 Route::post('/{regId}/update-data-pemohon', 'StafTeknisController@updateDataPemohon')->name('api.admin.staf-teknis.update-data-pemohon');

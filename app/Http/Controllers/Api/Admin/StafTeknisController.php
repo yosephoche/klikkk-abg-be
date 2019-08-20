@@ -5,17 +5,38 @@ namespace App\Http\Controllers\Api\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Repositories\PengajuanPengujian;
+use App\Models\pengajuanPelatihan;
 use Illuminate\Support\Facades\Notification;
 use App\Notifications\VerifikasiStafTeknisNotification;
+use App\Http\Resources\pelatihanResource;
 
 class StafTeknisController extends Controller
 {
     public function index(Request $request)
     {
         $pengajuanPengujian = new PengajuanPengujian();
-        $daftarPengajuan = $pengajuanPengujian->getListPengajuan($request, $request->filter);
 
-        return dtcApiResponse(200, $daftarPengajuan);
+        if($request->filter == 'pelatihan'){
+            $pengajuanPelatihan = pengajuanPelatihan::orderBy('id','desc')->paginate(10);
+            $data = $pengajuanPelatihan;
+        } else {
+            $daftarPengajuan = $pengajuanPengujian->getListPengajuan($request, $request->filter);
+            $data = $daftarPengajuan;
+        }
+        return dtcApiResponse(200, $data);
+    }
+
+    public function showPelatihan($id)
+    {
+        $data = pengajuanPelatihan::find($id);
+
+        if(isset($data))
+        {
+            $response = new pelatihanResource($data);
+            return dtcApiResponse(200, $response);
+        } else {
+            return dtcApiResponse(404,'Not Found','Pengajuan Pelatihan TIdak Di temukan');
+        }
     }
 
     public function riwayat(Request $request)

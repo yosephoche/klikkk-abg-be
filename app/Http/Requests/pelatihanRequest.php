@@ -33,6 +33,7 @@ class pelatihanRequest extends FormRequest
     {
         return [
             'email.email' => 'Please Provide A Valid Email Format',
+            'email.code' => '422'
         ];
     }
 }
