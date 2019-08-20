@@ -93,6 +93,7 @@ Route::group( ['middleware' => ['json.response'],'namespace' => 'Api'], function
                 });
 
                 Route::resource('survey', 'SurveyController');
+                Route::resource('jenis-akun', 'JenisAkunController');
 
                 Route::group(['prefix' => 'hasil-survey'], function(){
                     Route::get('/', 'HasilSurveyController@index');
