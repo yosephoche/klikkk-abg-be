@@ -11,6 +11,11 @@ class SurveyQuestion extends Model
 
     public function user()
     {
-        return $this->belongsToMany('App\Models\User', 'survey_results','question_id','user_id');
+        return $this->belongsToMany('App\Models\User', 'survey_results','question_id','user_id')->withPivot('answer');
+    }
+
+    public function surveyResult()
+    {
+        return $this->hasMany('App\Models\SurveyResult', 'question_id','id');
     }
 }
