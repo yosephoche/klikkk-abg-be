@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\Admin\MasterData;
 
+use App\Exceptions\DataNotFoundException;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\SurveyQuestion;
@@ -29,6 +30,10 @@ class HasilSurveyController extends Controller
     public function show($questionId)
     {
         $survey = SurveyQuestion::where('id' ,$questionId);
+
+        if ($survey->with(['user','surveyResult'])->first() == 0) {
+            throw new DataNotFoundException('Hasil survey tidak di temukan');
+        }
 
         $survey = $survey->with(['user','surveyResult'])->first();
         $result =
