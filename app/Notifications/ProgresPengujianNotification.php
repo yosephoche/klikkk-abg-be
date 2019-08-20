@@ -64,6 +64,7 @@ class ProgresPengujianNotification extends Notification
         return [
             'type' => 'message',
             'label' => 'pengujian',
+            'nomor_registrasi' => $this->pengajuan->regId,
             'title' => 'Update Progress Pengujian',
             'body' => 'Selamat, Pengujian anda dengan nomor registrasi '.$this->pengajuan->regId.' sudah berubah status dari '.$this->progressBefore->nama.' ke '.$this->progressNow->nama,
             'path' => null

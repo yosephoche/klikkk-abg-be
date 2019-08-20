@@ -12,6 +12,7 @@ use App\Mail\VerifikasiUserMail;
 use App\Notifications\PengajuanDiSetujuiNotification;
 use App\Notifications\PengajuanDiTolakNotification;
 use App\Notifications\UploadBuktiTransaksiNotification;
+use App\Notifications\VerifikasiUserNotification;
 
 class PengujianController extends Controller
 {
@@ -96,6 +97,7 @@ class PengujianController extends Controller
     public function kirim($regId)
     {
         $pengajuan =  new PengajuanPengujian($regId);
+
         $_pengajuan = $pengajuan->verifikasi(3);
         \App\Repositories\ProsesPengajuan::make(3, $regId);
 
@@ -103,9 +105,13 @@ class PengujianController extends Controller
 
         $staf_teknis = $staf_teknis->whereHas('roles', function($q){
             $q->where('name', 'staf_teknis');
-        })->first();
+        })->get();
 
-        Notification::send($staf_teknis, new VerifikasiUserMail($pengajuan->masterPengajuanPengujian->first(),$staf_teknis));
+
+        foreach ($staf_teknis as $key => $value) {
+            Notification::send($value, new VerifikasiUserNotification($pengajuan->masterPengajuanPengujian->first(),$staf_teknis));
+        }
+
 
         return dtcApiResponse(200, $_pengajuan);
     }

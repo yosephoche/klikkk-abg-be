@@ -60,6 +60,7 @@ class VerifikasiStafTeknisNotification extends Notification
             'type' => 'message',
             'label' => 'Pengujian' ,
             'title' => 'Verifikasi Staf Teknis',
+            'nomor_registrasi' => $this->pengajuan->regId,
             'path' => 'pengajuan/pengujian/view/'.$this->pengajuan->regId,
             'body' => 'Selamat, permohonan pengujian kamu telah berubah dari verifikasi staf teknis ke verifikasi kepala bidang'
         ];

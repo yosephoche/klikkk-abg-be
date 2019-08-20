@@ -62,6 +62,7 @@ class KonfirmasiKeuanganNotification extends Notification
         return [
             'type' => 'message',
             'label' => 'Pengujian',
+            'nomor_registrasi' => $this->pengajuan->regId,
             'title' => 'Konfirmasi pembayaran',
             'body' => 'Selamat, bagian keuangan kami telah mengkonfirmasi pembayaran anda',
             'path' => null

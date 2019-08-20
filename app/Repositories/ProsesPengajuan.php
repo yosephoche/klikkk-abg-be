@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Models\PengajuanPengujian;
 use App\Exceptions\PengajuanNotFoundException;
+use App\Exceptions\ProsesDoubleException;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -29,16 +30,13 @@ class ProsesPengajuan extends BaseRepository
         if ($_pengajuan instanceof Builder) {
             $_pengajuan  = $_pengajuan->first();
 
-            // cek proses sudah ada
-            if ($proses_pengajuan->cekSudahAda($_pengajuan->id, $tahap)->first() ==  null) {
-                $proses_pengajuan->id_pengajuan = $_pengajuan->id;
+            $proses_pengajuan->id_pengajuan = $_pengajuan->id;
 
-                $proses_pengajuan->tanggal_mulai = Carbon::now();
-                $proses_pengajuan->tahap_pengajuan = $tahap;
-                $proses_pengajuan->uuid = \Str::uuid();
+            $proses_pengajuan->tanggal_mulai = Carbon::now();
+            $proses_pengajuan->tahap_pengajuan = $tahap;
+            $proses_pengajuan->uuid = \Str::uuid();
 
-                $proses_pengajuan->save();
-            }
+            $proses_pengajuan->save();
 
 
             $_proses_pengajuan = $_pengajuan->prosesPengajuan()->tahapSebelumnya($tahap)->first();

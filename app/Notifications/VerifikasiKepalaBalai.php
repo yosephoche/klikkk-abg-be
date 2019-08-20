@@ -60,6 +60,7 @@ class VerifikasiKepalaBalai extends Notification
             'type' => 'message',
             'label' => 'Pengujian',
             'title' => 'Verifikasi Kepala Balai',
+            'nomor_registrasi' => $this->pengajuan->regId,
             'path' => 'pengajuan/pengujian/view/'.$this->pengajuan->regId,
             'body' => 'Selamat, permohonan pengujian kamu telah di verifikasi oleh kepalai balai K3'
         ];

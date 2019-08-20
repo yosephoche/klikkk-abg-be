@@ -60,6 +60,7 @@ class PengajuanSelesaiNotification extends Notification
         return [
             'type' => 'message',
             'label' => 'pengujian',
+            'nomor_registrasi' => $this->pengajuan->regId,
             'title' => 'Pengujian Selesai',
             'body' => 'Selamat, Pengujian dengan nomor registrasi'.$this->pengajuan->regId.' telah selesai',
             'path' => null
