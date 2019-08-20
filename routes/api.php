@@ -94,6 +94,11 @@ Route::group( ['middleware' => ['json.response'],'namespace' => 'Api'], function
 
                 Route::resource('survey', 'SurveyController');
 
+                Route::group(['prefix' => 'hasil-survey'], function(){
+                    Route::get('/', 'HasilSurveyController@index');
+                    Route::get('/show/{questionId}', 'HasilSurveyController@show');
+                });
+
             });
 
             Route::group(['prefix' => 'kepala-balai'], function(){
