@@ -15,14 +15,6 @@ class UserManagementController extends Controller
         return $user->getAllAdmin();
     }
 
-    // pemilihan role di menu role
-
-    // public function add(){
-    //     $roles = Role::all()->pluck('display_name');
-    //     $data['roles'] = $roles;
-    //     return dtcApiResponse(200,$data);
-    // }
-
     public function save(Request $request){
         $user = new User();
         return $user->registerAdmin($request);
@@ -40,5 +32,12 @@ class UserManagementController extends Controller
         $user = new User();
 
         return $user->updateAdmin($request);
+    }
+
+    public function delete($id)
+    {
+        $user = new User();
+
+        return $user->deleteUser($id);
     }
 }

@@ -81,6 +81,15 @@ Route::group( ['middleware' => ['json.response'],'namespace' => 'Api'], function
                     Route::get('/edit/{uuid}', 'UserManagementController@edit')->name('api.admin.master-data.user-data.user-management.edit');
                     Route::post('/save', 'UserManagementController@save')->name('api.admin.master-data.user-management.save');
                     Route::post('/update', 'UserManagementController@update')->name('api.admin.master-data.user-management.update');
+                    Route::post('/delete/{id}', 'UserManagementController@delete')->name('api.admin.master-data.user-management.delete');
+                });
+
+                Route::group(['prefix' => 'manajemen-pengguna'], function(){
+                    Route::get('/', 'ManajemenPenggunaController@index');
+                    Route::post('/delete/{id}', 'ManajemenPenggunaController@delete');
+                    // Route::get('/edit/{uuid}', 'ManajemenPengguna@edit');
+                    // Route::post('/save', 'ManajemenPengguna@save');
+                    // Route::post('/update', 'ManajemenPenggunaController@update');
                 });
 
                 Route::group(['prefix' => 'master-pelatihan'], function(){
