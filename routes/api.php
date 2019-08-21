@@ -173,7 +173,9 @@ Route::group( ['middleware' => ['json.response'],'namespace' => 'Api'], function
 
                     Route::get('/get-jenis-pengujian', 'PengujianController@getJenisPengujian')->name('api.user.pengajuan.pengujian.get-jenis-pengujian');
 
+                    Route::get('/{regId}/get-parameter-pengujian', 'PengujianController@getParameterPengujianDraft')->name('api.user.pengajuan.pengujian.get-parameter-pengujian');
                     Route::get('/get-parameter-pengujian', 'PengujianController@getParameterPengujian')->name('api.user.pengajuan.pengujian.get-parameter-pengujian');
+
 
                     Route::get('/', 'PengujianController@index')->name('api.user.pengajuan.pengujian.index');
                     Route::get('/add', 'PengujianController@add')->name('api.user.pengajuan.pegujian.add');
