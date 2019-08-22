@@ -174,6 +174,25 @@ class User extends BaseRepository
         return dtcApiResponse(200, $user);
     }
 
+    public function getAllUsers()
+    {
+        $user = $this->model->where('jenis_akun','!=',1)->paginate(10);
+        $user->getCollection()->transform(function($value){
+            return [
+                'id' => $value->id,
+                'uuid' => $value->uuid,
+                'user_id' => $value->user_id,
+                'nama_lengkap' => $value->nama_lengkap,
+                'email' => $value->email,
+                'nip' => $value->nip,
+                'no_telepon' => $value->no_telepon,
+                'avatar' => $value->avatar?asset('storage/'.$value->avatar):null,
+            ];
+        });
+
+        return dtcApiResponse(200, $user);
+    }
+
     public function registerAdmin($data){
         $user = $this->model;
 
@@ -265,6 +284,15 @@ class User extends BaseRepository
         else{
             return dtcApiResponse(404, false,'User tidak ditemukan');
         }
+    }
+
+    public function deleteUser($id)
+    {
+        $user = $this->model()::findOrFail($id);
+
+        $user->delete();
+
+        return dtcApiResponse(200,null,'User berhasil di hapus');
     }
 
     public function thread(){

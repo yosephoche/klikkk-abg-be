@@ -81,6 +81,15 @@ Route::group( ['middleware' => ['json.response'],'namespace' => 'Api'], function
                     Route::get('/edit/{uuid}', 'UserManagementController@edit')->name('api.admin.master-data.user-data.user-management.edit');
                     Route::post('/save', 'UserManagementController@save')->name('api.admin.master-data.user-management.save');
                     Route::post('/update', 'UserManagementController@update')->name('api.admin.master-data.user-management.update');
+                    Route::post('/delete/{id}', 'UserManagementController@delete')->name('api.admin.master-data.user-management.delete');
+                });
+
+                Route::group(['prefix' => 'manajemen-pengguna'], function(){
+                    Route::get('/', 'ManajemenPenggunaController@index');
+                    Route::post('/delete/{id}', 'ManajemenPenggunaController@delete');
+                    // Route::get('/edit/{uuid}', 'ManajemenPengguna@edit');
+                    // Route::post('/save', 'ManajemenPengguna@save');
+                    // Route::post('/update', 'ManajemenPenggunaController@update');
                 });
 
                 Route::group(['prefix' => 'master-pelatihan'], function(){
@@ -93,6 +102,7 @@ Route::group( ['middleware' => ['json.response'],'namespace' => 'Api'], function
                 });
 
                 Route::resource('survey', 'SurveyController');
+                Route::resource('jenis-akun', 'JenisAkunController');
 
                 Route::group(['prefix' => 'hasil-survey'], function(){
                     Route::get('/', 'HasilSurveyController@index');
@@ -176,7 +186,9 @@ Route::group( ['middleware' => ['json.response'],'namespace' => 'Api'], function
 
                     Route::get('/get-jenis-pengujian', 'PengujianController@getJenisPengujian')->name('api.user.pengajuan.pengujian.get-jenis-pengujian');
 
+                    Route::get('/{regId}/get-parameter-pengujian', 'PengujianController@getParameterPengujianDraft')->name('api.user.pengajuan.pengujian.get-parameter-pengujian');
                     Route::get('/get-parameter-pengujian', 'PengujianController@getParameterPengujian')->name('api.user.pengajuan.pengujian.get-parameter-pengujian');
+
 
                     Route::get('/', 'PengujianController@index')->name('api.user.pengajuan.pengujian.index');
                     Route::get('/add', 'PengujianController@add')->name('api.user.pengajuan.pegujian.add');

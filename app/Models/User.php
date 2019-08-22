@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Passport\HasApiTokens;
@@ -9,7 +10,9 @@ use Zizaco\Entrust\Traits\EntrustUserTrait;
 
 class User extends Authenticatable
 {
-    use Notifiable,HasApiTokens,EntrustUserTrait;
+    use Notifiable,HasApiTokens;
+    use EntrustUserTrait { restore as private restoreA; }
+    use SoftDeletes { restore as private restoreB; }
 
     /**
      * The attributes that are mass assignable.
@@ -64,4 +67,13 @@ class User extends Authenticatable
         return $this->belongsToMany('App\Models\SurveyQuestion','survey_results','user_id','question_id')->withTimestamps()->withPivot('answer');
     }
 
+<<<<<<< HEAD
+=======
+    // fix restore traits conflict
+    public function restore()
+    {
+        $this->restoreA();
+        $this->restoreB();
+    }
+>>>>>>> b12a9b40f0c282ca4ca0aa95c5540c6881fe44fe
 }

@@ -129,13 +129,35 @@ class PengajuanPengujian
         return dtcApiResponse(200,$master_jenis_pengujian);
     }
 
-    public static function getParameterPengujian($data)
+    public static function getParameterPengujian($data, $regId = null)
     {
-        $pengajuanPengujian = (new self);
 
-        $jenisPengujian = $pengajuanPengujian->jenisPengujian->active()->whereIn('id', $data->jenis_pengujian)->with(['parameterPengujian' => function($query){
-            return $query->active();
-        }])->get();
+        if ($regId) {
+            $pengajuanPengujian = (new self($regId));
+            $jenisPengujian = $pengajuanPengujian->jenisPengujian->active()->whereIn('id', $data->jenis_pengujian)->with(['parameterPengujian' => function($query){
+                return $query->active();
+            }])->get();
+
+            $parameterSebelumnya = $pengajuanPengujian->detailPengajuanPengujian;
+
+            $jenisPengujian->map(function($valueJenis) use ($parameterSebelumnya){
+                $valueJenis->parameterPengujian->transform(function($value) use ($parameterSebelumnya){
+                    $value->selected = $parameterSebelumnya->contains('id_parameter_pengujian', $value->id);
+                    if ($value->selected) {
+                        $value->jumlah_titik = $parameterSebelumnya->where('id_parameter_pengujian', $value->id)->first()->jumlah_titik;
+                    }
+                    return $value;
+                });
+
+            });
+        }
+        else{
+            $pengajuanPengujian = (new self);
+            $jenisPengujian = $pengajuanPengujian->jenisPengujian->active()->whereIn('id', $data->jenis_pengujian)->with(['parameterPengujian' => function($query){
+                return $query->active();
+            }])->get();
+        }
+
 
         return dtcApiResponse(200, $jenisPengujian);
     }
