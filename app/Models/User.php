@@ -67,13 +67,10 @@ class User extends Authenticatable
         return $this->belongsToMany('App\Models\SurveyQuestion','survey_results','user_id','question_id')->withTimestamps()->withPivot('answer');
     }
 
-<<<<<<< HEAD
-=======
     // fix restore traits conflict
     public function restore()
     {
         $this->restoreA();
         $this->restoreB();
     }
->>>>>>> b12a9b40f0c282ca4ca0aa95c5540c6881fe44fe
 }
