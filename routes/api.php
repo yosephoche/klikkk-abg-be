@@ -125,6 +125,7 @@ Route::group( ['middleware' => ['json.response'],'namespace' => 'Api'], function
                 Route::get('/{regId}/verifikasi-pengajuan', 'StafTeknisController@verifikasiPengajuan')->name('api.admin.staf-teknis.verifikasi-pengajuan');
                 Route::post('/{regId}/store-biaya-tambahan', 'StafTeknisController@storeBiayaTambahan')->name('api.admin.staf-teknis.store-biaya-tambahan');
 
+                Route::get('/QnA', 'StafTeknisController@indexQnA')->name('index.QnA');
             });
 
             Route::group(['prefix' => 'kepala-bidang'], function(){
@@ -157,7 +158,19 @@ Route::group( ['middleware' => ['json.response'],'namespace' => 'Api'], function
 
         Route::group(['prefix' => 'user', 'namespace' => 'User'], function(){
 
+
             Route::group(['prefix' => 'pengajuan' , 'namespace' => 'Pengajuan'], function(){
+    
+                Route::group(['prefix' => 'QnA'], function(){
+                    Route::get('/question','qnaController@index')->name('index.QnA');
+                    Route::get('/question/{id}','qnaController@show')->name('show.QnA');
+                    Route::post('/question/add','qnaController@store')->name('store.QnA');
+                    Route::delete('/question/delete/{id}','qnaController@destroy')->name('delete.QnA');
+                    Route::post('answer/{id}','qnaController@answer')->name('answer.QnA');
+                    Route::delete('answer/{id}','qnaController@destroyAnswer')->name('deleteAnswer.QnA');
+                    Route::post('reply/{id}','qnaController@reply')->name('reply.QnA');
+                });
+
 
                 Route::group(['prefix' => 'pengujian'], function(){
 

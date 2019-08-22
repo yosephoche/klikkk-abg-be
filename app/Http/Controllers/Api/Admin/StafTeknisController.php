@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Api\Admin;
 
+use App\Models\QnA;
+use App\Models\Answer;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Repositories\PengajuanPengujian;
@@ -25,6 +27,13 @@ class StafTeknisController extends Controller
         }
         return dtcApiResponse(200, $data);
     }
+
+    public function indexQnA()
+    {
+        $data = QnA::orderBy('id','desc')->paginate(10);
+        return dtcApiResponse(200, $data);
+    }
+
 
     public function showPelatihan($id)
     {

@@ -63,4 +63,5 @@ class User extends Authenticatable
     {
         return $this->belongsToMany('App\Models\SurveyQuestion','survey_results','user_id','question_id')->withTimestamps()->withPivot('answer');
     }
+
 }

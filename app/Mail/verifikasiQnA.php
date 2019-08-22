@@ -7,19 +7,20 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class verifikasiPelatihan extends Mailable
+class verifikasiQnA extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $data;
+    public $question;
+
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($data)
+    public function __construct($question)
     {
-        $this->data = $data;
+        $this->question = $question;
     }
 
     /**
@@ -29,10 +30,9 @@ class verifikasiPelatihan extends Mailable
      */
     public function build()
     {
-        return $this->view('mail.verifikasiPelatihan')
+        return $this->view('mail.verifikasiQnA')
                     ->with([
-                        'data' => $this->data,
+                        'data' => $this->question,
                     ]);
     }
 }
-    

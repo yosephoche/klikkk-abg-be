@@ -39,6 +39,28 @@ class notificationResource extends JsonResource
             ];
         }
 
+        if($this->data['label'] == "QnA")
+        {
+            return [
+                'id' => $this->id,
+                'type' => $this->data['type'],
+                'label' => $this->data['label'],
+                'title' => $this->data['title'],
+                'body' => $this->data['user']." Memposting Sebuah Pertanyaan :".$this->data['question'], 
+            ];
+        }
+
+        if($this->data['label'] == "answerQuestion")
+        {
+            return [
+                'id' => $this->id,
+                'type' => $this->data['type'],
+                'label' => $this->data['label'],
+                'title' => $this->data['title'],
+                'body' => $this->data['user']." Menjawab Pertanyaan anda pada :".$this->data['question'], 
+            ];
+        }
+
         if($this->data['label'] == "pengujian")
         {
             return [

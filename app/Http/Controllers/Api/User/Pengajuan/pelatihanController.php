@@ -28,7 +28,7 @@ class pelatihanController extends Controller
      */
     public function index()
     {
-        $data = pengajuanPelatihan::orderBy('id','desc')->paginate(5);
+        $data = pengajuanPelatihan::orderBy('id','desc')->where('user_id',Auth::user()->id)->paginate(5);
         $response = pelatihanResource::collection($data);
         return $this->collectionHttpResponse($response,$data);
 
