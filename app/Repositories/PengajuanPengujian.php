@@ -321,6 +321,7 @@ class PengajuanPengujian
                     'regId' => $value->pengajuanPengujian->regId,
                     'tahap_pengajuan' => $value->tahapPengajuan->nama,
                     'pic' => $value->tahapPengajuan->user->nama_lengkap,
+                    'pekerjaan' => $value->tahapPengajuan->user->pekerjaan,
                     'avatar' => userAvatar($value->tahapPengajuan->user->avatar),
                     'tanggal_mulai' => prettyDate($value->tanggal_mulai),
                     'tanggal_selesai' => prettyDate($value->tanggal_selesai),
@@ -521,6 +522,22 @@ class PengajuanPengujian
 
         return $pengajuanPengujian;
 
+    }
+
+    public static function statistik($year)
+    {
+        $pengajuanPengujian = (new self);
+        $namaBulan =  [1=>'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+        $pengajuanPengujian = $pengajuanPengujian->masterPengajuanPengujian;
+        $statistik = $pengajuanPengujian->whereYear('created_at', $year)->get()->groupBy(function($value){
+            return substr($value->created_at,5,2);
+        });
+
+        foreach ($statistik as $key => $value) {
+            dd($value->count());
+        }
+
+        dd($statistik);
     }
 
 
