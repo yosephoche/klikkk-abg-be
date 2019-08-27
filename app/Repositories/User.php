@@ -40,7 +40,7 @@ class User extends BaseRepository
                     $jenis_akun = $jenis_akun->first()?$jenis_akun->first()->nama:null;
 
                     $response = [
-                        'user_id' => $user->user_id,
+                        'user_id' => $user->uuid,
                         'token' => $token,
                         'email' => $user->email,
                         'nama_lengkap' => $user->nama_lengkap,

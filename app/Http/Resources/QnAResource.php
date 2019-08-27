@@ -17,7 +17,7 @@ class QnAResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'ownerId' => $this->user->id,
+            'ownerUuid' => $this->user->uuid,
             'owner' => $this->user->nama_lengkap,
             'avatar' => userAvatar($this->user->avatar),
             'question' => $this->question,
