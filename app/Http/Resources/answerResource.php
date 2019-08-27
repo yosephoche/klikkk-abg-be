@@ -16,6 +16,7 @@ class answerResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'userUuid' => $this->user->uuid,
             'name' => $this->user->nama_lengkap,
             'answer' => $this->answer,
             'reply' => answerResource::collection($this->reply),
