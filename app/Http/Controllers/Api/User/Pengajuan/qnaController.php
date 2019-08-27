@@ -91,6 +91,7 @@ class qnaController extends Controller
                 $query->where('name','staf_teknis');
             })->get();
 
+            $question->answers()->save($answer);
             Notification::send($staff, new answerPostNotification($answer,$question));        
         } else {
             $question->answers()->save($answer);
