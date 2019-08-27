@@ -59,7 +59,7 @@ class threadController extends Controller
 
     public function notification()
     {
-        $data = Auth::user()->unreadNotifications()->get()->where('data.type','notification')->sortBYDesc('created_at');
+        $data = Auth::user()->unreadNotifications()->get()->where('data.type','notification')->where('read_at',null)->sortBYDesc('created_at');
         $response = notificationResource::collection($data);
 
         // Auth::user()->unreadNotifications->markAsRead();
@@ -67,9 +67,15 @@ class threadController extends Controller
         
     }
 
-    public function readNotification($id)
+    public function countNotification()
     {
-        $data = Auth::user()->unreadNotifications()->where('id',$id)->first();
+        $data = Auth::user()->unreadNotifications()->get()->where('data.type','notification')->where('read_at',null)->count();
+        return dtcApiResponse(200, $data);
+    }
+
+    public function readNotification()
+    {
+        $data = Auth::user()->unreadNotifications()->get();
         $data->markAsRead();
 
         return $this->success();

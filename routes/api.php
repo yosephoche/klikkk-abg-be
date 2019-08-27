@@ -238,6 +238,7 @@ Route::group( ['middleware' => ['json.response'],'namespace' => 'Api'], function
             });
 
         });
+
         // Route FOr Forum
         Route::group(['prefix' => 'forum', 'namespace' => 'Forum'], function(){
             Route::group(['prefix'=>'threads'], function(){
@@ -245,7 +246,8 @@ Route::group( ['middleware' => ['json.response'],'namespace' => 'Api'], function
                 Route::get('/popular','threadController@popular')->name('popular.thread');
                 Route::get('/search','threadController@search')->name('search.thread');
                 Route::get('/notification','threadController@notification')->name('notifikasi.thread');
-                Route::post('/notification/read/{id}','threadController@readNotification')->name('notifikasi.read');
+                Route::get('/notification/count','threadController@countNotification')->name('notification.count');
+                Route::post('/notification/read','threadController@readNotification')->name('notifikasi.read');
                 Route::get('/{id}','threadController@show')->name('thread.detail');
                 Route::get('/related/{id}','threadController@relatedThread')->name('thread.related');
                 Route::post('like/{id}','threadController@like')->name('thread.like');
