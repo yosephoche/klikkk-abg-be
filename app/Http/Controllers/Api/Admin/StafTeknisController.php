@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Api\Admin;
 
 use App\Models\QnA;
 use App\Models\Answer;
+use App\Repositories\Traits\forumTrait;
+use App\Http\Resources\QnAResource;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Repositories\PengajuanPengujian;
@@ -14,6 +16,8 @@ use App\Http\Resources\pelatihanResource;
 
 class StafTeknisController extends Controller
 {
+    use forumTrait;
+
     public function index(Request $request)
     {
         $pengajuanPengujian = new PengajuanPengujian();
@@ -31,7 +35,8 @@ class StafTeknisController extends Controller
     public function indexQnA()
     {
         $data = QnA::orderBy('id','desc')->paginate(10);
-        return dtcApiResponse(200, $data);
+        $response = QnAResource::collection($data);
+        return $this->collectionHttpResponse($response,$data);
     }
 
 
