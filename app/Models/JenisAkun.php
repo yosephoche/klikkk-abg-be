@@ -21,4 +21,9 @@ class JenisAkun extends Model
         parent::save();
     }
 
+    public function user()
+    {
+        return $this->hasMany('App\Models\User');
+    }
+
 }
