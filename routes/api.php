@@ -136,6 +136,7 @@ Route::group( ['middleware' => ['json.response'],'namespace' => 'Api'], function
                 Route::post('/{regId}/store-biaya-tambahan', 'StafTeknisController@storeBiayaTambahan')->name('api.admin.staf-teknis.store-biaya-tambahan');
 
                 Route::get('/QnA', 'StafTeknisController@indexQnA')->name('index.QnA');
+                Route::get('/QnA/{id}','StafTeknisController@showQnA')->name('show.QnA');
             });
 
             Route::group(['prefix' => 'kepala-bidang'], function(){

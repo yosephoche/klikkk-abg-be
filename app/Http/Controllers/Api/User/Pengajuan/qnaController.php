@@ -113,7 +113,14 @@ class qnaController extends Controller
      */
     public function show($id)
     {
-        //
+        $data = QnA::find($id);
+        if(isset($data))
+        {
+            $response = new QnAResource($data);
+            return $this->singleHttpResponse($data,$response);
+        } else {
+            return $this->notFound();
+        }
     }
 
     /**

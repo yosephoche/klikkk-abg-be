@@ -39,6 +39,18 @@ class StafTeknisController extends Controller
         return $this->collectionHttpResponse($response,$data);
     }
 
+    public function showQnA($id)
+    {
+        $data = QnA::find($id);
+        if(isset($data))
+        {
+            $response = new QnAResource($data);
+            return $this->singleHttpResponse($data,$response);
+        } else {
+            return $this->notFound();
+        }
+    }
+
 
     public function showPelatihan($id)
     {
