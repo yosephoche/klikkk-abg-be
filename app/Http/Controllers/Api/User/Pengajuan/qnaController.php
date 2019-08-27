@@ -82,9 +82,20 @@ class qnaController extends Controller
         $answer->qna_id = $id;
         
         $question = QnA::find($id);
-        $question->answers()->save($answer);
+        $latest = $question->answers->last();
+        $user = User::find($latest->user->id);
+        $role = $user->roles->where('name','staf_teknis')->first();
+        if(!isset($role))
+        {
+            $staff = User::whereHas('roles', function($query){
+                $query->where('name','staf_teknis');
+            })->get();
 
-        Notification::send($question->user, new answerPostNotification($answer,$question));        
+            Notification::send($staff, new answerPostNotification($answer,$question));        
+        } else {
+            $question->answers()->save($answer);
+            Notification::send($question->user, new answerPostNotification($answer,$question));        
+        }       
 
         return dtcApiResponse(200,null,'Pertanyaan Sudah Di Balas');
     }

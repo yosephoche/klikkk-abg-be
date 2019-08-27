@@ -58,11 +58,11 @@ class answerPostNotification extends Notification
     public function toDatabase($notifiable)
     {
         return [
-            'type'  => 'notification',
+            'type'  => 'message',
             'label' => 'answerQuestion',
             'title' => 'Answering Question',
-            'user' => $this->answer->user->nama_lengkap,
-            'question' => $this->question->question,
+            'body'  => $this->answer->user->nama_lengkap.'Melakukan Reply Pada pertanyaan : '.$this->question->question,
+            'path'  => null,
         ];
     }
 }
