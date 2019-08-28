@@ -574,6 +574,13 @@ class PengajuanPengujian
             $pengajuan = $this->getOne($this->masterPengajuanPengujian->first()->regId);
             $groupPengujian = [];
 
+            $kepalaBidang = \App\Models\User::whereHas('roles' ,function($q){
+                $q->where('name', 'kepala_bagian');
+            });
+
+            // dd($kepalaBidang->first());
+            $kepalaBidang = $kepalaBidang->first();
+
             foreach ($pengajuan['data_pengujian'] as $key => $value) {
                 $_groupPengujian = explode('-',$value['group']);
                 if (collect($groupPengujian)->has($_groupPengujian[0]) == false) {
@@ -587,7 +594,7 @@ class PengajuanPengujian
             $tahun = date('Y', strtotime($pengajuan['data_pemohon']['created_at']));
 
 
-            $pdf = \PDF::loadView('berkas.proposal',compact('pengajuan','groupPengujian', 'bulan', 'tahun'));
+            $pdf = \PDF::loadView('berkas.proposal',compact('pengajuan','groupPengujian', 'bulan', 'tahun', 'kepalaBidang'));
             $pdf->save('storage/uploads/berkas/_'.$pengajuan['data_pemohon']['regId'].'.pdf');
 
             return asset('storage/uploads/berkas/_'.$pengajuan['data_pemohon']['regId'].'.pdf');

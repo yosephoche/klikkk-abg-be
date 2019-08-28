@@ -156,6 +156,7 @@ class StafTeknisController extends Controller
     public function cetak($regId)
     {
         $pengajuan = new PengajuanPengujian($regId);
+
         return dtcApiResponse(200,$pengajuan->cetak());
     }
 

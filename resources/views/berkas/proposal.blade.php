@@ -143,7 +143,7 @@
 <br>
 <br>
 <br>
-<div style="text-align: center;padding-left:70%"><b><u>Ir. Dr. Apatrys Muis, S.T12, </u></b></div>
-<div style="text-align: center;padding-left:70%"><b>NIP: 00000000000069 </b></div>
+<div style="text-align: center;padding-left:70%"><b><u>{{ $kepalaBidang->nama_lengkap }} </u></b></div>
+<div style="text-align: center;padding-left:70%"><b>NIP: {{ $kepalaBidang->nip }} </b></div>
 </body>
 </html>
