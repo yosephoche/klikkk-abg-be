@@ -59,10 +59,10 @@ class answerPostNotification extends Notification
     {
         return [
             'type'  => 'message',
-            'label' => 'answerQuestion',
-            'title' => 'Answering Question',
+            'label' => 'Pertanyaan',
+            'title' => 'Menjawab Pertanyaan',
             'body'  => $this->answer->user->nama_lengkap.'Melakukan Reply Pada pertanyaan : '.$this->question->question,
-            'path'  => null,
+            'path'  => 'pertanyaan/'.$this->question->id,
         ];
     }
 }
