@@ -59,7 +59,8 @@ class questionPostNotification extends Notification
             'type'  => 'notification',
             'label' => 'QnA',
             'title' => 'Post Question',
-            'user' => $this->question->user->nama_lengkap,
+            'path'  => 'pertanyaam/'.$this->question->id,
+            'user'  => $this->question->user->nama_lengkap,
             'question' => $this->question->question,
         ];
     }

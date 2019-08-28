@@ -6,6 +6,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class QnAResource extends JsonResource
 {
+    
     /**
      * Transform the resource into an array.
      *
@@ -16,7 +17,9 @@ class QnAResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'ownerUuid' => $this->user->uuid,
             'owner' => $this->user->nama_lengkap,
+            'avatar' => userAvatar($this->user->avatar),
             'question' => $this->question,
             'answer' => answerResource::collection($this->answers),
             'created_at' => $this->created_at->format('d,M-Y'),
