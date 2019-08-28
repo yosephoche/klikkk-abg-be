@@ -82,14 +82,15 @@ class qnaController extends Controller
         $answer->qna_id = $id;
         
         $question = QnA::find($id);
-        // $latest = $question->answers->last();
+        $latest = $question->answers->last();
 
-        // if(!isset($latest))
-        // {
-        //     $user = User::find($question->user->id);
-        // } else {
-        //     $user = User::find($latest->user->id);
-        // }
+        if(!isset($latest))
+        {
+            $user = User::find($question->user->id);
+        } else {
+            $user = User::find($latest->user->id);
+        }
+
 
         // $role = $user->roles->where('name','staf_teknis')->first();
         // if(isset($role))
@@ -104,7 +105,11 @@ class qnaController extends Controller
         // }       
         
         $question->answers()->save($answer);
-        Notification::send($question->user, new answerPostNotification($answer,$question));        
+
+        if($answer->user->id !== $user->id )
+        {
+            Notification::send($question->user, new answerPostNotification($answer,$question));        
+        }
         return dtcApiResponse(200,null,'Pertanyaan Sudah Di Balas');
     }
 
