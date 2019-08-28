@@ -83,7 +83,14 @@ class qnaController extends Controller
         
         $question = QnA::find($id);
         $latest = $question->answers->last();
-        $user = User::find($latest->user->id);
+
+        if(!isset($latest))
+        {
+            $user = User::find($question->user->id);
+        } else {
+            $user = User::find($latest->user->id);
+        }
+        
         $role = $user->roles->where('name','staf_teknis')->first();
         if(isset($role))
         {
