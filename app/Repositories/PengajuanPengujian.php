@@ -202,8 +202,45 @@ class PengajuanPengujian
 
     }
 
-    public function update($data)
+    public function storeDraft($data)
     {
+
+        if ($this->masterPengajuanPengujian instanceof Builder) {
+            $masterPengajuanPengujian = $this->masterPengajuanPengujian->first();
+            $prosesPengajuan = $this->prosesPengajuan;
+
+            $_masterPengajuan = $data->only($masterPengajuanPengujian->getFillable());
+
+            $masterPengajuanPengujian->tahap_pengajuan = 1;
+            $masterPengajuanPengujian->fill($_masterPengajuan);
+
+            $prosesPengajuan->uuid = \Str::uuid();
+            $prosesPengajuan->tahap_pengajuan = 1;
+            $prosesPengajuan->tanggal_mulai = \Carbon\Carbon::now();
+
+            $detailPengajuanPengujian = [];
+            $i = 0;
+            foreach ($data->id_parameter_pengujian as $key => $value) {
+                $detailPengajuanPengujian[$i]['id_parameter_pengujian'] = $value;
+                $detailPengajuanPengujian[$i]['jumlah_titik'] = $data->jumlah_titik[$i];
+                $i++;
+            }
+
+            DB::transaction(function() use($masterPengajuanPengujian, $detailPengajuanPengujian, $prosesPengajuan) {
+                $masterPengajuanPengujian->status_pengajuan = 'aktif';
+                $masterPengajuanPengujian->save();
+
+                $masterPengajuanPengujian->detailPengajuanPengujian()->createmany($detailPengajuanPengujian);
+
+                $masterPengajuanPengujian->prosesPengajuan()->save($prosesPengajuan->first());
+
+
+            });
+
+            return $this::getOne($masterPengajuanPengujian->regId);
+        }
+
+        throw new PengajuanNotFoundException();
 
     }
 
@@ -241,10 +278,7 @@ class PengajuanPengujian
 
             $_dataPengujian = $pengajuanPengujian->detailPengajuanPengujian()->with('parameterPengujian')->get()->groupBy('parameterPengujian.jenisPengujian.nama')->map(function($value){
 
-
                 return $value->map(function($value){
-                    // dd();
-                    // dump($value->parameterPengujian->jenisPengujian);
                     return [
                         'id_detail' => $value->id,
                         'id_parameter' => $value->id_parameter_pengujian,
@@ -252,7 +286,8 @@ class PengajuanPengujian
                         'jumlah_titik' => $value->jumlah_titik,
                         'biaya' => $value->parameterPengujian->biaya,
                         'total' => $value->jumlah_titik * $value->parameterPengujian->biaya,
-                        'id_jenis_pengujian' => $value->parameterPengujian->jenisPengujian->id
+                        'id_jenis_pengujian' => $value->parameterPengujian->jenisPengujian->id,
+
                     ];
                 });
             });
@@ -260,9 +295,8 @@ class PengajuanPengujian
             $dataPengujian = [];
             $i = 0;
             $grandTotal = 0;
-            // dd($_dataPengujian);
+
             foreach ($_dataPengujian as $key => $value) {
-                // dd($value->first()['id_jenis_pengujian']);
                 $dataPengujian[$i]['id_group'] = $value->first()['id_jenis_pengujian'];
                 $dataPengujian[$i]['group'] = $key;
                 $dataPengujian[$i]['parameter'] = $value->toArray();
@@ -298,7 +332,11 @@ class PengajuanPengujian
                     'tujuan' => $pengajuanPengujian->tujuan_pengujian,
                     'e_billing' => $pengajuanPengujian->e_billing,
                     'bukti_transaksi' => buktiTransaksiPengajuan($pengajuanPengujian->bukti_transaksi),
-                    'komentar' => $pengajuanPengujian->keterangan
+                    'berkas_kup' => buktiTransaksiPengajuan($pengajuanPengujian->berkas_kup),
+                    'berkas_proposal' => buktiTransaksiPengajuan($pengajuanPengujian->berkas_proposal),
+                    'berkas_surat_pengantar' => buktiTransaksiPengajuan($pengajuanPengujian->berkas_surat_pengantar),
+                    'komentar' => $pengajuanPengujian->keterangan,
+                    'created_at' => $pengajuanPengujian->created_at
             ];
             $data['data_pengujian'] = $dataPengujian;
             $data['biaya_tambahan'] = $biayaTambahan;
@@ -455,6 +493,133 @@ class PengajuanPengujian
         }
     }
 
+    public function uploadKup($data)
+    {
+        if ($this->masterPengajuanPengujian instanceof Builder) {
+            try {
+                if ($data->has('kup')) {
+                    $pengajuan = $this->masterPengajuanPengujian->first();
+                    $image = $data->file('kup');
+                    $name = $pengajuan->regId;
+                    $folder = '/uploads/kup/';
+                    $filePath = $folder . $name. '.' . $image->getClientOriginalExtension();
+                    $this->uploadOne($image, $folder, 'public', $name);
+                    $pengajuan->berkas_kup = $filePath;
+
+                    $pengajuan->save();
+                    return asset('storage'.$pengajuan->berkas_kup);
+                }
+            } catch (\Exception $e) {
+                return dtcApiResponse(500,false, $e->getMessage());
+            }
+        }
+        else{
+            throw new PengajuanNotFoundException();
+        }
+    }
+
+    public function uploadProposal($data)
+    {
+        if ($this->masterPengajuanPengujian instanceof Builder) {
+            try {
+                if ($data->has('proposal')) {
+                    $pengajuan = $this->masterPengajuanPengujian->first();
+                    $image = $data->file('proposal');
+                    $name = $pengajuan->regId;
+                    $folder = '/uploads/proposal/';
+                    $filePath = $folder . $name. '.' . $image->getClientOriginalExtension();
+                    $this->uploadOne($image, $folder, 'public', $name);
+                    $pengajuan->berkas_proposal = $filePath;
+
+                    $pengajuan->save();
+                    return asset('storage'.$pengajuan->berkas_proposal);
+                }
+            } catch (\Exception $e) {
+                return dtcApiResponse(500,false, $e->getMessage());
+            }
+        }
+        else{
+            throw new PengajuanNotFoundException();
+        }
+    }
+
+    public function uploadSuratPEngantar($data)
+    {
+        if ($this->masterPengajuanPengujian instanceof Builder) {
+            try {
+                if ($data->has('surat_pengantar')) {
+                    $pengajuan = $this->masterPengajuanPengujian->first();
+                    $image = $data->file('surat_pengantar');
+                    $name = $pengajuan->regId;
+                    $folder = '/uploads/surat_pengantar/';
+                    $filePath = $folder . $name. '.' . $image->getClientOriginalExtension();
+                    $this->uploadOne($image, $folder, 'public', $name);
+                    $pengajuan->berkas_surat_pengantar = $filePath;
+
+                    $pengajuan->save();
+                    return asset('storage'.$pengajuan->berkas_surat_pengantar);
+                }
+            } catch (\Exception $e) {
+                return dtcApiResponse(500,false, $e->getMessage());
+            }
+        }
+        else{
+            throw new PengajuanNotFoundException();
+        }
+    }
+
+    public function cetak()
+    {
+        if ($this->masterPengajuanPengujian instanceof Builder) {
+            $pengajuan = $this->getOne($this->masterPengajuanPengujian->first()->regId);
+            $groupPengujian = [];
+
+            foreach ($pengajuan['data_pengujian'] as $key => $value) {
+                $_groupPengujian = explode('-',$value['group']);
+                if (collect($groupPengujian)->has($_groupPengujian[0]) == false) {
+                    $groupPengujian[] = $_groupPengujian[0];
+                }
+            }
+
+            $groupPengujian = array_unique($groupPengujian);
+
+            $bulan = namaBulan(date('m', strtotime($pengajuan['data_pemohon']['created_at'])));
+            $tahun = date('Y', strtotime($pengajuan['data_pemohon']['created_at']));
+
+
+            $pdf = \PDF::loadView('berkas.proposal',compact('pengajuan','groupPengujian', 'bulan', 'tahun'));
+            $pdf->save('storage/uploads/berkas/_'.$pengajuan['data_pemohon']['regId'].'.pdf');
+
+            return asset('storage/uploads/berkas/_'.$pengajuan['data_pemohon']['regId'].'.pdf');
+        }
+        throw new PengajuanNotFoundException();
+    }
+
+    public function uploadBerkas($tipe,$data)
+    {
+        if ($this->masterPengajuanPengujian instanceof Builder) {
+            try {
+                if ($data->has('bukti_transaksi')) {
+                    $pengajuan = $this->masterPengajuanPengujian->first();
+                    $image = $data->file('bukti_transaksi');
+                    $name = str_slug($data->input('nama_lengkap')).'_'.time();
+                    $folder = '/uploads/bukti_transaksi/';
+                    $filePath = $folder . $name. '.' . $image->getClientOriginalExtension();
+                    $this->uploadOne($image, $folder, 'public', $name);
+                    $pengajuan->bukti_transaksi = $filePath;
+
+                    $pengajuan->save();
+                    return $pengajuan->bukti_transaksi;
+                }
+            } catch (\Exception $e) {
+                return dtcApiResponse(500,false, $e->getMessage());
+            }
+        }
+        else{
+            throw new PengajuanNotFoundException();
+        }
+    }
+
     public function historyUser()
     {
         $pengajuan = $this->masterPengajuanPengujian;
@@ -528,17 +693,35 @@ class PengajuanPengujian
     {
         $pengajuanPengujian = (new self);
         $namaBulan =  [1=>'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
-        $pengajuanPengujian = $pengajuanPengujian->masterPengajuanPengujian;
-        $statistik = $pengajuanPengujian->whereYear('created_at', $year)->get()->groupBy(function($value){
+        $masterPengajuan = $pengajuanPengujian->masterPengajuanPengujian;
+        $statistik = $masterPengajuan->whereYear('created_at', $year)->get()->groupBy(function($value){
             return substr($value->created_at,5,2);
         });
 
+        $dataStatistik = [];
+
         foreach ($statistik as $key => $value) {
-            dd($value->count());
+            $dataStatistik[$namaBulan[(int )$key]] = [
+                'pengajuan_masuk' => $value->count(),
+                'pengajuan_terproses' => $pengajuanPengujian->pengajuanTerproses($key,$year),
+                'pengajuan_tidak_terproses' => $pengajuanPengujian->pengajuanTidakTerproses($key,$year)
+            ];
         }
 
-        dd($statistik);
+        return [$dataStatistik];
     }
 
+    private function pengajuanTerproses( $m, $y){
+        $prosesPengajuan = $this->prosesPengajuan;
+        $prosesPengajuan = $prosesPengajuan->where('tahap_pengajuan',19)->whereMonth('tanggal_selesai', (int)$m)->whereYear('tanggal_selesai',$y)->get();
+        return $prosesPengajuan->count();
+    }
+
+    private function pengajuanTidakTerproses($m,$y){
+        $masterPengujian = $this->masterPengajuanPengujian;
+        $masterPengujian = $masterPengujian->where('status_pengajuan','tolak')->whereMonth('updated_at', (int)$m)->whereYear('updated_at',$y)->get();
+
+        return $masterPengujian->count();
+    }
 
 }

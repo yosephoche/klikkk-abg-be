@@ -115,6 +115,33 @@ class StafTeknisController extends Controller
         return dtcApiResponse(200, $_pengajuan);
     }
 
+    public function uploadKup($regId, Request $request)
+    {
+        $pengajuan = new PengajuanPengujian($regId);
+
+        return dtcApiResponse(200, $pengajuan->uploadKup($request), 'Berkas KUP berhasil di upload');
+    }
+
+    public function uploadProposal($regId, Request $request)
+    {
+        $pengajuan = new PengajuanPengujian($regId);
+
+        return dtcApiResponse(200, $pengajuan->uploadProposal($request), 'Berkas Proposal berhasil di upload');
+    }
+
+    public function uploadSuratPengantar($regId, Request $request)
+    {
+        $pengajuan = new PengajuanPengujian($regId);
+
+        return dtcApiResponse(200, $pengajuan->uploadSuratPEngantar($request), 'Berkas Surat Pengantar  berhasil di upload');
+    }
+
+    public function cetak($regId)
+    {
+        $pengajuan = new PengajuanPengujian($regId);
+        return dtcApiResponse(200,$pengajuan->cetak());
+    }
+
 
 
 }

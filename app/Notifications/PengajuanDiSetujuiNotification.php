@@ -8,7 +8,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use App\Mail\PengajuanDiSetujuiMail;
 
-class PengajuanDiSetujuiNotification extends Notification
+class PengajuanDiSetujuiNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 

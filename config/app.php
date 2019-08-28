@@ -182,6 +182,8 @@ return [
         Zizaco\Entrust\EntrustServiceProvider::class,
 
         Fedeisas\LaravelMailCssInliner\LaravelMailCssInlinerServiceProvider::class,
+        Barryvdh\DomPDF\ServiceProvider::class,
+
 
     ],
 
@@ -235,6 +237,7 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         /** ENTRUST */
         'Entrust' => Zizaco\Entrust\EntrustFacade::class,
+        'PDF' => Barryvdh\DomPDF\Facade::class,
 
     ],
 
