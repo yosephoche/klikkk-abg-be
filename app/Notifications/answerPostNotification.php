@@ -62,7 +62,7 @@ class answerPostNotification extends Notification
             'label' => 'Pertanyaan',
             'title' => 'Menjawab Pertanyaan',
             'body'  => $this->answer->user->nama_lengkap.'Melakukan Reply Pada pertanyaan : '.$this->question->question,
-            'path'  => 'panduan/pertanyaan/'.$this->question->id,
+            'path'  => 'panduan/pesan/pertanyaan/'.$this->question->id,
         ];
     }
 }
