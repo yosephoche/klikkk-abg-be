@@ -30,7 +30,7 @@ class threadResource extends JsonResource
         return [
             'id' => $this->id,
             'owner' => $this->user,
-            'email' => $this->user->email,
+            // 'email' => $this->user->email,
             'avatar' => userAvatar($this->user->avatar),
             'jabatan' => $this->user->roles,
             'category' => $this->subCategory->name,
