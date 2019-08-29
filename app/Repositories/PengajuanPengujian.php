@@ -732,8 +732,8 @@ class PengajuanPengujian
 
                     'name' => $namaBulan[(int)$key],
                     'pengajuan_masuk' => $value->count(),
-                    'pengajuan_terproses' => $pengajuanPengujian->pengajuanTerproses($key,$year),
-                    'pengajuan_tidak_terproses' => $pengajuanPengujian->pengajuanTidakTerproses($key,$year)
+                    'pengajuan_terproses' => $pengajuanPengujian->pengajuanTerproses($year,$key),
+                    'pengajuan_tidak_terproses' => $pengajuanPengujian->pengajuanTidakTerproses($year,$key)
 
             ];
             $totalPengajuanMasuk+= (int) $value->count();
