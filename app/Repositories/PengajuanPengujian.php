@@ -729,12 +729,11 @@ class PengajuanPengujian
         $i = 1;
         foreach ($statistik as $key => $value) {
             $dataStatistik['detail'][] = [
-                'data' => [
+
                     'name' => $namaBulan[(int)$key],
                     'pengajuan_masuk' => $value->count(),
                     'pengajuan_terproses' => $pengajuanPengujian->pengajuanTerproses($key,$year),
                     'pengajuan_tidak_terproses' => $pengajuanPengujian->pengajuanTidakTerproses($key,$year)
-                ]
 
             ];
             $totalPengajuanMasuk+= (int) $value->count();
