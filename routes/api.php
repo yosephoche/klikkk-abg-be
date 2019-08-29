@@ -197,6 +197,7 @@ Route::group( ['middleware' => ['json.response'],'namespace' => 'Api'], function
 
                     Route::get('/{regId}/get-parameter-pengujian', 'PengujianController@getParameterPengujianDraft')->name('api.user.pengajuan.pengujian.get-parameter-pengujian');
                     Route::get('/get-parameter-pengujian', 'PengujianController@getParameterPengujian')->name('api.user.pengajuan.pengujian.get-parameter-pengujian');
+                    Route::get('/get-peraturan-pengujian', 'PengujianController@getPeraturanPengujian')->name('api.user.pengajuan.pengujian.get-peraturan-pengujian');
 
 
                     Route::post('/{regId}/store', 'PengujianController@storeDraft')->name('api.user.pengajuan.pengujian.store-draft');

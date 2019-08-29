@@ -129,6 +129,16 @@ class PengajuanPengujian
         return dtcApiResponse(200,$master_jenis_pengujian);
     }
 
+    public static function getPeraturanPengujian($data)
+    {
+        $pengajuanPengujian = (new self);
+        $jenisPengujian = $pengajuanPengujian->jenisPengujian->active()->whereIn('id', $data->jenis_pengujian)->with('peraturanParameter' )->get();
+
+        // dd($jenisPengujian);
+
+        return dtcApiResponse(200,$jenisPengujian);
+    }
+
     public static function getParameterPengujian($data, $regId = null)
     {
 

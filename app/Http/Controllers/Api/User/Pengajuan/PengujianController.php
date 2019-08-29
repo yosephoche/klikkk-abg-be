@@ -32,6 +32,11 @@ class PengujianController extends Controller
         return PengajuanPengujian::getParameterPengujian($request, $regId);
     }
 
+    public function getPeraturanPengujian(Request $request)
+    {
+        return PengajuanPengujian::getPeraturanPengujian($request);
+    }
+
     public function view($regId)
     {
         return dtcApiResponse(200, PengajuanPengujian::getOne($regId));
