@@ -49,7 +49,7 @@ class User extends Authenticatable
 
     public function jenisAkun()
     {
-        return belongsTo('App\Models\jenisAkun','jenis_akun');
+        return $this->belongsTo('App\Models\jenisAkun','jenis_akun');
     }
 
     public function pelatihan()
