@@ -262,7 +262,7 @@ class PengajuanPengujian
                 'nama_pemohon' => $value->nama_pemohon,
                 'tanggal_pengajuan' => prettyDate($value->created_at),
                 'tujuan_pengujian' => $value->tujuan_pengujian,
-                'avatar' => userAvatar($value->users->avatar)
+                'avatar' => userAvatar(isset($value->users->avatar) ? $value->users->avatar:null)
             ];
         });
 
@@ -705,30 +705,56 @@ class PengajuanPengujian
             return substr($value->created_at,5,2);
         });
 
-        $dataStatistik = [];
+        $rawYears = \DB::table('pengajuan_pengujian')
+                ->select(\DB::raw('SUBSTRING(created_at,1,4) AS YEARS'))
+                ->groupBy(\DB::raw('SUBSTRING(created_at,1,4)'))->get();
 
-        foreach ($statistik as $key => $value) {
-            $dataStatistik[$namaBulan[(int )$key]] = [
-                'pengajuan_masuk' => $value->count(),
-                'pengajuan_terproses' => $pengajuanPengujian->pengajuanTerproses($key,$year),
-                'pengajuan_tidak_terproses' => $pengajuanPengujian->pengajuanTidakTerproses($key,$year)
-            ];
+        $years = [];
+        foreach ($rawYears as $key => $value) {
+            $years[$key] = $value->YEARS;
         }
 
-        return [$dataStatistik];
+        $dataStatistik = [];
+        $totalPengajuanMasuk = 0;
+        $i = 1;
+        foreach ($statistik as $key => $value) {
+            $dataStatistik['detail'][] = [
+                'info' => ['bulan' => (int)$key , 'nama_bulan' => $namaBulan[(int)$key]  ],
+                'data' => [
+                    'pengajuan_masuk' => $value->count(),
+                    'pengajuan_terproses' => $pengajuanPengujian->pengajuanTerproses($key,$year),
+                    'pengajuan_tidak_terproses' => $pengajuanPengujian->pengajuanTidakTerproses($key,$year)
+                ]
+
+            ];
+            $totalPengajuanMasuk+= (int) $value->count();
+            $i++;
+        }
+
+        $dataStatistik['master'] = [
+            'pengajuan_masuk' => $totalPengajuanMasuk,
+            'pengajuan_terproses' => $pengajuanPengujian->pengajuanTerproses($year),
+            'pengajuan_tidak_terproses' => $pengajuanPengujian->pengajuanTidakTerproses($year)
+        ];
+
+        $dataStatistik['years'] = $years;
+
+        return array_values([$dataStatistik]);
     }
 
-    private function pengajuanTerproses( $m, $y){
+    private function pengajuanTerproses($y, $m = null){
         $prosesPengajuan = $this->prosesPengajuan;
-        $prosesPengajuan = $prosesPengajuan->where('tahap_pengajuan',19)->whereMonth('tanggal_selesai', (int)$m)->whereYear('tanggal_selesai',$y)->get();
-        return $prosesPengajuan->count();
+        $prosesPengajuan = $prosesPengajuan->where('tahap_pengajuan',19)->whereYear('tanggal_selesai',$y);
+        $prosesPengajuan = $m ? $prosesPengajuan->whereMonth('tanggal_selesai', (int)$m) : $prosesPengajuan;
+        return $prosesPengajuan->get()->count();
     }
 
-    private function pengajuanTidakTerproses($m,$y){
+    private function pengajuanTidakTerproses($y, $m = null){
         $masterPengujian = $this->masterPengajuanPengujian;
-        $masterPengujian = $masterPengujian->where('status_pengajuan','tolak')->whereMonth('updated_at', (int)$m)->whereYear('updated_at',$y)->get();
+        $masterPengujian = $masterPengujian->where('status_pengajuan','tolak')->whereYear('updated_at',$y);
+        $masterPengujian = $m ? $masterPengujian->whereMonth('updated_at', (int)$m) : $masterPengujian;
 
-        return $masterPengujian->count();
+        return $masterPengujian->get()->count();
     }
 
 }
