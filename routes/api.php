@@ -309,6 +309,7 @@ Route::group( ['middleware' => ['json.response'],'namespace' => 'Api'], function
         Route::group(['prefix' => 'setting'], function(){
             Route::post('/change-password', 'SettingController@changePassword');
             Route::post('/emailNotification','SettingController@emailNotification');
+            Route::post('/upload-avatar', 'SettingController@changeAvatar');
         });
     });
 

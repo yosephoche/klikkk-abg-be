@@ -6,6 +6,7 @@ use Auth;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Http\Controllers\Controller;
+use App\Repositories\User as AppUser;
 use Illuminate\Support\Facades\Hash;
 
 class SettingController extends Controller
@@ -41,7 +42,14 @@ class SettingController extends Controller
                 return dtcApiResponse(200,'true','Email Notification Di aktifkan');
             }
         } else {
-            return dtcApiResponse(404, null,'User Tidak Di temukan');        
+            return dtcApiResponse(404, null,'User Tidak Di temukan');
         }
+    }
+
+    public function changeAvatar(Request $request)
+    {
+        $user = new AppUser();
+
+        return dtcApiResponse(200, $user->uploadAvatar($request), 'Avatar berhasil di update');
     }
 }
