@@ -41,7 +41,7 @@ class threadResource extends JsonResource
             'videos' => galeryResource::collection($this->galery->where('type','video')),
             // 'edit_link' => $edit_links,
             'created_at' => $this->created_at->format('d,M-Y'),
-            'comments' => commentResource::collection($this->comments),
+            // 'comments' => commentResource::collection($this->comments),
             'commentsCount' => $this->comments->count(),
             'likesCount' => $this->likesCount,
             'likes' => $this->collectLikers(),
