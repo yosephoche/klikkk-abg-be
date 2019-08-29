@@ -29,7 +29,6 @@ class PengujianController extends Controller
 
     public function getParameterPengujianDraft($regId, Request $request)
     {
-        // dd($regId);
         return PengajuanPengujian::getParameterPengujian($request, $regId);
     }
 
@@ -42,6 +41,25 @@ class PengujianController extends Controller
     {
         $pengajuanPengujian = new PengajuanPengujian();
         $pengajuanPengujian = $pengajuanPengujian->store($request);
+
+        $kepala_balai = new \App\Models\User();
+
+        $kepala_balai = $kepala_balai->whereHas('roles', function($q){
+            $q->where('name', 'kepala_balai');
+        })->get();
+
+        foreach ($kepala_balai as $key => $value) {
+            Notification::send($value, new PengajuanBaruNotification($pengajuanPengujian['data_pemohon']['regId']));
+        }
+
+
+        return dtcApiResponse(200, $pengajuanPengujian);
+    }
+
+    public function storeDraft($regId, Request $request)
+    {
+        $pengajuanPengujian = new PengajuanPengujian($regId);
+        $pengajuanPengujian = $pengajuanPengujian->storeDraft($request);
 
         $kepala_balai = new \App\Models\User();
 

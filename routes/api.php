@@ -18,15 +18,13 @@ Route::group( ['middleware' => ['json.response'],'namespace' => 'Api'], function
     Route::post('/register', 'AuthController@register')->name('api.register');
     Route::get('/register', 'AuthController@getRegisterData');
     Route::get('/verification/{token}', 'AuthController@verifyUsersEmail')->name('api.verifyUsersEmail');
-    /**
-     * TODO : reset password
-     *
-     */
+
+    // TODO : reset password
 
     // Private Route
     Route::group( [ 'middleware' => ['auth:api'] ], function(){
         Route::get('/logout', 'AuthController@logout')->name('api.logout');
-        // Route::get('/home', 'HomeController@index')->name('api.home');
+
         Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function(){
 
             Route::group(['prefix' => 'master-data', 'namespace' => 'MasterData'], function(){
@@ -109,6 +107,10 @@ Route::group( ['middleware' => ['json.response'],'namespace' => 'Api'], function
                     Route::get('/show/{questionId}', 'HasilSurveyController@show');
                 });
 
+                Route::group(['prefix' => 'statistik'], function(){
+                    Route::get('/{year}', 'StatistikController@index');
+                });
+
             });
 
             Route::group(['prefix' => 'kepala-balai'], function(){
@@ -124,6 +126,7 @@ Route::group( ['middleware' => ['json.response'],'namespace' => 'Api'], function
                 Route::get('/', 'StafTeknisController@index')->name('api.admin.staf-teknis.index');
                 Route::get('/riwayat', 'StafTeknisController@riwayat')->name('api.admin.staf-teknis.riwayat');
                 Route::get('/show/{regId}', 'StafTeknisController@show')->name('api.admin.staf-teknis.show');
+                Route::get('/cetak/{regId}', 'StafTeknisController@cetak')->name('api.admin.staf-teknis.cetak');
                 Route::get('/pelatihan/show/{id}','StafTeknisController@showPelatihan')->name('api.admin.staf-teknis.showPelatihan');
 
                 Route::get('/get-master-data', 'StafTeknisController@getMasterData')->name('api.admin.staf-teknis.get-master-data');
@@ -131,9 +134,14 @@ Route::group( ['middleware' => ['json.response'],'namespace' => 'Api'], function
                 Route::post('/{regId}/update-detail', 'StafTeknisController@updateDetail')->name('api.admin.staf-teknis.update-detail');
                 Route::post('/{regId}/update-biaya-tambahan', 'StafTeknisController@updateBiayaTambahan')->name('api.admin.staf-teknis.update-biaya-tambahan');
 
+                Route::post('/{regId}/upload-kup', 'StafTeknisController@uploadKup');
+                Route::post('/{regId}/upload-proposal', 'StafTeknisController@uploadProposal');
+                Route::post('/{regId}/upload-surat-pengantar', 'StafTeknisController@uploadSuratPengantar');
+
 
                 Route::get('/{regId}/verifikasi-pengajuan', 'StafTeknisController@verifikasiPengajuan')->name('api.admin.staf-teknis.verifikasi-pengajuan');
                 Route::post('/{regId}/store-biaya-tambahan', 'StafTeknisController@storeBiayaTambahan')->name('api.admin.staf-teknis.store-biaya-tambahan');
+
 
                 Route::get('/QnA', 'StafTeknisController@indexQnA')->name('index.QnA');
                 Route::get('/QnA/{id}','StafTeknisController@showQnA')->name('show.QnA');
@@ -171,7 +179,7 @@ Route::group( ['middleware' => ['json.response'],'namespace' => 'Api'], function
 
 
             Route::group(['prefix' => 'pengajuan' , 'namespace' => 'Pengajuan'], function(){
-    
+
                 Route::group(['prefix' => 'QnA'], function(){
                     Route::get('/question','qnaController@index')->name('index.QnA');
                     Route::get('/question/{id}','qnaController@show')->name('show.QnA');
@@ -191,11 +199,12 @@ Route::group( ['middleware' => ['json.response'],'namespace' => 'Api'], function
                     Route::get('/get-parameter-pengujian', 'PengujianController@getParameterPengujian')->name('api.user.pengajuan.pengujian.get-parameter-pengujian');
 
 
-                    Route::get('/', 'PengujianController@index')->name('api.user.pengajuan.pengujian.index');
-                    Route::get('/add', 'PengujianController@add')->name('api.user.pengajuan.pegujian.add');
+                    Route::post('/{regId}/store', 'PengujianController@storeDraft')->name('api.user.pengajuan.pengujian.store-draft');
                     Route::get('/view/{regId}', 'PengujianController@view')->name('api.user.pengajuan.pegujian.view');
+                    Route::get('/add', 'PengujianController@add')->name('api.user.pengajuan.pegujian.add');
                     Route::post('/store', 'PengujianController@store')->name('api.user.pengajuan.pengujian.store');
                     Route::post('/draft', 'PengujianController@draft')->name('api.user.pengajuan.pengujian.draft');
+                    Route::get('/', 'PengujianController@index')->name('api.user.pengajuan.pengujian.index');
 
                     Route::get('/get-master-data', 'PengujianController@getMasterData')->name('api.user.pengajuan.pengujian.get-master-data');
                     Route::post('/{regId}/update-data-pemohon', 'PengujianController@updateDataPemohon')->name('api.user.pengajuan.pengujian.update-data-pemohon');
