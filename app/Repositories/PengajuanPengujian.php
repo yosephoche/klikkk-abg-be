@@ -557,9 +557,9 @@ class PengajuanPengujian
     {
         if ($this->masterPengajuanPengujian instanceof Builder) {
             try {
-                if ($data->has('surat_pengantar')) {
+                if ($data->has('surat-pengantar')) {
                     $pengajuan = $this->masterPengajuanPengujian->first();
-                    $image = $data->file('surat_pengantar');
+                    $image = $data->file('surat-pengantar');
                     $name = $pengajuan->regId;
                     $folder = '/uploads/surat_pengantar/';
                     $filePath = $folder . $name. '.' . $image->getClientOriginalExtension();

@@ -212,7 +212,7 @@ Route::group( ['middleware' => ['json.response'],'namespace' => 'Api'], function
                     Route::post('/{regId}/update-detail', 'PengujianController@updateDetail')->name('api.user.pengajuan.pengujian.update-detail');
                     Route::post('/{regId}/update-biaya-tambahan', 'PengujianController@updateBiayaTambahan')->name('api.user.pengajuan.pengujian.update-biaya-tambahan');
 
-                    Route::get('/{regId}/kirim', 'PengujianController@kirim')->name('api.user.pengajuan.pengujian.kirim');
+                    Route::post('/{regId}/kirim', 'PengujianController@kirim')->name('api.user.pengajuan.pengujian.kirim');
                     Route::post('/{regId}/tolak', 'PengujianController@tolak')->name('api.user.pengajuan.pengujian.tolak');
                     Route::get('/{regId}/terima', 'PengujianController@terima')->name('api.user.pengajuan.pengujian.terima');
 
