@@ -11,11 +11,12 @@ use Illuminate\Support\Carbon;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Storage;
 use App\Repositories\Traits\UploadTrait;
+use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
 
 class User extends BaseRepository
 {
 
-    use UploadTrait;
+    use UploadTrait, SendsPasswordResetEmails;
 
     public function __construct()
     {
@@ -314,4 +315,5 @@ class User extends BaseRepository
             }
         }
     }
+
 }
