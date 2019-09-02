@@ -272,6 +272,8 @@ class PengajuanPengujian
                 'nama_pemohon' => $value->nama_pemohon,
                 'tanggal_pengajuan' => prettyDate($value->created_at),
                 'tujuan_pengujian' => $value->tujuan_pengujian,
+                'nama_perusahaan' => $value->nama_perusahaan,
+                'rencana_lokasi_pengujian' => $value->rencana_lokasi_pengujian,
                 'avatar' => userAvatar(isset($value->users->avatar) ? $value->users->avatar:null)
             ];
         });
