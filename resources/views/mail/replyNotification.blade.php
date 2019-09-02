@@ -140,7 +140,7 @@
     <div class="container">
       <header>
         <div class="wrap-logo">
-          <img src="{{ {{ asset('storage/images/logo.png') }} }}" class="logo">
+          <img src="{{ asset('storage/images/logo.png') }}" class="logo">
         </div>
       </header>
 
