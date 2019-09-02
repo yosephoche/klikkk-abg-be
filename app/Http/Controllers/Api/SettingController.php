@@ -25,6 +25,19 @@ class SettingController extends Controller
         return dtcApiResponse(200, null,'Password berhasil di ganti');
     }
 
+    public function changeName(Request $request)
+    {
+        $user = User::find(Auth::user()->id);
+        if(isset($user))
+        {
+            $user->nama_lengkap = $request->nama;
+            $user->save();
+            return dtcApiResponse(200,'Success','Nama Berhasil Di Ubah');            
+        } else {
+            return dtcApiResponse(404, null,'User Tidak Di temukan');        
+        }
+    }
+
 
     public function emailNotification(Request $request)
     {
