@@ -16,6 +16,8 @@ Route::group( ['middleware' => ['json.response'],'namespace' => 'Api'], function
     // Public Routes
     Route::post('/login', 'AuthController@login')->name('api.login');
     Route::post('/register', 'AuthController@register')->name('api.register');
+    Route::post('/forget-password', 'AuthController@forgetPassword')->name('api.forget-password');
+    Route::get('/reset-password', 'AuthController@resetPassword')->name('password.reset');
     Route::get('/register', 'AuthController@getRegisterData');
     Route::get('/verification/{token}', 'AuthController@verifyUsersEmail')->name('api.verifyUsersEmail');
 
@@ -197,6 +199,7 @@ Route::group( ['middleware' => ['json.response'],'namespace' => 'Api'], function
 
                     Route::get('/{regId}/get-parameter-pengujian', 'PengujianController@getParameterPengujianDraft')->name('api.user.pengajuan.pengujian.get-parameter-pengujian');
                     Route::get('/get-parameter-pengujian', 'PengujianController@getParameterPengujian')->name('api.user.pengajuan.pengujian.get-parameter-pengujian');
+                    Route::get('/get-peraturan-pengujian', 'PengujianController@getPeraturanPengujian')->name('api.user.pengajuan.pengujian.get-peraturan-pengujian');
 
 
                     Route::post('/{regId}/store', 'PengujianController@storeDraft')->name('api.user.pengajuan.pengujian.store-draft');
@@ -211,7 +214,7 @@ Route::group( ['middleware' => ['json.response'],'namespace' => 'Api'], function
                     Route::post('/{regId}/update-detail', 'PengujianController@updateDetail')->name('api.user.pengajuan.pengujian.update-detail');
                     Route::post('/{regId}/update-biaya-tambahan', 'PengujianController@updateBiayaTambahan')->name('api.user.pengajuan.pengujian.update-biaya-tambahan');
 
-                    Route::get('/{regId}/kirim', 'PengujianController@kirim')->name('api.user.pengajuan.pengujian.kirim');
+                    Route::post('/{regId}/kirim', 'PengujianController@kirim')->name('api.user.pengajuan.pengujian.kirim');
                     Route::post('/{regId}/tolak', 'PengujianController@tolak')->name('api.user.pengajuan.pengujian.tolak');
                     Route::get('/{regId}/terima', 'PengujianController@terima')->name('api.user.pengajuan.pengujian.terima');
 
@@ -310,6 +313,7 @@ Route::group( ['middleware' => ['json.response'],'namespace' => 'Api'], function
             Route::post('/change-password', 'SettingController@changePassword');
             Route::post('/emailNotification','SettingController@emailNotification');
             Route::post('/changeName','SettingController@changeName');
+            Route::post('/upload-avatar', 'SettingController@changeAvatar');
         });
     });
 

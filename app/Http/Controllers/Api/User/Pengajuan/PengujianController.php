@@ -32,6 +32,11 @@ class PengujianController extends Controller
         return PengajuanPengujian::getParameterPengujian($request, $regId);
     }
 
+    public function getPeraturanPengujian(Request $request)
+    {
+        return PengajuanPengujian::getPeraturanPengujian($request);
+    }
+
     public function view($regId)
     {
         return dtcApiResponse(200, PengajuanPengujian::getOne($regId));
@@ -118,9 +123,12 @@ class PengujianController extends Controller
         return dtcApiResponse(200, $biayaTambahan);
     }
 
-    public function kirim($regId)
+    public function kirim($regId, Request $request)
     {
         $pengajuan =  new PengajuanPengujian($regId);
+        $master = $pengajuan->masterPengajuanPengujian->first();
+        $master->keterangan = $request->komentar;
+        $master->save();
 
         $_pengajuan = $pengajuan->verifikasi(3);
         \App\Repositories\ProsesPengajuan::make(3, $regId);

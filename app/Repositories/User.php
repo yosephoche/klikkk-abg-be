@@ -11,11 +11,12 @@ use Illuminate\Support\Carbon;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Storage;
 use App\Repositories\Traits\UploadTrait;
+use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
 
 class User extends BaseRepository
 {
 
-    use UploadTrait;
+    use UploadTrait, SendsPasswordResetEmails;
 
     public function __construct()
     {
@@ -81,11 +82,7 @@ class User extends BaseRepository
 
         $user->emailVerification()->save($email_verification);
 
-        // $user->notify(new VerifyEmail($user));
         Notification::send($user, new VerifyEmail($user));
-
-        // Mail::to($user)->send(new AppVerifyEmail($user));
-        // Mail::to('muh.zulkifli@docotel.com')->send(new AppVerifyEmail('muh.zulkifli@docotel.com'));
 
         return dtcApiResponse(200, null, 'User anda berhasil terdaftar, silahkan konfirmasi email anda untuk menyelesaikan proses pendaftaran');
     }
@@ -298,4 +295,25 @@ class User extends BaseRepository
     public function thread(){
         return $this->hasMany('App\Thread');
     }
+
+    public function uploadAvatar($data)
+    {
+        $user = auth('api')->user();
+        if ($data->has('avatar') && $data->avatar !== null) {
+            try {
+                $image = $data->file('avatar');
+                $name = str_slug($user->nama_lengkap).'_'.time();
+                $folder = '/uploads/avatar/';
+                $filePath = $folder . $name. '.' . $image->getClientOriginalExtension();
+                $this->uploadOne($image, $folder, 'public', $name);
+                $user->avatar = $filePath;
+                $user->save();
+
+                return $user->avatar?asset('storage'.$user->avatar):null;
+            } catch (\Exception $e) {
+                return dtcApiResponse(500,false, $e->getMessage());
+            }
+        }
+    }
+
 }

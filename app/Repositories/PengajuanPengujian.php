@@ -129,6 +129,16 @@ class PengajuanPengujian
         return dtcApiResponse(200,$master_jenis_pengujian);
     }
 
+    public static function getPeraturanPengujian($data)
+    {
+        $pengajuanPengujian = (new self);
+        $jenisPengujian = $pengajuanPengujian->jenisPengujian->active()->whereIn('id', $data->jenis_pengujian)->with('peraturanParameter' )->get();
+
+        // dd($jenisPengujian);
+
+        return dtcApiResponse(200,$jenisPengujian);
+    }
+
     public static function getParameterPengujian($data, $regId = null)
     {
 
@@ -547,9 +557,9 @@ class PengajuanPengujian
     {
         if ($this->masterPengajuanPengujian instanceof Builder) {
             try {
-                if ($data->has('surat_pengantar')) {
+                if ($data->has('surat-pengantar')) {
                     $pengajuan = $this->masterPengajuanPengujian->first();
-                    $image = $data->file('surat_pengantar');
+                    $image = $data->file('surat-pengantar');
                     $name = $pengajuan->regId;
                     $folder = '/uploads/surat_pengantar/';
                     $filePath = $folder . $name. '.' . $image->getClientOriginalExtension();
@@ -719,12 +729,11 @@ class PengajuanPengujian
         $i = 1;
         foreach ($statistik as $key => $value) {
             $dataStatistik['detail'][] = [
-                'info' => ['bulan' => (int)$key , 'nama_bulan' => $namaBulan[(int)$key]  ],
-                'data' => [
+
+                    'name' => $namaBulan[(int)$key],
                     'pengajuan_masuk' => $value->count(),
-                    'pengajuan_terproses' => $pengajuanPengujian->pengajuanTerproses($key,$year),
-                    'pengajuan_tidak_terproses' => $pengajuanPengujian->pengajuanTidakTerproses($key,$year)
-                ]
+                    'pengajuan_terproses' => $pengajuanPengujian->pengajuanTerproses($year,$key),
+                    'pengajuan_tidak_terproses' => $pengajuanPengujian->pengajuanTidakTerproses($year,$key)
 
             ];
             $totalPengajuanMasuk+= (int) $value->count();
