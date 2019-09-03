@@ -14,15 +14,16 @@ class SettingController extends Controller
     public function changePassword(Request $request)
     {
         $user = auth('api')->user();
+        $user->nama_lengkap = $request->nama;
         if (Hash::check($request->old_password, $user->password)) {
             $user->password = Hash::make($request->new_password);
-            $user->save();
         }
         else{
             return dtcApiResponse(401,null,'Password lama tidak sesuai');
         }
-
-        return dtcApiResponse(200, null,'Password berhasil di ganti');
+        $user->save();
+        
+        return dtcApiResponse(200, null,'Data berhasil di ganti');
     }
 
     public function changeName(Request $request)

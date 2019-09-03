@@ -73,10 +73,16 @@ class threadController extends Controller
         return dtcApiResponse(200, $data);
     }
 
-    public function readNotification()
+    public function readNotification(Request $request)
     {
-        $data = Auth::user()->unreadNotifications()->get();
-        $data->markAsRead();
+        $data = Auth::user()->unreadNotifications()->get()->where('data.path',$request->slug)->first();
+        if(isset($data))
+        {
+            $data->markAsRead();
+            return dtcApiResponse(200,'Success','Notifikasi Sudah Di Baca');            
+        } else {
+            return dtcApiResponse(404, null,'Notifikasi Tidak Di temukan');        
+        }
 
         return $this->success();
     }
