@@ -27,6 +27,9 @@ class threadResource extends JsonResource
         } else {
             $likeStatus = False;
         }
+
+        
+
         return [
             'id' => $this->id,
             'owner' => $this->user->nama_lengkap,

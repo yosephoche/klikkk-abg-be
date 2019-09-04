@@ -4,6 +4,8 @@ namespace App\Repositories;
 
 use Illuminate\Support\Facades\Hash;
 use App\Models\Role;
+use App\Models\Thread;
+use App\Models\Comment;
 use App\Notifications\VerifyEmail;
 use App\Models\EmailVerification;
 use Illuminate\Support\Facades\Notification;
@@ -286,6 +288,8 @@ class User extends BaseRepository
     public function deleteUser($id)
     {
         $user = $this->model()::findOrFail($id);
+        $thread = Thread::where('created_by',$user->id)->delete();
+        $comment = Comment::where('user_id',$user->id)->delete();
 
         $user->delete();
 
