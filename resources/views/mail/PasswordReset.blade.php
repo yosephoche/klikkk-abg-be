@@ -145,7 +145,7 @@
       <section>
         <div class="card">
           <div class="wrap-avatar">
-            <img src="{{ $message->embed(storage_path().'/images/bs_konfirmasi.png')}}" class="avatar">
+            <img src="{{ $message->embed(storage_path().'/images/ic_sandi.png')}}" class="avatar">
           </div>
 
           <div class="wrap-title">

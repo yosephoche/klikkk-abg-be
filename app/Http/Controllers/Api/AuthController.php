@@ -57,18 +57,19 @@ class AuthController extends Controller
 
     public function resetPassword(Request $request)
     {
-        $token = \DB::table('password_resets')->where('token', $request->token);
+        $res = Password::broker()->reset(
+            $request->all(), function($user, $password)
+            {
+                $user->password = Hash::make($password);
 
-        if ($token->first()) {
-            $user = \App\Models\User::where('email', $token->first()->email);
+                $user->setRememberToken(\Str::random(60));
 
-            $user = $user->first();
-            $user->password = Hash::make($request->password);
-            $user->save();
+                $user->save();
+            }
+        );
 
-            return dtcApiResponse(200, '', 'Password berhasil di reset');
-        }
 
-        return dtcApiResponse(404,'','User tidak ditemukan');
+        return $res == Password::PASSWORD_RESET ? dtcApiResponse(200, '', 'Password berhasil di reset')
+                                                : dtcApiResponse(404,'','User tidak ditemukan');
     }
 }
