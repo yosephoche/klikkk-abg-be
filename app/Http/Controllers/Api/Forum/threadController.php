@@ -294,9 +294,10 @@ class threadController extends Controller
     {
         $thread = $this->thread->findThread($id);
 
+        $role = Auth::user()->roles->where('name','admin')->first();
         if(isset($thread))
         {
-            if(Auth::user()->id == $thread->created_by)
+            if(Auth::user()->id == $thread->created_by || isset($role))
             {
                 $thread->delete();
                 return $this->success();
