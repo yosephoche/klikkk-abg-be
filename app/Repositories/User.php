@@ -318,7 +318,7 @@ class User extends BaseRepository
         }
         $user->nama_lengkap = $data->name;
         $user->save();
-        return $user->avatar?asset('storage'.$user->avatar):null;
+        return $user->avatar?asset('storage'.$user->avatar):$user;
     }
 
 }
