@@ -278,6 +278,7 @@ Route::group( ['middleware' => ['json.response'],'namespace' => 'Api'], function
                 Route::put('/update/{id}','threadController@update')->name('thread_edit');
                 Route::post('/post','threadController@store')->name('thread_post');
                 Route::delete('/delete/{id}','threadController@destroy')->name('delete_thread');
+                Route::delete('/fixData','threadController@fixDataThread')->name('thread_fix');
             });
 
             Route::group(['prefix'=>'galery'], function(){

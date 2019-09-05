@@ -20,6 +20,11 @@ class commentResource extends JsonResource
         } else {
             $likeStatus = False;
         }
+
+        if(!isset($this->user))
+        {
+            $this->delete();
+        }
         return [
             'id' => $this->id,
             'owner' => $this->user->nama_lengkap,

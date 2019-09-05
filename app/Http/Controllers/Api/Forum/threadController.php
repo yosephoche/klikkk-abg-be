@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Api\Forum;
 
 use Auth;
 use App\Models\Thread;
+use App\Models\Comment;
+use App\Models\User;
 use Illuminate\Support\Str;
 use App\Models\Galery;
 use Illuminate\Http\Request;
@@ -294,9 +296,10 @@ class threadController extends Controller
     {
         $thread = $this->thread->findThread($id);
 
+        $role = Auth::user()->roles->where('name','admin')->first();
         if(isset($thread))
         {
-            if(Auth::user()->id == $thread->created_by)
+            if(Auth::user()->id == $thread->created_by || isset($role))
             {
                 $thread->delete();
                 return $this->success();
@@ -305,6 +308,27 @@ class threadController extends Controller
             }
         } else {
             return $this->notFound();
+        }
+    }
+
+    public function fixDataThread()
+    {
+        $datas = Thread::orderBy('id','desc')->get();
+        foreach ($datas as $data) {
+            $user = User::where('id',$data->created_by)->first();
+            if(!isset($user))
+            {
+                $data->delete();
+            }
+        }
+
+        $comments = Comment::orderBy('id','desc')->get();
+        foreach ($comments as $comment) {
+            $user = User::where('id',$comment->user_id)->first();
+            if(!isset($user))
+            {
+                $data->delete();
+            }
         }
     }
 }
