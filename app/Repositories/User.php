@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Role;
 use App\Models\Thread;
@@ -302,7 +303,7 @@ class User extends BaseRepository
 
     public function uploadAvatar($data)
     {
-        $user = auth('api')->user();
+        $user = Auth::user();
         if ($data->has('avatar') && $data->avatar !== null) {
             try {
                 $image = $data->file('avatar');
