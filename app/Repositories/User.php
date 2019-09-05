@@ -303,8 +303,6 @@ class User extends BaseRepository
 
     public function uploadAvatar($data)
     {
-        $user = Auth::user();
-        dd(Auth::user());
         if ($data->has('avatar') && $data->avatar !== null) {
             try {
                 $image = $data->file('avatar');
