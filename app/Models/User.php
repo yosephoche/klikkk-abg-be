@@ -73,6 +73,11 @@ class User extends Authenticatable
         return $this->belongsToMany('App\Models\SurveyQuestion','survey_results','user_id','question_id')->withTimestamps()->withPivot('answer');
     }
 
+    public function pollingResult()
+    {
+        return $this->hasMany('App\Models\PollingResult','user_id','id');
+    }
+
     // fix restore traits conflict
     public function restore()
     {

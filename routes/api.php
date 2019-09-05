@@ -102,11 +102,17 @@ Route::group( ['middleware' => ['json.response'],'namespace' => 'Api'], function
                 });
 
                 Route::resource('survey', 'SurveyController');
+                Route::resource('polling', 'PollingController');
                 Route::resource('jenis-akun', 'JenisAkunController');
 
                 Route::group(['prefix' => 'hasil-survey'], function(){
                     Route::get('/', 'HasilSurveyController@index');
                     Route::get('/show/{questionId}', 'HasilSurveyController@show');
+                });
+
+                Route::group(['prefix' => 'hasil-polling'], function(){
+                    Route::get('/', 'PollingResultController@index');
+                    Route::get('/show/{pollingId}', 'PollingResultController@show');
                 });
 
                 Route::group(['prefix' => 'statistik'], function(){
@@ -247,6 +253,11 @@ Route::group( ['middleware' => ['json.response'],'namespace' => 'Api'], function
             Route::group(['prefix'=>'survey'], function(){
                 Route::get('/show-survey', 'SurveyController@showSurvey');
                 Route::post('/submit-survey', 'SurveyController@store');
+            });
+
+            Route::group(['prefix'=>'polling'], function(){
+                Route::get('/show-polling', 'PollingController@showPolling');
+                Route::post('/submit-polling', 'PollingController@store');
             });
 
         });
