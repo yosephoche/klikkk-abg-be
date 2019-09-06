@@ -84,6 +84,7 @@ class PollingController extends Controller
     {
         $polling = Polling::findOrFail($id);
         $polling->question = $request->question;
+        $polling->save();
 
         return dtcApiResponse(200, $polling, 'Polling berhasil di update');
     }
