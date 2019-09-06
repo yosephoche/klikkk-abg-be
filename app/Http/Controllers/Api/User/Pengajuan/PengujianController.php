@@ -43,8 +43,8 @@ class PengujianController extends Controller
         $editable = Storage::disk('local')->exists($regId);
         $pengajuan = PengajuanPengujian::getOne($regId);
         $pengajuan['editable'] = ! $editable;
-        dd($pengajuan);
-        return dtcApiResponse(200, null);
+        // dd($pengajuan);
+        return dtcApiResponse(200, $pengajuan);
     }
 
     public function store(Request $request)
