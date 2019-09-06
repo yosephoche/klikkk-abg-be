@@ -151,6 +151,7 @@ class PengujianController extends Controller
             Notification::send($value, new VerifikasiUserNotification($pengajuan->masterPengajuanPengujian->first(),$staf_teknis));
         }
 
+        Storage::disk('local')->exists($regId) ? Storage::disk('local')->delete($regId):'';
 
         return dtcApiResponse(200, $_pengajuan);
     }
