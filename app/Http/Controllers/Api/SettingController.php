@@ -63,23 +63,7 @@ class SettingController extends Controller
     public function changeAvatar(Request $request)
     {
         $user = Auth::user();
-
-        if ($request->has('avatar') && $request->avatar !== null) {
-            try {
-                $image = $request->file('avatar');
-                $name = str_slug($user->nama_lengkap).'_'.time();
-                $folder = '/uploads/avatar/';
-                $filePath = $folder . $name. '.' . $image->getClientOriginalExtension();
-                $this->uploadOne($image, $folder, 'public', $name);
-                $user->avatar = $filePath;
-                
-            } catch (\Exception $e) {
-                return dtcApiResponse(500,false, $e->getMessage());
-            }
-        }
-        $user->nama_lengkap = $request->name;
-        $user->save();
-
+        $user->uploadAvatar($request);
         return dtcApiResponse(200, $user, 'Avatar berhasil di update');
     }
 }
