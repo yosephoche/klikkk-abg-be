@@ -311,13 +311,15 @@ class User extends BaseRepository
                 $filePath = $folder . $name. '.' . $image->getClientOriginalExtension();
                 $this->uploadOne($image, $folder, 'public', $name);
                 $user->avatar = $filePath;
-                $user->save();
-
-                return $user->avatar?asset('storage'.$user->avatar):null;
+                
             } catch (\Exception $e) {
                 return dtcApiResponse(500,false, $e->getMessage());
             }
         }
+        $user->nama_lengkap = $data->name;
+        $user->save();
+        $user['avatar'] = asset('storage'.$user->avatar);
+        return $user;
     }
 
 }
