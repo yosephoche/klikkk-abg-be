@@ -62,7 +62,7 @@ class SettingController extends Controller
 
     public function changeAvatar(Request $request)
     {
-        $user = Auth::user();
+        $user = new AppUser();
         $user->uploadAvatar($request);
         return dtcApiResponse(200, $user, 'Avatar berhasil di update');
     }
