@@ -38,6 +38,19 @@ class KeuanganController extends Controller
         return dtcApiResponse(200, true);
     }
 
+    public function uploadEbilling($regId, Request $request)
+    {
+        $pengajuanPengujian = new PengajuanPengujian($regId);
+        $pengajuanPengujian->uploadEbilling($request);
+
+        $pengajuanPengujian->verifikasi(7);
+        \App\Repositories\ProsesPengajuan::make(7, $request->regId);
+
+        Notification::send( $pengajuanPengujian->masterPengajuanPengujian->first()->users, new InputEbillingNotification($pengajuanPengujian->masterPengajuanPengujian->first()) );
+
+        return dtcApiResponse(200, true);
+    }
+
     public function show($regId)
     {
         $pengajuan =  PengajuanPengujian::getOne($regId);

@@ -169,6 +169,7 @@ Route::group( ['middleware' => ['json.response'],'namespace' => 'Api'], function
                 Route::get('/riwayat', 'KeuanganController@riwayat')->name('api.admin.keuangan.riwayat');
                 Route::get('/show/{regId}', 'KeuanganController@show')->name('api.admin.keuangan.show');
                 Route::post('/{regId}/input-ebilling', 'KeuanganController@inputEbilling')->name('api.admin.keuangan.input-ebilling');
+                Route::post('/{regId}/upload-ebilling', 'KeuanganController@uploadEbilling')->name('api.admin.keuangan.upload-ebilling');
                 Route::get('/{regId}/konfirmasi-pembayaran', 'KeuanganController@konfirmasiPembayaran')->name('api.admin.keuangan.konfirmasi-pembayaran');
 
             });

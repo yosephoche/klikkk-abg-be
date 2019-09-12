@@ -342,7 +342,7 @@ class PengajuanPengujian
                     'nomor_telepon' => $pengajuanPengujian->no_telepon,
                     'jenis_usaha' => $pengajuanPengujian->jenis_usaha,
                     'tujuan' => $pengajuanPengujian->tujuan_pengujian,
-                    'e_billing' => $pengajuanPengujian->e_billing,
+                    'e_billing' => buktiTransaksiPengajuan($pengajuanPengujian->e_billing),
                     'bukti_transaksi' => buktiTransaksiPengajuan($pengajuanPengujian->bukti_transaksi),
                     'berkas_kup' => buktiTransaksiPengajuan($pengajuanPengujian->berkas_kup),
                     'berkas_proposal' => buktiTransaksiPengajuan($pengajuanPengujian->berkas_proposal),
@@ -570,6 +570,31 @@ class PengajuanPengujian
 
                     $pengajuan->save();
                     return asset('storage'.$pengajuan->berkas_surat_pengantar);
+                }
+            } catch (\Exception $e) {
+                return dtcApiResponse(500,false, $e->getMessage());
+            }
+        }
+        else{
+            throw new PengajuanNotFoundException();
+        }
+    }
+
+    public function uploadEbilling($data)
+    {
+        if ($this->masterPengajuanPengujian instanceof Builder) {
+            try {
+                if ($data->has('ebilling')) {
+                    $pengajuan = $this->masterPengajuanPengujian->first();
+                    $image = $data->file('ebilling');
+                    $name = $pengajuan->regId;
+                    $folder = '/uploads/ebilling/';
+                    $filePath = $folder . $name. '.' . $image->getClientOriginalExtension();
+                    $this->uploadOne($image, $folder, 'public', $name);
+                    $pengajuan->e_billing = $filePath;
+
+                    $pengajuan->save();
+                    return asset('storage'.$pengajuan->e_billing);
                 }
             } catch (\Exception $e) {
                 return dtcApiResponse(500,false, $e->getMessage());
