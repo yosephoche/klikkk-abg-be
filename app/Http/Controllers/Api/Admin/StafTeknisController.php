@@ -160,6 +160,13 @@ class StafTeknisController extends Controller
         return dtcApiResponse(200,$pengajuan->cetak());
     }
 
+    public function downloadTemplateKup($regId)
+    {
+        $pengajuan = new PengajuanPengujian($regId);
+
+        return dtcApiResponse(200,$pengajuan->downloadTemplateKup());
+    }
+
 
 
 }

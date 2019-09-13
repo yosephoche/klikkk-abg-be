@@ -7,7 +7,9 @@ use App\Http\Resources\PengajuanPengujian as PengajuanPengujianResource;
 use Illuminate\Database\Eloquent\Builder;
 use App\Exceptions\PengajuanNotFoundException;
 use App\Exceptions\ProsesDoubleException;
+use App\Exports\BerkasKup;
 use App\Repositories\Traits\UploadTrait;
+use Maatwebsite\Excel\Facades\Excel;
 
 class PengajuanPengujian
 {
@@ -645,6 +647,29 @@ class PengajuanPengujian
         throw new PengajuanNotFoundException();
     }
 
+    public function downloadTemplateKup()
+    {
+        if ($this->masterPengajuanPengujian instanceof Builder) {
+            $pengajuan = $this->getOne($this->masterPengajuanPengujian->first()->regId);
+            $groupPengujian = [];
+
+            foreach ($pengajuan['data_pengujian'] as $key => $value) {
+                $_groupPengujian = explode('-',$value['group']);
+                if (collect($groupPengujian)->has($_groupPengujian[0]) == false) {
+                    $groupPengujian[] = $_groupPengujian[0];
+                }
+            }
+
+            $groupPengujian = array_unique($groupPengujian);
+
+            Excel::store(new BerkasKup($pengajuan), $pengajuan['data_pemohon']['regId'].'.xlsx','public');
+
+            return asset('storage/'.$pengajuan['data_pemohon']['regId'].'.xlsx');
+        }
+
+        throw new PengajuanNotFoundException();
+    }
+
     public function uploadBerkas($tipe,$data)
     {
         if ($this->masterPengajuanPengujian instanceof Builder) {
@@ -673,7 +698,7 @@ class PengajuanPengujian
     public function historyUser()
     {
         $pengajuan = $this->masterPengajuanPengujian;
-        $pengajuan = $pengajuan->history()->get()->groupBy('status_pengajuan')->map(function($value, $key){
+        $pengajuan = $pengajuan->history()->orderBy('created_at','DESC')->get()->groupBy('status_pengajuan')->map(function($value, $key){
 
             return $value->map(function($value) use ($key){
 

@@ -135,6 +135,7 @@ Route::group( ['middleware' => ['json.response'],'namespace' => 'Api'], function
                 Route::get('/riwayat', 'StafTeknisController@riwayat')->name('api.admin.staf-teknis.riwayat');
                 Route::get('/show/{regId}', 'StafTeknisController@show')->name('api.admin.staf-teknis.show');
                 Route::get('/cetak/{regId}', 'StafTeknisController@cetak')->name('api.admin.staf-teknis.cetak');
+                Route::get('/download-template-kup/{regId}', 'StafTeknisController@downloadTemplateKup');
                 Route::get('/pelatihan/show/{id}','StafTeknisController@showPelatihan')->name('api.admin.staf-teknis.showPelatihan');
 
                 Route::get('/get-master-data', 'StafTeknisController@getMasterData')->name('api.admin.staf-teknis.get-master-data');
