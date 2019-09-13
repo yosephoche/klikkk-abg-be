@@ -60,6 +60,7 @@ class pelatihanController extends Controller
         $data->instansi = $request->instansi;
         $data->telepon = $request->telepon;
         $data->komentar = $request->komentar;
+        $data->status = "aktif";
         $data->save();
         $data->jenisPelatihan()->sync($request->jenisPelatihan);
 

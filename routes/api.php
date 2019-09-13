@@ -124,6 +124,7 @@ Route::group( ['middleware' => ['json.response'],'namespace' => 'Api'], function
             Route::group(['prefix' => 'kepala-balai'], function(){
                 Route::get('/', 'KepalaBalaiController@index')->name('api.admin.kepala-balai.index');
                 Route::get('/riwayat', 'KepalaBalaiController@riwayat')->name('api.admin.kepala-balai.riwayat');
+                Route::get('/riwayatPelatihan','StafTeknisController@riwayatPelatihan')->name('api.admin.staf-teknis.riwayatPelatihan');
                 Route::get('/{regId}/verifikasi', 'KepalaBalaiController@verifikasi')->name('api.admin.kepala-balai.verifikasi');
                 Route::get('/{regId}/disposisi', 'KepalaBalaiController@disposisi')->name('api.admin.kepala-balai.disposisi');
                 Route::get('/disposisi-all', 'KepalaBalaiController@disposisiAll')->name('api.admin.kepala-balai.disposisiAll');
@@ -133,12 +134,13 @@ Route::group( ['middleware' => ['json.response'],'namespace' => 'Api'], function
             Route::group(['prefix' => 'staf-teknis'], function(){
                 Route::get('/', 'StafTeknisController@index')->name('api.admin.staf-teknis.index');
                 Route::get('/riwayat', 'StafTeknisController@riwayat')->name('api.admin.staf-teknis.riwayat');
+                Route::get('/riwayatPelatihan','StafTeknisController@riwayatPelatihan')->name('api.admin.staf-teknis.riwayatPelatihan');
                 Route::get('/show/{regId}', 'StafTeknisController@show')->name('api.admin.staf-teknis.show');
                 Route::get('/cetak/{regId}', 'StafTeknisController@cetak')->name('api.admin.staf-teknis.cetak');
                 Route::get('/download-template-kup/{regId}', 'StafTeknisController@downloadTemplateKup');
                 Route::get('/pelatihan/show/{id}','StafTeknisController@showPelatihan')->name('api.admin.staf-teknis.showPelatihan');
-
                 Route::get('/get-master-data', 'StafTeknisController@getMasterData')->name('api.admin.staf-teknis.get-master-data');
+                Route::post('/pelatihan/done/{id}','StafTeknisController@donePelatihan')->name('api.admin.staf-teknis.donePelatihan');
                 Route::post('/{regId}/update-data-pemohon', 'StafTeknisController@updateDataPemohon')->name('api.admin.staf-teknis.update-data-pemohon');
                 Route::post('/{regId}/update-detail', 'StafTeknisController@updateDetail')->name('api.admin.staf-teknis.update-detail');
                 Route::post('/{regId}/update-biaya-tambahan', 'StafTeknisController@updateBiayaTambahan')->name('api.admin.staf-teknis.update-biaya-tambahan');

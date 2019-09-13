@@ -32,6 +32,24 @@ class StafTeknisController extends Controller
         return dtcApiResponse(200, $data);
     }
 
+    public function riwayatPelatihan()
+    {
+        $pengajuanPelatihan = pengajuanPelatihan::where('status','done')->orderBy('id','desc')->paginate(10);
+        $data = $pengajuanPelatihan;
+        return dtcApiResponse(200, $data);
+    }
+
+    public function donePelatihan($id)
+    {
+        $data = pengajuanPelatihan::find($id);
+        if(isset($data)){
+            $data->status = 'done';
+            $data->save();
+            return dtcApiResponse(200, $data,'Pelatihan Selesai');
+        } else {
+            return dtcApiResponse(404,'Not Found','Pengajuan Pelatihan Tidak Di temukan');
+        }
+    }
     public function indexQnA()
     {
         $data = QnA::orderBy('id','desc')->paginate(10);
