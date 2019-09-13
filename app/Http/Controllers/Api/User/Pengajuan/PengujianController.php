@@ -13,6 +13,7 @@ use App\Notifications\PengajuanDiSetujuiNotification;
 use App\Notifications\PengajuanDiTolakNotification;
 use App\Notifications\UploadBuktiTransaksiNotification;
 use App\Notifications\VerifikasiUserNotification;
+use Illuminate\Support\Facades\Storage;
 
 class PengujianController extends Controller
 {
@@ -39,7 +40,11 @@ class PengujianController extends Controller
 
     public function view($regId)
     {
-        return dtcApiResponse(200, PengajuanPengujian::getOne($regId));
+        $editable = Storage::disk('local')->exists($regId);
+        $pengajuan = PengajuanPengujian::getOne($regId);
+        $pengajuan['editable'] = ! $editable;
+        // dd($pengajuan);
+        return dtcApiResponse(200, $pengajuan);
     }
 
     public function store(Request $request)
@@ -109,6 +114,8 @@ class PengujianController extends Controller
     {
         $pengajuan = new PengajuanPengujian($regId);
 
+        Storage::disk('local')->put($regId, null);
+
         $detail = $pengajuan->updateDetail($request);
 
         return dtcApiResponse(200, $detail);
@@ -144,6 +151,7 @@ class PengujianController extends Controller
             Notification::send($value, new VerifikasiUserNotification($pengajuan->masterPengajuanPengujian->first(),$staf_teknis));
         }
 
+        Storage::disk('local')->exists($regId) ? Storage::disk('local')->delete($regId):'';
 
         return dtcApiResponse(200, $_pengajuan);
     }

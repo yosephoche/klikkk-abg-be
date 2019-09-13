@@ -173,9 +173,14 @@ class User extends BaseRepository
         return dtcApiResponse(200, $user);
     }
 
-    public function getAllUsers()
+    public function getAllUsers($request)
     {
-        $user = $this->model->where('jenis_akun','!=',1)->paginate(10);
+
+        $user = $this->model->where('jenis_akun','>',1);
+        if ($request->has('search')) {
+            $user = $user->where('nama_lengkap' , 'like', '%'.$request->search.'%');
+        }
+        $user = $user->paginate(10);
         $user->getCollection()->transform(function($value){
             return [
                 'id' => $value->id,
@@ -311,7 +316,7 @@ class User extends BaseRepository
                 $filePath = $folder . $name. '.' . $image->getClientOriginalExtension();
                 $this->uploadOne($image, $folder, 'public', $name);
                 $user->avatar = $filePath;
-                
+
             } catch (\Exception $e) {
                 return dtcApiResponse(500,false, $e->getMessage());
             }

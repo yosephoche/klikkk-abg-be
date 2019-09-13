@@ -137,6 +137,7 @@ Route::group( ['middleware' => ['json.response'],'namespace' => 'Api'], function
                 Route::get('/riwayatPelatihan','StafTeknisController@riwayatPelatihan')->name('api.admin.staf-teknis.riwayatPelatihan');
                 Route::get('/show/{regId}', 'StafTeknisController@show')->name('api.admin.staf-teknis.show');
                 Route::get('/cetak/{regId}', 'StafTeknisController@cetak')->name('api.admin.staf-teknis.cetak');
+                Route::get('/download-template-kup/{regId}', 'StafTeknisController@downloadTemplateKup');
                 Route::get('/pelatihan/show/{id}','StafTeknisController@showPelatihan')->name('api.admin.staf-teknis.showPelatihan');
                 Route::get('/get-master-data', 'StafTeknisController@getMasterData')->name('api.admin.staf-teknis.get-master-data');
                 Route::post('/pelatihan/done/{id}','StafTeknisController@donePelatihan')->name('api.admin.staf-teknis.donePelatihan');
@@ -171,6 +172,7 @@ Route::group( ['middleware' => ['json.response'],'namespace' => 'Api'], function
                 Route::get('/riwayat', 'KeuanganController@riwayat')->name('api.admin.keuangan.riwayat');
                 Route::get('/show/{regId}', 'KeuanganController@show')->name('api.admin.keuangan.show');
                 Route::post('/{regId}/input-ebilling', 'KeuanganController@inputEbilling')->name('api.admin.keuangan.input-ebilling');
+                Route::post('/{regId}/upload-ebilling', 'KeuanganController@uploadEbilling')->name('api.admin.keuangan.upload-ebilling');
                 Route::get('/{regId}/konfirmasi-pembayaran', 'KeuanganController@konfirmasiPembayaran')->name('api.admin.keuangan.konfirmasi-pembayaran');
 
             });

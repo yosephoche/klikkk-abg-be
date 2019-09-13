@@ -7,7 +7,9 @@ use App\Http\Resources\PengajuanPengujian as PengajuanPengujianResource;
 use Illuminate\Database\Eloquent\Builder;
 use App\Exceptions\PengajuanNotFoundException;
 use App\Exceptions\ProsesDoubleException;
+use App\Exports\BerkasKup;
 use App\Repositories\Traits\UploadTrait;
+use Maatwebsite\Excel\Facades\Excel;
 
 class PengajuanPengujian
 {
@@ -306,6 +308,8 @@ class PengajuanPengujian
 
             $dataPengujian = [];
             $i = 0;
+            $totalBiayaPengujian = 0;
+            $diskon = 0;
             $grandTotal = 0;
 
             foreach ($_dataPengujian as $key => $value) {
@@ -313,11 +317,11 @@ class PengajuanPengujian
                 $dataPengujian[$i]['group'] = $key;
                 $dataPengujian[$i]['parameter'] = $value->toArray();
                 $dataPengujian[$i]['total'] = $value->sum('total');
-
-                $grandTotal += $dataPengujian[$i]['total'];
+                $totalBiayaPengujian += $dataPengujian[$i]['total'];
 
                 $i++;
             }
+
 
             $biayaTambahan = null;
 
@@ -342,17 +346,22 @@ class PengajuanPengujian
                     'nomor_telepon' => $pengajuanPengujian->no_telepon,
                     'jenis_usaha' => $pengajuanPengujian->jenis_usaha,
                     'tujuan' => $pengajuanPengujian->tujuan_pengujian,
-                    'e_billing' => $pengajuanPengujian->e_billing,
+                    'e_billing' => buktiTransaksiPengajuan($pengajuanPengujian->e_billing),
                     'bukti_transaksi' => buktiTransaksiPengajuan($pengajuanPengujian->bukti_transaksi),
                     'berkas_kup' => buktiTransaksiPengajuan($pengajuanPengujian->berkas_kup),
                     'berkas_proposal' => buktiTransaksiPengajuan($pengajuanPengujian->berkas_proposal),
                     'berkas_surat_pengantar' => buktiTransaksiPengajuan($pengajuanPengujian->berkas_surat_pengantar),
                     'komentar' => $pengajuanPengujian->keterangan,
+                    'discount' => $pengajuanPengujian->discount ?? 0,
                     'created_at' => $pengajuanPengujian->created_at
             ];
+
             $data['data_pengujian'] = $dataPengujian;
+            $data['total_biaya_pengujian'] = $totalBiayaPengujian;
+            $data['nilai_diskon'] = $totalBiayaPengujian * ($pengajuanPengujian->discount / 100);
+            $data['total_biaya_pengujian_setelah_diskon'] = $pengajuanPengujian->discount ? $totalBiayaPengujian - $data['nilai_diskon'] : $totalBiayaPengujian;
             $data['biaya_tambahan'] = $biayaTambahan;
-            $data['grand_total'] = $grandTotal;
+            $data['grand_total'] = $grandTotal + $data['total_biaya_pengujian_setelah_diskon'];
 
             return $data;
         }
@@ -580,6 +589,31 @@ class PengajuanPengujian
         }
     }
 
+    public function uploadEbilling($data)
+    {
+        if ($this->masterPengajuanPengujian instanceof Builder) {
+            try {
+                if ($data->has('ebilling')) {
+                    $pengajuan = $this->masterPengajuanPengujian->first();
+                    $image = $data->file('ebilling');
+                    $name = $pengajuan->regId;
+                    $folder = '/uploads/ebilling/';
+                    $filePath = $folder . $name. '.' . $image->getClientOriginalExtension();
+                    $this->uploadOne($image, $folder, 'public', $name);
+                    $pengajuan->e_billing = $filePath;
+
+                    $pengajuan->save();
+                    return asset('storage'.$pengajuan->e_billing);
+                }
+            } catch (\Exception $e) {
+                return dtcApiResponse(500,false, $e->getMessage());
+            }
+        }
+        else{
+            throw new PengajuanNotFoundException();
+        }
+    }
+
     public function cetak()
     {
         if ($this->masterPengajuanPengujian instanceof Builder) {
@@ -590,7 +624,6 @@ class PengajuanPengujian
                 $q->where('name', 'kepala_bagian');
             });
 
-            // dd($kepalaBidang->first());
             $kepalaBidang = $kepalaBidang->first();
 
             foreach ($pengajuan['data_pengujian'] as $key => $value) {
@@ -611,6 +644,29 @@ class PengajuanPengujian
 
             return asset('storage/uploads/berkas/_'.$pengajuan['data_pemohon']['regId'].'.pdf');
         }
+        throw new PengajuanNotFoundException();
+    }
+
+    public function downloadTemplateKup()
+    {
+        if ($this->masterPengajuanPengujian instanceof Builder) {
+            $pengajuan = $this->getOne($this->masterPengajuanPengujian->first()->regId);
+            $groupPengujian = [];
+
+            foreach ($pengajuan['data_pengujian'] as $key => $value) {
+                $_groupPengujian = explode('-',$value['group']);
+                if (collect($groupPengujian)->has($_groupPengujian[0]) == false) {
+                    $groupPengujian[] = $_groupPengujian[0];
+                }
+            }
+
+            $groupPengujian = array_unique($groupPengujian);
+
+            Excel::store(new BerkasKup($pengajuan), $pengajuan['data_pemohon']['regId'].'.xlsx','public');
+
+            return asset('storage/'.$pengajuan['data_pemohon']['regId'].'.xlsx');
+        }
+
         throw new PengajuanNotFoundException();
     }
 
@@ -642,7 +698,7 @@ class PengajuanPengujian
     public function historyUser()
     {
         $pengajuan = $this->masterPengajuanPengujian;
-        $pengajuan = $pengajuan->history()->get()->groupBy('status_pengajuan')->map(function($value, $key){
+        $pengajuan = $pengajuan->history()->orderBy('created_at','DESC')->get()->groupBy('status_pengajuan')->map(function($value, $key){
 
             return $value->map(function($value) use ($key){
 

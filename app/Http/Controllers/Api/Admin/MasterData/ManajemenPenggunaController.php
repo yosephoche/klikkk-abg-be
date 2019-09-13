@@ -8,10 +8,10 @@ use App\Repositories\User;
 
 class ManajemenPenggunaController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $user = new User();
-        return $user->getAllUsers();
+        return $user->getAllUsers($request);
     }
 
     public function delete($id)
