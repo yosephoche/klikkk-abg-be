@@ -306,6 +306,8 @@ class PengajuanPengujian
 
             $dataPengujian = [];
             $i = 0;
+            $totalBiayaPengujian = 0;
+            $diskon = 0;
             $grandTotal = 0;
 
             foreach ($_dataPengujian as $key => $value) {
@@ -313,11 +315,11 @@ class PengajuanPengujian
                 $dataPengujian[$i]['group'] = $key;
                 $dataPengujian[$i]['parameter'] = $value->toArray();
                 $dataPengujian[$i]['total'] = $value->sum('total');
-
-                $grandTotal += $dataPengujian[$i]['total'];
+                $totalBiayaPengujian += $dataPengujian[$i]['total'];
 
                 $i++;
             }
+
 
             $biayaTambahan = null;
 
@@ -348,11 +350,16 @@ class PengajuanPengujian
                     'berkas_proposal' => buktiTransaksiPengajuan($pengajuanPengujian->berkas_proposal),
                     'berkas_surat_pengantar' => buktiTransaksiPengajuan($pengajuanPengujian->berkas_surat_pengantar),
                     'komentar' => $pengajuanPengujian->keterangan,
+                    'discount' => $pengajuanPengujian->discount ?? 0,
                     'created_at' => $pengajuanPengujian->created_at
             ];
+
             $data['data_pengujian'] = $dataPengujian;
+            $data['total_biaya_pengujian'] = $totalBiayaPengujian;
+            $data['nilai_diskon'] = $totalBiayaPengujian * ($pengajuanPengujian->discount / 100);
+            $data['total_biaya_pengujian_setelah_diskon'] = $pengajuanPengujian->discount ? $totalBiayaPengujian - $data['nilai_diskon'] : $totalBiayaPengujian;
             $data['biaya_tambahan'] = $biayaTambahan;
-            $data['grand_total'] = $grandTotal;
+            $data['grand_total'] = $grandTotal + $data['total_biaya_pengujian_setelah_diskon'];
 
             return $data;
         }
@@ -615,7 +622,6 @@ class PengajuanPengujian
                 $q->where('name', 'kepala_bagian');
             });
 
-            // dd($kepalaBidang->first());
             $kepalaBidang = $kepalaBidang->first();
 
             foreach ($pengajuan['data_pengujian'] as $key => $value) {
