@@ -425,6 +425,14 @@ class PengajuanPengujian
     public function updateDetail($data)
     {
         if ($this->masterPengajuanPengujian instanceof Builder) {
+
+            if ($data->has('discount')) {
+                $masterPengajuan = $this->masterPengajuanPengujian->first();
+                $masterPengajuan->discount = $data->discount??0;
+                // dd($masterPengajuan);
+                $masterPengajuan->save();
+            }
+
             $this->masterPengajuanPengujian->first()->detailPengajuanPengujian()->delete();
             $detailPengajuanPengujian = [];
             $i = 0;
