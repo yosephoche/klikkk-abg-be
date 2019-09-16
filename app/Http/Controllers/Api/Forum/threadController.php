@@ -263,9 +263,11 @@ class threadController extends Controller
     public function update(Request $request, $id)
     {
         $thread = $this->thread->findThread($id);
+        $role = Auth::user()->roles->where('name','admin')->first();
+
         if(isset($thread))
         {
-            if(Auth::user()->id == $thread->created_by)
+            if(Auth::user()->id == $thread->created_by || isset($role))
             {
                 $thread->subject = $request->subject;
                 $thread->slug = str_slug($thread->subject);
