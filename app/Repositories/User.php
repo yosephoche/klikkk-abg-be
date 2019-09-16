@@ -190,6 +190,9 @@ class User extends BaseRepository
                 'email' => $value->email,
                 'nip' => $value->nip,
                 'no_telepon' => $value->no_telepon,
+                'pekerjaan' => $value->pekerjaan,
+                'instansi' => $value->instansi,
+                'email_verified_at' => date('d-m-Y H:i:s', strtotime($value->email_verified_at)) ,
                 'avatar' => $value->avatar?asset('storage/'.$value->avatar):null,
             ];
         });
